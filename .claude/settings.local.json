@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(./node_modules/.bin/tailwindcss:*)",
+      "Bash(node -e:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout /t 4)",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\\\Users\\\\Andy3\\\\Desktop\\\\Proyectos Portafolio arosado\\\\Proyecto Amwey\\\\vitagloss-rd\\\\src'' -Recurse -Filter ''*.jsx'' | ForEach-Object { \\(Get-Content $_FullName\\) -replace ''18091234567'', ''18492763532'' | Set-Content $_FullName }\")",
+      "Bash(powershell -Command \"& { Get-ChildItem -Path ''C:\\\\Users\\\\Andy3\\\\Desktop\\\\Proyectos Portafolio arosado\\\\Proyecto Amwey\\\\vitagloss-rd\\\\src'' -Recurse -Filter ''*.jsx'' | ForEach-Object { \\(Get-Content -Path $_FullName -Raw\\) -replace ''18091234567'', ''18492763532'' | Set-Content -Path $_FullName -NoNewline } }\")",
+      "Bash(powershell:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(cmd /c \"taskkill /F /IM node.exe\")",
+      "Bash(cmd /c taskkill /F /IM node.exe)",
+      "Bash(timeout /t 4 /nobreak)"
+    ]
+  }
+}
