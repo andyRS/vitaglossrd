@@ -274,6 +274,15 @@ export default function ProductoDetalle() {
                   </>
                 )}
               </div>
+              {/* Cuotas */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                  💳 3 cuotas de RD${Math.round(producto.precio / 3).toLocaleString('es-DO')}
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full">
+                  📦 Envío gratis desde RD$2,500
+                </span>
+              </div>
             </div>
 
             {/* Calculadora costo/día */}
@@ -367,6 +376,34 @@ export default function ProductoDetalle() {
             >
               ← Ver más productos
             </Link>
+
+            {/* Política de devolución y garantías */}
+            <div className="mt-5 bg-gray-50 rounded-2xl p-5 border border-gray-100">
+              <p className="text-xs font-black text-gray-500 uppercase tracking-wider mb-3">🛡️ Compra con confianza</p>
+              <div className="flex flex-col gap-2.5">
+                <div className="flex items-start gap-3">
+                  <span className="text-base flex-shrink-0">↩️</span>
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Garantía de satisfacción 30 días</p>
+                    <p className="text-xs text-gray-400">Si no quedas satisfecho/a, te devolvemos tu dinero. Sin preguntas.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-base flex-shrink-0">🏷️</span>
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Productos 100% originales</p>
+                    <p className="text-xs text-gray-400">Distribuidor autorizado Amway en República Dominicana.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-base flex-shrink-0">🔒</span>
+                  <div>
+                    <p className="text-sm font-bold text-gray-700">Pago seguro por WhatsApp</p>
+                    <p className="text-xs text-gray-400">Transferencia bancaria, tarjetas o efectivo. Confirmamos tu pedido al instante.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Garantías */}
             <div className="grid grid-cols-3 gap-3 mt-6 text-center">

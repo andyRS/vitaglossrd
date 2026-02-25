@@ -58,8 +58,10 @@ export default function LeadPopup() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!nombre.trim() || !whatsapp.trim()) return
+    const refCode = sessionStorage.getItem('vg_ref')
+    const refTexto = refCode ? ` Me recomendó el representante: *${refCode}*.` : ''
     const msg = encodeURIComponent(
-      `Hola VitaGloss RD! 👋 Soy *${nombre}* y me registré desde la web para obtener mi *10% de descuento en mi primer pedido*. ¡Quiero conocer sus productos!`
+      `Hola VitaGloss RD! 👋 Soy *${nombre}* y me registré desde la web para obtener mi *10% de descuento en mi primer pedido*. ¡Quiero conocer sus productos!${refTexto}`
     )
     window.open(`https://wa.me/18492763532?text=${msg}`, '_blank')
     setEnviado(true)
