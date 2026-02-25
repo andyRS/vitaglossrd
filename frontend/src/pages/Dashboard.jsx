@@ -107,6 +107,9 @@ export default function Dashboard() {
   const [savingProfile, setSavingProfile] = useState(false)
   const [profileMsg, setProfileMsg] = useState('')
 
+  // kanban view toggle
+  const [kanbanView, setKanbanView] = useState(false)
+
   // templates copy feedback
   const [copied, setCopied] = useState(null)
 
@@ -382,12 +385,29 @@ export default function Dashboard() {
         {/* ── TAB 1: LEADS ───────────────────────────────────────────────── */}
         {tab === 1 && (
           <Section>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
               <h2 className="text-2xl font-black text-primary">Gestión de Leads</h2>
-              <button onClick={() => setLeadFormOpen(true)}
-                className="bg-primary hover:bg-blue-800 text-white text-sm font-bold px-5 py-2.5 rounded-2xl flex items-center gap-2 transition-all hover:scale-105">
-                <span aria-hidden="true">+</span> Nuevo lead
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Toggle lista/kanban */}
+                <div className="bg-gray-100 rounded-xl p-1 flex gap-1">
+                  <button
+                    onClick={() => setKanbanView(false)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${!kanbanView ? 'bg-white shadow text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+                  >
+                    ☰ Lista
+                  </button>
+                  <button
+                    onClick={() => setKanbanView(true)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${kanbanView ? 'bg-white shadow text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+                  >
+                    ⬛ Kanban
+                  </button>
+                </div>
+                <button onClick={() => setLeadFormOpen(true)}
+                  className="bg-primary hover:bg-blue-800 text-white text-sm font-bold px-5 py-2.5 rounded-2xl flex items-center gap-2 transition-all hover:scale-105">
+                  <span aria-hidden="true">+</span> Nuevo lead
+                </button>
+              </div>
             </div>
 
             {/* Form modal */}
@@ -432,7 +452,48 @@ export default function Dashboard() {
                 <p className="text-gray-500 mb-4">No tienes leads registrados aún.</p>
                 <button onClick={() => setLeadFormOpen(true)} className="text-sm text-secondary font-semibold hover:underline">+ Agregar primer lead</button>
               </div>
+            ) : kanbanView ? (
+              /* ── KANBAN BOARD ── */
+              <div className="overflow-x-auto pb-4">
+                <div className="flex gap-4 min-w-max">
+                  {ESTADO_LEAD.map(estado => {
+                    const col = { nuevo: { label: 'Nuevos', color: 'bg-sky-500', bg: 'bg-sky-50', border: 'border-sky-200' }, contactado: { label: 'Contactados', color: 'bg-yellow-500', bg: 'bg-yellow-50', border: 'border-yellow-200' }, interesado: { label: 'Interesados', color: 'bg-purple-500', bg: 'bg-purple-50', border: 'border-purple-200' }, cerrado: { label: 'Cerrados', color: 'bg-green-500', bg: 'bg-green-50', border: 'border-green-200' }, perdido: { label: 'Perdidos', color: 'bg-red-400', bg: 'bg-red-50', border: 'border-red-200' } }[estado]
+                    const colLeads = leads.filter(l => l.estado === estado)
+                    return (
+                      <div key={estado} className={`w-64 flex-shrink-0 rounded-2xl border ${col.border} ${col.bg} p-3`}>
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className={`w-2.5 h-2.5 rounded-full ${col.color}`} />
+                          <span className="font-bold text-sm text-gray-700">{col.label}</span>
+                          <span className="ml-auto bg-white border border-gray-200 text-gray-500 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{colLeads.length}</span>
+                        </div>
+                        <div className="space-y-2 min-h-[60px]">
+                          {colLeads.map(l => (
+                            <div key={l._id} className="bg-white rounded-xl p-3 border border-white shadow-sm">
+                              <p className="font-semibold text-gray-800 text-sm leading-tight mb-1">{l.nombre}</p>
+                              {l.productoInteres && <p className="text-gray-400 text-xs mb-2 truncate">{l.productoInteres}</p>}
+                              <div className="flex items-center justify-between gap-1 mt-2">
+                                {l.telefono ? (
+                                  <a href={`https://wa.me/${l.telefono.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer"
+                                    className="text-green-600 text-xs font-semibold hover:underline">📲 {l.telefono}</a>
+                                ) : <span />}
+                                <select
+                                  value={l.estado}
+                                  onChange={e => changeLeadEstado(l._id, e.target.value)}
+                                  className="text-[10px] font-bold bg-gray-50 border border-gray-200 rounded-lg px-1.5 py-1 cursor-pointer focus:outline-none"
+                                >
+                                  {ESTADO_LEAD.map(s => <option key={s} value={s}>{s}</option>)}
+                                </select>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             ) : (
+              /* ── TABLA LISTA ── */
               <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden">
                 <div className="hidden sm:grid grid-cols-5 px-6 py-3 bg-gray-50 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
                   <span>Cliente</span><span>Producto</span><span>Origen</span><span>Estado</span><span></span>
@@ -657,6 +718,40 @@ export default function Dashboard() {
                   </form>
                 </div>
               </div>
+
+              {/* ─ Enlace de referido ─ */}
+              {user?.refCode && (
+                <div className="mt-6 bg-gradient-to-br from-[#0a1628] to-[#1B3A6B] rounded-3xl p-6 text-white">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-2xl">🔗</span>
+                    <div>
+                      <p className="font-black text-base">Tu enlace de referido</p>
+                      <p className="text-white/50 text-xs">Comparte este link y rastrea cada visita</p>
+                    </div>
+                    <span className="ml-auto bg-secondary/20 border border-secondary/40 text-secondary text-xs font-bold px-3 py-1 rounded-full">
+                      {user.refClicks ?? 0} clicks
+                    </span>
+                  </div>
+                  <div className="bg-white/10 rounded-2xl px-4 py-3 flex items-center gap-3 mb-4">
+                    <p className="flex-1 text-white/80 text-xs truncate font-mono">
+                      {window.location.origin}/?ref={user.refCode}
+                    </p>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard?.writeText(`${window.location.origin}/?ref=${user.refCode}`)
+                        setCopied('ref')
+                        setTimeout(() => setCopied(null), 2000)
+                      }}
+                      className="flex-shrink-0 bg-secondary hover:bg-teal-400 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all"
+                    >
+                      {copied === 'ref' ? '✓ Copiado' : '📋 Copiar'}
+                    </button>
+                  </div>
+                  <p className="text-white/40 text-xs">
+                    Cuando alguien entra por tu enlace y deja sus datos en el popup de descuento, el lead queda registrado a tu nombre.
+                  </p>
+                </div>
+              )}
             </div>
           </Section>
         )}

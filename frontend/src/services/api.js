@@ -32,6 +32,7 @@ export const api = {
   me: () => request('GET', '/auth/me', null, true),
   updateProfile: (body) => request('PATCH', '/auth/me', body, true),
   changePassword: (body) => request('PATCH', '/auth/password', body, true),
+  trackRef: (code) => request('GET', `/auth/ref/${code}`),
 
   // Members (público)
   getMembers: () => request('GET', '/members'),
@@ -50,4 +51,9 @@ export const api = {
   createSale: (body) => request('POST', '/sales', body, true),
   updateSale: (id, body) => request('PATCH', `/sales/${id}`, body, true),
   deleteSale: (id) => request('DELETE', `/sales/${id}`, null, true),
+
+  // Reviews (público)
+  getReviews: (productoId) => request('GET', `/reviews/${productoId}`),
+  createReview: (productoId, body) => request('POST', `/reviews/${productoId}`, body),
+  deleteReview: (id) => request('DELETE', `/reviews/${id}`, null, true),
 }

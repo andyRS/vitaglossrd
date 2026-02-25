@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useCart } from '../context/CartContext'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const { count, setOpen: openCart } = useCart()
 
   const isHome = location.pathname === '/'
 
@@ -84,6 +86,23 @@ export default function Navbar() {
 
           {/* CTA Button desktop */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Carrito */}
+            <button
+              onClick={() => openCart(true)}
+              aria-label={`Ver carrito${count > 0 ? `, ${count} producto${count !== 1 ? 's' : ''}` : ''}`}
+              className={`relative p-2.5 rounded-xl transition-all duration-200 ${
+                isTransparent ? 'text-white hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              {count > 0 && (
+                <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </button>
             <a
               href="https://wa.me/18492763532?text=Hola!%20Quiero%20conocer%20los%20productos%20de%20VitaGloss%20RD"
                   target="_blank"
@@ -97,12 +116,30 @@ export default function Navbar() {
           </div>
 
           {/* Hamburger */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
+          <div className="md:hidden flex items-center gap-2">
+            {/* Cart icon mobile */}
+            <button
+              onClick={() => openCart(true)}
+              aria-label="Ver carrito"
+              className={`relative p-2 rounded-xl transition-colors ${
+                isTransparent ? 'text-white hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              {count > 0 && (
+                <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={menuOpen}
-            className={`md:hidden flex flex-col justify-center gap-1.5 p-2 rounded-lg transition-colors ${isTransparent ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
-          >
+            className={`flex flex-col justify-center gap-1.5 p-2 rounded-lg transition-colors ${isTransparent ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
+            >
             <motion.span
               animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 8 : 0 }}
               className={`block w-6 h-0.5 rounded-full origin-center ${isTransparent ? 'bg-white' : 'bg-gray-700'}`}
@@ -115,7 +152,8 @@ export default function Navbar() {
               animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -8 : 0 }}
               className={`block w-6 h-0.5 rounded-full origin-center ${isTransparent ? 'bg-white' : 'bg-gray-700'}`}
             />
-          </button>
+            </button>
+          </div>
         </div>
       </div>
 

@@ -52,12 +52,32 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  refCode: {
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true,
+  },
+  refClicks: {
+    type: Number,
+    default: 0,
+  },
 }, {
   timestamps: true,
 })
 
 // Hash password antes de guardar
 userSchema.pre('save', async function (next) {
+  // Auto-generate refCode
+  if (!this.refCode) {
+    const base = (this.nombre || 'user')
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+      .replace(/[^a-z0-9]/g, '')
+      .substring(0, 10)
+    const suffix = Math.random().toString(36).substring(2, 6)
+    this.refCode = `${base}-${suffix}`
+  }
   if (!this.isModified('password')) return next()
   this.password = await bcrypt.hash(this.password, 12)
   next()

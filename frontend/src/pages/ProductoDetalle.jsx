@@ -1,9 +1,11 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
 import ProductoCard from '../components/ProductoCard'
 import { useSEO } from '../hooks/useSEO'
+import { useCart } from '../context/CartContext'
+import ReviewsSection from '../components/ReviewsSection'
 
 // Acordeón individual
 function Accordion({ titulo, icono, children, defaultOpen = false }) {
@@ -55,11 +57,62 @@ export default function ProductoDetalle() {
   const { id } = useParams()
   const producto = productos.find(p => p.id === parseInt(id))
   const [imgActiva, setImgActiva] = useState(0)
+  const [agregado, setAgregado] = useState(false)
+  const { addItem } = useCart()
+
+  const handleAgregar = () => {
+    addItem(producto)
+    setAgregado(true)
+    setTimeout(() => setAgregado(false), 2000)
+    // Meta Pixel
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'AddToCart', {
+        content_name: producto.nombre,
+        content_ids: [String(producto.id)],
+        content_type: 'product',
+        value: producto.precio,
+        currency: 'DOP',
+      })
+    }
+  }
 
   useSEO({
     title: producto?.nombre ?? 'Producto',
     description: producto?.descripcion ?? 'Producto Amway original en VitaGloss RD. Envío a todo el país.',
+    jsonLd: producto ? {
+      '@context': 'https://schema.org/',
+      '@type': 'Product',
+      name: producto.nombre,
+      description: producto.descripcion,
+      image: producto.imagenes ?? [producto.imagen],
+      brand: { '@type': 'Brand', name: 'Amway' },
+      sku: producto.articulo,
+      offers: {
+        '@type': 'Offer',
+        url: `https://vitagloss-rd.com/producto/${producto.id}`,
+        priceCurrency: 'DOP',
+        price: producto.precio,
+        availability: producto.disponible
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+        seller: { '@type': 'Organization', name: 'VitaGloss RD' },
+      },
+    } : null,
   })
+
+  // Meta Pixel: ViewContent event
+  useEffect(() => {
+    if (!producto) return
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'ViewContent', {
+        content_name: producto.nombre,
+        content_ids: [String(producto.id)],
+        content_type: 'product',
+        value: producto.precio,
+        currency: 'DOP',
+      })
+    }
+  }, [producto?.id])
 
   if (!producto) {
     return (
@@ -278,6 +331,22 @@ export default function ProductoDetalle() {
                 </div>
               </div>
             )}
+
+            {/* Btn carrito */}
+            <button
+              onClick={handleAgregar}
+              className={`w-full py-4 rounded-2xl font-black text-base transition-all duration-200 flex items-center justify-center gap-3 mb-3 border-2 ${
+                agregado
+                  ? 'border-green-500 text-green-600 bg-green-50 scale-95'
+                  : 'border-primary text-primary hover:bg-primary hover:text-white'
+              }`}
+            >
+              {agregado ? (
+                <><span className="text-xl">✓</span> ¡Agregado al pedido!</>
+              ) : (
+                <><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg> Agregar al pedido</>
+              )}
+            </button>
 
             {/* Botón principal WhatsApp */}
             <a
@@ -598,6 +667,11 @@ export default function ProductoDetalle() {
             </motion.div>
           )}
         </div>
+      </div>
+
+      {/* ===== RESEÑAS DE CLIENTES ===== */}
+      <div className="max-w-7xl mx-auto px-4 pb-16">
+        <ReviewsSection productoId={producto.id} />
       </div>
     </div>
   )

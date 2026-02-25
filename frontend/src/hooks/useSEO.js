@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export function useSEO({ title, description }) {
+export function useSEO({ title, description, jsonLd }) {
   useEffect(() => {
     // Título
     document.title = title ? `${title} | VitaGloss RD` : 'VitaGloss RD — Tu salud, tu sonrisa'
@@ -31,4 +31,25 @@ export function useSEO({ title, description }) {
     }
     if (description) ogDesc.setAttribute('content', description)
   }, [title, description])
+
+  // JSON-LD structured data
+  useEffect(() => {
+    const id = 'vg-jsonld'
+    let existing = document.getElementById(id)
+    if (!jsonLd) {
+      if (existing) existing.remove()
+      return
+    }
+    if (!existing) {
+      existing = document.createElement('script')
+      existing.id = id
+      existing.type = 'application/ld+json'
+      document.head.appendChild(existing)
+    }
+    existing.textContent = JSON.stringify(jsonLd)
+    return () => {
+      const el = document.getElementById(id)
+      if (el) el.remove()
+    }
+  }, [jsonLd])
 }

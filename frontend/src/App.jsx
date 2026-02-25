@@ -1,10 +1,14 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, useSearchParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import { AuthProvider } from './context/AuthContext'
+import { CartProvider } from './context/CartContext'
+import { api } from './services/api'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import LeadPopup from './components/LeadPopup'
+import CartDrawer from './components/CartDrawer'
 import Home from './pages/Home'
 import Catalogo from './pages/Catalogo'
 import ProductoDetalle from './pages/ProductoDetalle'
@@ -18,12 +22,26 @@ import Dashboard from './pages/Dashboard'
 // Páginas que NO deben mostrar el Navbar/Footer público
 const DASHBOARD_ROUTES = ['/dashboard']
 
+// Detecta ?ref= en URL y guarda en sessionStorage para atribuir leads
+function RefTracker() {
+  const [searchParams] = useSearchParams()
+  useEffect(() => {
+    const ref = searchParams.get('ref')
+    if (ref) {
+      sessionStorage.setItem('vg_ref', ref)
+      api.trackRef(ref).catch(() => {}) // silently track click
+    }
+  }, [searchParams])
+  return null
+}
+
 function Layout() {
   const { pathname } = useLocation()
   const isDashboard = DASHBOARD_ROUTES.some(r => pathname.startsWith(r))
 
   return (
     <div className="flex flex-col min-h-screen">
+      <RefTracker />
       {!isDashboard && <Navbar />}
       <main className="flex-1">
         <Routes>
@@ -48,6 +66,7 @@ function Layout() {
       {!isDashboard && <Footer />}
       {!isDashboard && <WhatsAppFloat />}
       {!isDashboard && <LeadPopup />}
+      {!isDashboard && <CartDrawer />}
     </div>
   )
 }
@@ -55,9 +74,11 @@ function Layout() {
 function App() {
   return (
     <AuthProvider>
+      <CartProvider>
       <BrowserRouter>
         <Layout />
       </BrowserRouter>
+      </CartProvider>
     </AuthProvider>
   )
 }

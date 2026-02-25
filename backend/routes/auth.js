@@ -123,4 +123,19 @@ router.patch('/password', protect, async (req, res) => {
   }
 })
 
+// ── GET /api/auth/ref/:code — track ref link click ───────────────────────
+router.get('/ref/:code', async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { refCode: req.params.code, activo: true },
+      { $inc: { refClicks: 1 } },
+      { new: true }
+    )
+    if (!user) return res.status(404).json({ error: 'Enlace no válido.' })
+    res.json({ nombre: user.nombre, refCode: user.refCode, whatsapp: user.whatsapp })
+  } catch (err) {
+    res.status(500).json({ error: 'Error al procesar enlace.' })
+  }
+})
+
 module.exports = router
