@@ -31,10 +31,17 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$root\whatsap
 
 Start-Sleep -Seconds 2
 
-# 4. n8n
+# 4. n8n (con variables de entorno pre-cargadas desde n8n.env)
 Write-Host "▶ Iniciando n8n (puerto 5678)..." -ForegroundColor Magenta
-Write-Host "  → Abre http://localhost:5678 para importar el workflow" -ForegroundColor Magenta
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "n8n start" -WindowStyle Normal
+Write-Host "  → Abre http://localhost:5678 para administrar los workflows" -ForegroundColor Magenta
+$n8nStartCmd = @"
+# Cargar n8n.env
+Get-Content '$root\n8n-workflow\n8n.env' | Where-Object { `$_ -match '^[^#]' -and `$_ -match '=' } | ForEach-Object {
+    `$p = `$_ -split '=',2; [System.Environment]::SetEnvironmentVariable(`$p[0].Trim(), `$p[1].Trim(), 'Process')
+}
+n8n start
+"@
+Start-Process powershell -ArgumentList "-NoExit", "-Command", $n8nStartCmd -WindowStyle Normal
 
 Write-Host ""
 Write-Host "══════════════════════════════════════════════════════" -ForegroundColor Cyan
@@ -42,12 +49,10 @@ Write-Host "  Servicios arrancando en ventanas separadas:" -ForegroundColor Whit
 Write-Host "  🔷 Backend API    →  http://localhost:4000" -ForegroundColor Cyan
 Write-Host "  🔷 Frontend       →  http://localhost:5174" -ForegroundColor Cyan
 Write-Host "  📱 WhatsApp QR    →  http://localhost:3001/qr?key=vitagloss_wa_2026" -ForegroundColor Green
-Write-Host "  🔧 n8n Workflows  →  http://localhost:5678" -ForegroundColor Magenta
+Write-Host "  🔧 n8n Panel      →  http://localhost:5678  (admin / vitagloss2026)" -ForegroundColor Magenta
 Write-Host "══════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "PRÓXIMOS PASOS:" -ForegroundColor Yellow
-Write-Host "  1. Escanea el QR de WhatsApp" -ForegroundColor White
-Write-Host "  2. En n8n: New Workflow → Import → n8n-workflow/vitagloss-ventas.json" -ForegroundColor White
-Write-Host "  3. En n8n: Settings → Variables → agrega WA_SECRET, VENDOR_PHONE, API_URL, ADMIN_TOKEN" -ForegroundColor White
-Write-Host "  4. Activa el workflow en n8n" -ForegroundColor White
+Write-Host "  1. Escanea el QR de WhatsApp en el navegador" -ForegroundColor White
+Write-Host "  2. Ejecuta: .\n8n-workflow\setup-n8n.ps1   (importa workflow + variables)" -ForegroundColor White
 Write-Host ""

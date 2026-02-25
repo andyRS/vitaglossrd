@@ -1,8 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const Order = require('../models/Order')
-const { protect, adminOnly } = require('../middleware/auth')
+const protect = require('../middleware/auth')
 // globalThis.fetch nativo disponible en Node 18+ (aquí Node 24)
+
+// Middleware: solo admins
+function adminOnly(req, res, next) {
+  if (req.user?.rol !== 'admin') return res.status(403).json({ error: 'Solo administradores' })
+  next()
+}
 
 // ── Helper: disparar webhook n8n ──────────────────────────────────────────
 async function notifyN8n(order) {
