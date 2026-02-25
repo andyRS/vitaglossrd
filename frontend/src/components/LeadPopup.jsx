@@ -100,26 +100,27 @@ export default function LeadPopup() {
                 <span aria-hidden="true">✕</span>
               </button>
 
-              <div className="px-7 pt-7 pb-7">
+              <div className="px-6 pt-6 pb-5">
                 {!enviado ? (
                   <>
                     {/* Header compacto */}
-                    <div className="text-center mb-5">
-                      <div className="text-4xl mb-2">🎁</div>
+                    <div className="text-center mb-4">
+                      <div className="text-3xl mb-2">🎁</div>
                       <h2 className="text-white font-black text-xl mb-1">¡Espera, tenemos un regalo!</h2>
-                      <p className="text-white/60 text-sm mb-3">Déjanos tu WhatsApp y recibe <span className="text-yellow-300 font-black">gratis ahora mismo</span>:</p>
+                      <p className="text-white/60 text-sm mb-3">
+                        Déjanos tu WhatsApp y recibe{' '}
+                        <span className="text-yellow-300 font-black">todo esto gratis</span>
+                      </p>
                       <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-left space-y-2 mb-3">
                         <p className="text-white/80 text-xs flex items-start gap-2"><span className="text-green-400 mt-0.5 flex-shrink-0">✅</span> Guía: <span className="font-bold">"Los 3 productos más pedidos en RD y por qué funcionan"</span></p>
                         <p className="text-white/80 text-xs flex items-start gap-2"><span className="text-green-400 mt-0.5 flex-shrink-0">✅</span> <span className="text-yellow-300 font-bold">10% OFF</span> en tu primer pedido</p>
                         <p className="text-white/80 text-xs flex items-start gap-2"><span className="text-green-400 mt-0.5 flex-shrink-0">✅</span> Atención personalizada por WhatsApp</p>
                       </div>
-                      <span className="inline-flex items-center gap-1.5 bg-yellow-400 text-yellow-900 font-black text-xs px-4 py-1.5 rounded-full">
-                        ⚡ Solo para nuevos clientes · Hoy es gratis
-                      </span>
+                      <p className="text-white/40 text-xs">⚡ Solo para nuevos clientes · Completamente gratis</p>
                     </div>
 
                     {/* Formulario */}
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
                       <div>
                         <label className="text-white/50 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Tu nombre</label>
                         <input
@@ -128,7 +129,7 @@ export default function LeadPopup() {
                           value={nombre}
                           onChange={e => setNombre(e.target.value)}
                           required
-                          className="w-full bg-white/10 border border-white/20 focus:border-white/50 text-white placeholder-white/30 rounded-xl px-4 py-2.5 text-sm outline-none transition-colors"
+                          className="w-full bg-white/10 border border-white/20 focus:border-white/50 text-white placeholder-white/30 rounded-xl px-4 py-2 text-sm outline-none transition-colors"
                         />
                       </div>
                       <div>
@@ -139,7 +140,7 @@ export default function LeadPopup() {
                           value={whatsapp}
                           onChange={e => setWhatsapp(e.target.value)}
                           required
-                          className="w-full bg-white/10 border border-white/20 focus:border-white/50 text-white placeholder-white/30 rounded-xl px-4 py-2.5 text-sm outline-none transition-colors"
+                          className="w-full bg-white/10 border border-white/20 focus:border-white/50 text-white placeholder-white/30 rounded-xl px-4 py-2 text-sm outline-none transition-colors"
                         />
                       </div>
                       <button
