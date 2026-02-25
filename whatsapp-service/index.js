@@ -14,7 +14,7 @@ const express    = require('express')
 const qrcode     = require('qrcode')
 const { Client, LocalAuth } = require('whatsapp-web.js')
 
-const PORT       = process.env.WA_PORT  || 3001
+const PORT       = process.env.WA_PORT  || 3002
 const SECRET_KEY = process.env.WA_SECRET || 'vitagloss_wa_2026'
 
 const app = express()
