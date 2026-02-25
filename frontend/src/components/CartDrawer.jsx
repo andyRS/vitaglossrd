@@ -1,17 +1,56 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 import { useCart } from '../context/CartContext'
+import { api } from '../services/api'
 
 export default function CartDrawer() {
   const { items, open, setOpen, removeItem, updateCantidad, total, clearCart, buildWhatsAppMsg, count } = useCart()
 
-  const handlePedir = () => {
-    const url = buildWhatsAppMsg()
-    if (url) {
-      window.open(url, '_blank')
-      clearCart()
-      setOpen(false)
-    }
+  const [step, setStep]         = useState('cart')   // 'cart' | 'checkout'
+  const [nombre, setNombre]     = useState('')
+  const [whatsapp, setWhatsapp] = useState('')
+  const [saving, setSaving]     = useState(false)
+
+  const resetAndClose = () => {
+    setOpen(false)
+    setStep('cart')
+    setNombre('')
+    setWhatsapp('')
   }
+
+  // Abre WhatsApp y guarda pedido opcionalmente
+  const abrirWhatsApp = async (clienteNombre, clienteWA) => {
+    const url = buildWhatsAppMsg()
+    if (!url) return
+
+    // Guardar pedido en backend (sin bloquear)
+    const refCode = sessionStorage.getItem('vg_ref') || ''
+    api.createOrder({
+      items: items.map(i => ({ nombre: i.nombre, articulo: i.articulo || '', cantidad: i.cantidad, precio: i.precio })),
+      total,
+      nombre:   clienteNombre || 'Cliente web',
+      whatsapp: clienteWA     || '',
+      refCode,
+    }).catch(() => {}) // silencioso si falla
+
+    window.open(url, '_blank')
+    clearCart()
+    resetAndClose()
+  }
+
+  // Paso 1: click en "Pedir" → ir al checkout
+  const handlePedirClick = () => setStep('checkout')
+
+  // Paso 2: formulario confirmado
+  const handleConfirmar = async (e) => {
+    e.preventDefault()
+    setSaving(true)
+    await abrirWhatsApp(nombre, whatsapp)
+    setSaving(false)
+  }
+
+  // Saltar formulario
+  const handleSaltar = () => abrirWhatsApp('', '')
 
   return (
     <AnimatePresence>
@@ -23,7 +62,7 @@ export default function CartDrawer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
+            onClick={resetAndClose}
             className="fixed inset-0 bg-black/50 z-[70] backdrop-blur-sm"
           />
 
@@ -48,7 +87,7 @@ export default function CartDrawer() {
                 )}
               </div>
               <button
-                onClick={() => setOpen(false)}
+                onClick={resetAndClose}
                 aria-label="Cerrar carrito"
                 className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors"
               >
@@ -123,22 +162,68 @@ export default function CartDrawer() {
                   <span className="text-gray-500 text-sm">Total del pedido</span>
                   <span className="text-2xl font-black text-gray-800">RD${total.toLocaleString()}</span>
                 </div>
-                <button
-                  onClick={handlePedir}
-                  className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold py-4 rounded-2xl transition-colors flex items-center justify-center gap-2 text-base shadow-lg shadow-green-200"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.855L.057 23.169a.75.75 0 0 0 .921.921l5.314-1.474A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.516-5.162-1.415l-.371-.219-3.843 1.067 1.067-3.843-.219-.371A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-                  </svg>
-                  Pedir por WhatsApp
-                </button>
-                <button
-                  onClick={clearCart}
-                  className="w-full text-gray-400 hover:text-gray-600 text-sm py-1 transition-colors"
-                >
-                  Vaciar pedido
-                </button>
+
+                {/* Step: cart normal */}
+                {step === 'cart' && (
+                  <>
+                    <button
+                      onClick={handlePedirClick}
+                      className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold py-4 rounded-2xl transition-colors flex items-center justify-center gap-2 text-base shadow-lg shadow-green-200"
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.855L.057 23.169a.75.75 0 0 0 .921.921l5.314-1.474A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.516-5.162-1.415l-.371-.219-3.843 1.067 1.067-3.843-.219-.371A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+                      </svg>
+                      Pedir por WhatsApp
+                    </button>
+                    <button onClick={clearCart} className="w-full text-gray-400 hover:text-gray-600 text-sm py-1 transition-colors">
+                      Vaciar pedido
+                    </button>
+                  </>
+                )}
+
+                {/* Step: checkout — captura datos cliente */}
+                {step === 'checkout' && (
+                  <AnimatePresence mode="wait">
+                    <motion.form
+                      key="checkout"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      onSubmit={handleConfirmar}
+                      className="space-y-3"
+                    >
+                      <div className="bg-green-50 rounded-2xl px-4 py-3 text-center">
+                        <p className="text-xs font-bold text-green-700">Un último paso 😊</p>
+                        <p className="text-xs text-green-600">Deja tus datos para que podamos confirmarte el pedido</p>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Tu nombre"
+                        value={nombre}
+                        onChange={e => setNombre(e.target.value)}
+                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-green-400 transition-colors"
+                      />
+                      <input
+                        type="tel"
+                        placeholder="Tu WhatsApp (ej. 809-555-1234)"
+                        value={whatsapp}
+                        onChange={e => setWhatsapp(e.target.value)}
+                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-green-400 transition-colors"
+                      />
+                      <button
+                        type="submit"
+                        disabled={saving}
+                        className="w-full bg-[#25D366] disabled:bg-gray-300 hover:bg-[#1ebe5d] text-white font-bold py-3.5 rounded-2xl transition-colors flex items-center justify-center gap-2 text-sm shadow-lg shadow-green-200"
+                      >
+                        {saving ? 'Abriendo…' : '✅ Confirmar y pedir por WhatsApp'}
+                      </button>
+                      <button type="button" onClick={handleSaltar} className="w-full text-gray-400 hover:text-gray-600 text-xs py-1 transition-colors">
+                        Saltar — pedir sin registrarme
+                      </button>
+                    </motion.form>
+                  </AnimatePresence>
+                )}
               </div>
             )}
           </motion.div>

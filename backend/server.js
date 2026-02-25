@@ -10,6 +10,7 @@ const leadRoutes = require('./routes/leads')
 const saleRoutes = require('./routes/sales')
 const dashboardRoutes = require('./routes/dashboard')
 const reviewRoutes = require('./routes/reviews')
+const orderRoutes = require('./routes/orders')
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -49,6 +50,7 @@ app.use('/api/leads', leadRoutes)
 app.use('/api/sales', saleRoutes)
 app.use('/api/dashboard', dashboardRoutes)
 app.use('/api/reviews', reviewRoutes)
+app.use('/api/orders', orderRoutes)
 
 // ── Health check ───────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

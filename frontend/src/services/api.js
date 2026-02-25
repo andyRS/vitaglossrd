@@ -56,4 +56,10 @@ export const api = {
   getReviews: (productoId) => request('GET', `/reviews/${productoId}`),
   createReview: (productoId, body) => request('POST', `/reviews/${productoId}`, body),
   deleteReview: (id) => request('DELETE', `/reviews/${id}`, null, true),
+
+  // Orders (público para crear, protegido para listar)
+  createOrder: (body) => request('POST', '/orders', body),
+  getOrders: (params = '') => request('GET', `/orders${params}`, null, true),
+  updateOrder: (id, body) => request('PATCH', `/orders/${id}`, body, true),
+  deleteOrder: (id) => request('DELETE', `/orders/${id}`, null, true),
 }

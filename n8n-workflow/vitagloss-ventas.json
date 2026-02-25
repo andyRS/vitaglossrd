@@ -1,0 +1,332 @@
+{
+  "name": "VitaGloss RD — Automatización de Ventas Web",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nuevo-pedido",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "📦 Nuevo Pedido Web",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ recibido: true, orderId: $json.body.orderId }) }}",
+        "options": {}
+      },
+      "id": "respond-webhook",
+      "name": "✅ Confirmar recepción",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [460, 180]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "order-id",
+              "name": "orderId",
+              "value": "={{ $json.body.orderId }}",
+              "type": "string"
+            },
+            {
+              "id": "cliente-nombre",
+              "name": "clienteNombre",
+              "value": "={{ $json.body.nombre }}",
+              "type": "string"
+            },
+            {
+              "id": "cliente-wa",
+              "name": "clienteWhatsapp",
+              "value": "={{ $json.body.whatsapp }}",
+              "type": "string"
+            },
+            {
+              "id": "total",
+              "name": "total",
+              "value": "={{ $json.body.total }}",
+              "type": "number"
+            },
+            {
+              "id": "items-text",
+              "name": "itemsTexto",
+              "value": "={{ $json.body.items.map(i => `  • ${i.nombre} x${i.cantidad} — RD$${i.precio * i.cantidad}`).join('\\n') }}",
+              "type": "string"
+            },
+            {
+              "id": "ref-code",
+              "name": "refCode",
+              "value": "={{ $json.body.refCode || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "mensaje-vendedor",
+              "name": "mensajeVendedor",
+              "value": "={{ '🛒 *NUEVO PEDIDO WEB*\\n\\n' + '👤 Cliente: *' + $json.body.nombre + '*' + ($json.body.whatsapp ? '\\n📱 WA: ' + $json.body.whatsapp : '') + '\\n\\n📋 *Productos:*\\n' + $json.body.items.map(i => '  • ' + i.nombre + ' x' + i.cantidad + ' — RD$' + (i.precio * i.cantidad).toLocaleString()).join('\\n') + '\\n\\n💰 *Total: RD$' + $json.body.total.toLocaleString() + '*' + ($json.body.refCode ? '\\n\\n🔗 Referido: ' + $json.body.refCode : '') + '\\n\\n⏰ ' + new Date().toLocaleString('es-DO', { timeZone: 'America/Santo_Domingo' }) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-datos",
+      "name": "📝 Preparar datos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://localhost:8080/message/sendText/{{ $vars.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $vars.EVOLUTION_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $vars.VENDOR_PHONE }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('📝 Preparar datos').item.json.mensajeVendedor }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "wa-vendor-notify",
+      "name": "📲 Notificar vendedor WA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('📝 Preparar datos').item.json.clienteWhatsapp }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-client-wa",
+      "name": "¿Tiene WA el cliente?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://localhost:8080/message/sendText/{{ $vars.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $vars.EVOLUTION_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('📝 Preparar datos').item.json.clienteWhatsapp }}"
+            },
+            {
+              "name": "text",
+              "value": "=¡Hola *{{ $('📝 Preparar datos').item.json.clienteNombre }}*! 👋\\n\\nGracias por tu pedido en VitaGloss RD. ✅\\n\\nHemos recibido tu solicitud:\\n{{ $('📝 Preparar datos').item.json.itemsTexto }}\\n\\n💰 *Total: RD${{ $('📝 Preparar datos').item.json.total.toLocaleString() }}*\\n\\nUn representante te contactará pronto para confirmar el envío y el pago. ¡Gracias por confiar en nosotros! 🙏"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "wa-client-confirm",
+      "name": "📩 Confirmar al cliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "unit": "hours",
+        "amount": 3
+      },
+      "id": "wait-followup",
+      "name": "⏳ Esperar 3 horas",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1120, 520],
+      "webhookId": "followup-wait"
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $vars.API_URL }}/orders/{{ $('📝 Preparar datos').item.json.orderId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $vars.ADMIN_TOKEN }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "check-order-status",
+      "name": "🔍 Verificar estado pedido",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 520]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {},
+          "conditions": [
+            {
+              "leftValue": "={{ $json.order.estado }}",
+              "rightValue": "nuevo",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-still-nuevo",
+      "name": "¿Sigue sin contactar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1560, 520]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://localhost:8080/message/sendText/{{ $vars.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $vars.EVOLUTION_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $vars.VENDOR_PHONE }}"
+            },
+            {
+              "name": "text",
+              "value": "=⚠️ *RECORDATORIO — Pedido sin atender*\\n\\nEl pedido de *{{ $('📝 Preparar datos').item.json.clienteNombre }}* lleva 3 horas sin confirmarse.\\n\\n💰 Total: RD${{ $('📝 Preparar datos').item.json.total.toLocaleString() }}\\n\\n📋 ID: {{ $('📝 Preparar datos').item.json.orderId }}\\n\\n¡Contáctalo ahora para no perder la venta! 🔥"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "wa-followup",
+      "name": "🔔 Follow-up al vendedor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1780, 420]
+    }
+  ],
+  "connections": {
+    "📦 Nuevo Pedido Web": {
+      "main": [
+        [
+          { "node": "✅ Confirmar recepción", "type": "main", "index": 0 },
+          { "node": "📝 Preparar datos",     "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "📝 Preparar datos": {
+      "main": [
+        [{ "node": "📲 Notificar vendedor WA", "type": "main", "index": 0 }]
+      ]
+    },
+    "📲 Notificar vendedor WA": {
+      "main": [
+        [{ "node": "¿Tiene WA el cliente?", "type": "main", "index": 0 }]
+      ]
+    },
+    "¿Tiene WA el cliente?": {
+      "main": [
+        [{ "node": "📩 Confirmar al cliente", "type": "main", "index": 0 }],
+        [{ "node": "⏳ Esperar 3 horas",      "type": "main", "index": 0 }]
+      ]
+    },
+    "📩 Confirmar al cliente": {
+      "main": [
+        [{ "node": "⏳ Esperar 3 horas", "type": "main", "index": 0 }]
+      ]
+    },
+    "⏳ Esperar 3 horas": {
+      "main": [
+        [{ "node": "🔍 Verificar estado pedido", "type": "main", "index": 0 }]
+      ]
+    },
+    "🔍 Verificar estado pedido": {
+      "main": [
+        [{ "node": "¿Sigue sin contactar?", "type": "main", "index": 0 }]
+      ]
+    },
+    "¿Sigue sin contactar?": {
+      "main": [
+        [{ "node": "🔔 Follow-up al vendedor", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": ["vitagloss", "ventas", "whatsapp"],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-24T00:00:00.000Z",
+  "versionId": "1"
+}

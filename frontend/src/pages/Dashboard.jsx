@@ -26,7 +26,7 @@ const BADGE_VENTA = {
   cancelado:  'bg-red-100 text-red-700',
 }
 
-const TABS = ['📊 Resumen', '👥 Leads', '💰 Ventas', '💬 Plantillas', '🟢 Equipo VitaGlossRD', '⚙️ Perfil']
+const TABS = ['📊 Resumen', '👥 Leads', '💰 Ventas', '💬 Plantillas', '🟢 Equipo VitaGlossRD', '📦 Pedidos Web', '⚙️ Perfil']
 
 const WA_TEMPLATES = [
   { producto: 'Glister™ Pasta Dental', msg: '¡Hola! 👋 Te cuento sobre *Glister™*, la pasta dental con flúor activo de Amway. Combate caries, blanquea los dientes y elimina el mal aliento desde la primera semana. 🦷✨ ¿Te interesa saber el precio y cómo pedirla?' },
@@ -110,6 +110,11 @@ export default function Dashboard() {
   // kanban view toggle
   const [kanbanView, setKanbanView] = useState(false)
 
+  // orders
+  const [orders, setOrders] = useState([])
+  const [loadingOrders, setLoadingOrders] = useState(false)
+  const [orderEstadoFilter, setOrderEstadoFilter] = useState('')
+
   // templates copy feedback
   const [copied, setCopied] = useState(null)
 
@@ -132,6 +137,16 @@ export default function Dashboard() {
     finally { setLoadingSales(false) }
   }, [])
 
+  const loadOrders = useCallback(async (estado = '') => {
+    setLoadingOrders(true)
+    try {
+      const q = estado ? `?estado=${estado}` : ''
+      const d = await api.getOrders(q)
+      setOrders(d.orders || [])
+    } catch {}
+    finally { setLoadingOrders(false) }
+  }, [])
+
   useEffect(() => {
     loadStats()
   }, [loadStats])
@@ -139,7 +154,8 @@ export default function Dashboard() {
   useEffect(() => {
     if (tab === 1) loadLeads()
     if (tab === 2) loadSales()
-    if (tab === 5 && user) setProfileForm({ nombre: user.nombre || '', descripcion: user.descripcion || '', whatsapp: user.whatsapp || '', metaMensual: user.metaMensual || 10000 })
+    if (tab === 5) loadOrders()
+    if (tab === 6 && user) setProfileForm({ nombre: user.nombre || '', descripcion: user.descripcion || '', whatsapp: user.whatsapp || '', metaMensual: user.metaMensual || 10000 })
   }, [tab]) // eslint-disable-line
 
   // ── lead actions ─────────────────────────────────────────────────────────
@@ -664,8 +680,110 @@ export default function Dashboard() {
           </Section>
         )}
 
-        {/* ── TAB 5: PERFIL ──────────────────────────────────────────────── */}
+        {/* ── TAB 5: PEDIDOS WEB ────────────────────────────────────────────────── */}
         {tab === 5 && (
+          <Section>
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+              <div>
+                <h2 className="text-2xl font-black text-primary mb-1">Pedidos Web</h2>
+                <p className="text-gray-500 text-sm">Pedidos recibidos desde el carrito en la web.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <select
+                  value={orderEstadoFilter}
+                  onChange={e => { setOrderEstadoFilter(e.target.value); loadOrders(e.target.value) }}
+                  className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary"
+                >
+                  <option value="">Todos</option>
+                  <option value="nuevo">Nuevos</option>
+                  <option value="contactado">Contactados</option>
+                  <option value="confirmado">Confirmados</option>
+                  <option value="entregado">Entregados</option>
+                  <option value="cancelado">Cancelados</option>
+                </select>
+                <button onClick={() => loadOrders(orderEstadoFilter)} className="border border-gray-200 rounded-xl px-3 py-2 text-sm hover:bg-gray-50 transition-colors">
+                  🔄
+                </button>
+              </div>
+            </div>
+
+            {loadingOrders ? (
+              <div className="flex justify-center py-16"><div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>
+            ) : orders.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-5xl mb-3">📦</p>
+                <p className="text-gray-400 font-medium">No hay pedidos aún</p>
+                <p className="text-gray-300 text-sm mt-1">Cuando un cliente confirme un pedido desde la web aparecerá aquí</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {orders.map(order => (
+                  <div key={order._id} className="bg-white rounded-3xl border border-gray-100 p-5 hover:shadow-md transition-shadow">
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="font-black text-gray-800">{order.nombre}</p>
+                          {order.refCode && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-semibold">ref: {order.refCode}</span>}
+                        </div>
+                        {order.whatsapp && (
+                          <a href={`https://wa.me/${order.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer"
+                            className="text-green-600 text-sm font-semibold hover:underline flex items-center gap-1">
+                            📲 {order.whatsapp}
+                          </a>
+                        )}
+                        <p className="text-gray-400 text-xs mt-1">{new Date(order.createdAt).toLocaleString('es-DO', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-xl font-black text-primary">RD${order.total.toLocaleString()}</p>
+                        <select
+                          value={order.estado}
+                          onChange={async e => {
+                            await api.updateOrder(order._id, { estado: e.target.value })
+                            loadOrders(orderEstadoFilter)
+                          }}
+                          className={`mt-1 text-xs font-bold px-2 py-1 rounded-full border-0 outline-none cursor-pointer ${
+                            order.estado === 'nuevo'      ? 'bg-sky-100 text-sky-700' :
+                            order.estado === 'contactado' ? 'bg-yellow-100 text-yellow-700' :
+                            order.estado === 'confirmado' ? 'bg-blue-100 text-blue-700' :
+                            order.estado === 'entregado'  ? 'bg-green-100 text-green-700' :
+                                                            'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          <option value="nuevo">Nuevo</option>
+                          <option value="contactado">Contactado</option>
+                          <option value="confirmado">Confirmado</option>
+                          <option value="entregado">Entregado</option>
+                          <option value="cancelado">Cancelado</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 rounded-2xl p-3 space-y-1">
+                      {order.items.map((item, i) => (
+                        <div key={i} className="flex justify-between text-sm">
+                          <span className="text-gray-600">{item.nombre} <span className="text-gray-400">x{item.cantidad}</span></span>
+                          <span className="font-semibold text-gray-700">RD${(item.precio * item.cantidad).toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {order.whatsapp && (
+                      <a
+                        href={`https://wa.me/${order.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Hola *${order.nombre}* 👋 Tu pedido de RD$${order.total.toLocaleString()} está confirmado ✅ ¿Cuándo podemos coordinarlo?`)}`}
+                        target="_blank" rel="noopener noreferrer"
+                        className="mt-3 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-bold py-2.5 rounded-2xl flex items-center justify-center gap-2 transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Confirmar por WhatsApp
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </Section>
+        )}
+
+        {/* ── TAB 6: PERFIL ────────────────────────────────────────────────────────── */}
+        {tab === 6 && (
           <Section>
             <div className="max-w-lg mx-auto">
               <h2 className="text-2xl font-black text-primary mb-6">Mi perfil</h2>
