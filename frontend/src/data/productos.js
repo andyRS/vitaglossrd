@@ -386,9 +386,9 @@ export const productos = [
       { nombre: "NSF", descripcion: "Certificación de contenido NSF" }
     ],
     imagenes: [
-      "/doublex-01.jpg"
+      "/102992MX-690px-01.jpg"
     ],
-    imagen: "/doublex-01.jpg",
+    imagen: "/102992MX-690px-01.jpg",
     rating: 4.9,
     reviewCount: 41,
     usosPorEnvase: 31,
