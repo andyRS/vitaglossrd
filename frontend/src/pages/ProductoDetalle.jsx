@@ -168,36 +168,86 @@ export default function ProductoDetalle() {
 
           {/* === GALERÍA IZQUIERDA === */}
           <div className="flex flex-col gap-4">
-            {/* Imagen principal */}
-            <motion.div
-              key={imgActiva}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25 }}
-              className="bg-gray-50 rounded-3xl flex items-center justify-center p-6 sm:p-8 border border-gray-100 relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
-              style={{ minHeight: '280px' }}
+            {/* Imagen principal con flechas */}
+            <div
+              className="bg-gray-50 rounded-3xl flex items-center justify-center p-6 sm:p-8 border border-gray-100 relative overflow-hidden select-none"
+              style={{ minHeight: '320px' }}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
-              <img
-                src={imagenes[imgActiva]}
-                alt={producto.nombre}
-                className="max-h-96 w-full object-contain drop-shadow-lg pointer-events-none"
-              />
-              {/* Indicadores de puntos en mobile */}
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={imgActiva}
+                  src={imagenes[imgActiva]}
+                  alt={producto.nombre}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.22 }}
+                  className="max-h-96 w-full object-contain drop-shadow-lg pointer-events-none"
+                />
+              </AnimatePresence>
+
+              {/* Flechas laterales */}
               {imagenes.length > 1 && (
-                <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 md:hidden">
-                  {imagenes.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setImgActiva(i)}
-                      aria-label={`Ver imagen ${i + 1}`}
-                      className={`w-2 h-2 rounded-full transition-all duration-200 ${i === imgActiva ? 'bg-secondary scale-125' : 'bg-gray-300'}`}
-                    />
-                  ))}
-                </div>
+                <>
+                  <button
+                    onClick={() => setImgActiva(prev => (prev - 1 + imagenes.length) % imagenes.length)}
+                    aria-label="Imagen anterior"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:border-primary hover:text-primary transition-colors text-gray-400"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => setImgActiva(prev => (prev + 1) % imagenes.length)}
+                    aria-label="Imagen siguiente"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center hover:border-primary hover:text-primary transition-colors text-gray-400"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                </>
               )}
-            </motion.div>
+            </div>
+
+            {/* Certificaciones visuales debajo de la imagen */}
+            {producto.certificaciones && producto.certificaciones.length > 0 && (
+              <div className="flex items-center gap-5 px-2">
+                {producto.certificaciones.map((cert, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    {cert.nombre === 'Halal' && (
+                      <div className="w-10 h-10 rounded-full border-2 border-gray-800 flex items-center justify-center bg-white flex-shrink-0">
+                        <svg viewBox="0 0 40 40" className="w-9 h-9">
+                          <path d="M20 6 a14 14 0 1 0 9.9 4.1" fill="none" stroke="#111" strokeWidth="2.2" strokeLinecap="round"/>
+                          <text x="20" y="24" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#111" fontFamily="serif">M</text>
+                        </svg>
+                      </div>
+                    )}
+                    {cert.nombre === 'Kosher' && (
+                      <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
+                        <svg viewBox="0 0 44 44" className="w-10 h-10">
+                          <polygon points="22,2 27,15 41,15 30,23 34,37 22,29 10,37 14,23 3,15 17,15" fill="none" stroke="#111" strokeWidth="1.8" strokeLinejoin="round"/>
+                          <text x="22" y="26" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#111" fontFamily="sans-serif">K</text>
+                        </svg>
+                      </div>
+                    )}
+                    {cert.nombre === 'NSF' && (
+                      <div className="w-10 h-10 rounded-md flex items-center justify-center bg-gray-900 flex-shrink-0">
+                        <div className="text-center leading-none">
+                          <p className="text-white text-[7px] font-bold tracking-wider">CONTENTS</p>
+                          <p className="text-white text-[7px] font-bold tracking-wider">CERTIFIED</p>
+                          <p className="text-white text-[10px] font-black">NSF</p>
+                        </div>
+                      </div>
+                    )}
+                    <span className="text-gray-500 text-xs leading-tight max-w-[70px]">{cert.descripcion}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Miniaturas */}
             {imagenes.length > 1 && (
@@ -264,10 +314,10 @@ export default function ProductoDetalle() {
             {/* Precio */}
             <div className="bg-gray-50 rounded-2xl px-6 py-5 mb-6 border border-gray-100">
               <div className="flex items-end gap-3 mb-3">
-                <span className="text-4xl font-black text-primary">RD${producto.precio}</span>
+                <span className="text-4xl font-black text-primary">RD${producto.precio.toLocaleString('es-DO', { minimumFractionDigits: producto.precio % 1 !== 0 ? 2 : 0, maximumFractionDigits: 2 })}</span>
                 {producto.precioOriginal && (
                   <>
-                    <span className="text-gray-300 text-lg line-through mb-1">RD${producto.precioOriginal}</span>
+                    <span className="text-gray-300 text-lg line-through mb-1">RD${producto.precioOriginal.toLocaleString('es-DO')}</span>
                     <span className="bg-red-100 text-red-500 text-xs font-bold px-2 py-1 rounded-full mb-1">
                       -{Math.round(((producto.precioOriginal - producto.precio) / producto.precioOriginal) * 100)}% OFF
                     </span>
