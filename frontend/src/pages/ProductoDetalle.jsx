@@ -171,7 +171,7 @@ export default function ProductoDetalle() {
           <div className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
             {/* Imagen principal */}
             <div
-              className="relative bg-white rounded-2xl overflow-hidden select-none border border-gray-100"
+              className="relative bg-white rounded-2xl overflow-hidden select-none border-2 border-gray-200"
               style={{ aspectRatio: '1/1' }}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
@@ -228,8 +228,8 @@ export default function ProductoDetalle() {
                   <button
                     key={i}
                     onClick={() => setImgActiva(i)}
-                    className={`w-16 h-16 rounded-xl overflow-hidden bg-white border border-gray-100 p-1.5 transition-all duration-200 flex-shrink-0 ${
-                      imgActiva === i ? 'ring-2 ring-primary' : 'opacity-50 hover:opacity-100'
+                    className={`w-16 h-16 rounded-xl overflow-hidden bg-white border-2 p-1.5 transition-all duration-200 flex-shrink-0 ${
+                      imgActiva === i ? 'border-primary' : 'border-gray-200 opacity-60 hover:opacity-100'
                     }`}
                   >
                     <img src={img} alt={`Vista ${i + 1}`} className="w-full h-full object-contain" />
