@@ -89,17 +89,20 @@ export default function LeadPopup() {
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[70] w-full max-w-sm mx-auto px-4"
           >
-            <div className="bg-gradient-to-br from-[#0a1628] via-[#1B3A6B] to-[#0f2a54] rounded-3xl overflow-hidden shadow-2xl">
+            {/* Wrapper: limita altura total, botón cerrar siempre visible */}
+            <div className="rounded-3xl shadow-2xl overflow-hidden max-h-[90dvh] flex flex-col relative">
 
-              {/* Botón cerrar */}
+              {/* Botón cerrar — siempre visible, no scrollea */}
               <button
                 onClick={cerrar}
                 aria-label="Cerrar oferta"
-                className="absolute top-4 right-4 w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors text-sm z-10"
+                className="absolute top-4 right-4 w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors text-sm z-20"
               >
                 <span aria-hidden="true">✕</span>
               </button>
 
+              {/* Contenido scrolleable */}
+              <div className="bg-gradient-to-br from-[#0a1628] via-[#1B3A6B] to-[#0f2a54] overflow-y-auto flex-1">
               <div className="px-6 pt-6 pb-5">
                 {!enviado ? (
                   <>
@@ -168,6 +171,7 @@ export default function LeadPopup() {
                     <p className="text-white/50 text-sm">Te redirigimos a WhatsApp para completar tu registro VIP.</p>
                   </motion.div>
                 )}
+              </div>
               </div>
             </div>
           </motion.div>
