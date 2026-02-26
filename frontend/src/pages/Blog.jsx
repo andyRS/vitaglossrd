@@ -32,9 +32,34 @@ function catStyle(cat) {
 
 export default function Blog() {
   useSEO({
-    title: 'Blog — Salud, Nutrición y Bienestar en República Dominicana',
-    description:
-      'Artículos sobre salud bucal, nutrición, vitaminas y bienestar para República Dominicana. Consejos basados en ciencia de los especialistas de VitaGloss RD.',
+    title:       'Blog — Salud, Nutrición y Bienestar en República Dominicana',
+    description: 'Artículos sobre salud bucal, nutrición, vitaminas y bienestar para República Dominicana. Consejos basados en ciencia de los especialistas de VitaGloss RD.',
+    canonical:   'https://vitaglossrd.com/blog',
+    ogImage:     'https://vitaglossrd.com/logoVitaglossRd.png',
+    jsonLdList: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: 'Blog VitaGloss RD',
+        description: 'Artículos sobre salud bucal, nutrición, vitaminas y bienestar para República Dominicana.',
+        url: 'https://vitaglossrd.com/blog',
+        inLanguage: 'es-DO',
+        publisher: {
+          '@type': 'Organization',
+          name: 'VitaGloss RD',
+          url: 'https://vitaglossrd.com',
+          logo: { '@type': 'ImageObject', url: 'https://vitaglossrd.com/logoVitaglossRd.png' },
+        },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://vitaglossrd.com' },
+          { '@type': 'ListItem', position: 2, name: 'Blog',   item: 'https://vitaglossrd.com/blog' },
+        ],
+      },
+    ],
   })
 
   const [categoriaActiva, setCategoriaActiva] = useState('Todas')

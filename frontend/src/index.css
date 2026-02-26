@@ -47,6 +47,7 @@ html {
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
   line-height: 1.3;
+  scroll-margin-top: 90px; /* compensa navbar fijo */
 }
 .prose-custom h3 {
   font-size: 1.15rem;
@@ -54,6 +55,7 @@ html {
   color: #1B3A6B;
   margin-top: 2rem;
   margin-bottom: 0.5rem;
+  scroll-margin-top: 90px;
 }
 .prose-custom ul,
 .prose-custom ol {

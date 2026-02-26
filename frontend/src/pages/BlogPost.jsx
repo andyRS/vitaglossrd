@@ -1,8 +1,11 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 import { getPostBySlug, getPostsRelacionados } from '../data/posts'
+import { buildTOC } from '../utils/toc'
+
+const SITE_URL = 'https://vitaglossrd.com'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -35,46 +38,78 @@ export default function BlogPost() {
   const post = getPostBySlug(slug)
   const relacionados = post ? getPostsRelacionados(slug) : []
 
-  const isYMYL = post && ['Nutrición', 'Suplementos', 'Vitaminas', 'Salud bucal'].includes(post.categoria)
+  const isYMYL = post && ['Nutrición', 'Suplementos', 'Vitaminas', 'Salud bucal', 'Bienestar'].includes(post.categoria)
+
+  // ── TOC ─────────────────────────────────────────────────────────────────
+  const { htmlWithIds, headings } = useMemo(
+    () => post ? buildTOC(post.contenido) : { htmlWithIds: '', headings: [] },
+    [post]
+  )
+
+  // ── SEO ─────────────────────────────────────────────────────────────────
+  const canonicalUrl = post ? `${SITE_URL}/blog/${post.slug}` : SITE_URL
+  const ogImageUrl   = post ? `${SITE_URL}${post.imagen}` : `${SITE_URL}/og-default.jpg`
+
+  const articleSchema = post ? {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.titulo,
+    description: post.excerpt,
+    datePublished: post.fecha,
+    dateModified: post.fechaActualizacion || post.fecha,
+    url: canonicalUrl,
+    image: {
+      '@type': 'ImageObject',
+      url: ogImageUrl,
+      width: 1200,
+      height: 630,
+    },
+    author: {
+      '@type': 'Person',
+      name: 'Andy Rosado',
+      url: `${SITE_URL}/sobre-nosotros`,
+      jobTitle: 'Distribuidor Independiente Certificado Amway',
+      worksFor: { '@type': 'Organization', name: 'VitaGloss RD', url: SITE_URL },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'VitaGloss RD',
+      url: SITE_URL,
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logoVitaglossRd.png` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+    inLanguage: 'es-DO',
+    keywords: post.tags?.join(', '),
+  } : null
+
+  const breadcrumbSchema = post ? {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio',   item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Blog',     item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.titulo, item: canonicalUrl },
+    ],
+  } : null
+
+  const faqSchema = post?.faqs?.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.pregunta,
+      acceptedAnswer: { '@type': 'Answer', text: faq.respuesta },
+    })),
+  } : null
+
+  const jsonLdList = [articleSchema, breadcrumbSchema, faqSchema].filter(Boolean)
 
   useSEO({
-    title: post ? post.titulo : 'Artículo no encontrado',
+    title:       post ? post.titulo : 'Artículo no encontrado',
     description: post ? post.excerpt : '',
-    jsonLd: post
-      ? {
-          '@context': 'https://schema.org',
-          '@type': 'Article',
-          headline: post.titulo,
-          description: post.excerpt,
-          datePublished: post.fecha,
-          dateModified: post.fechaActualizacion || post.fecha,
-          author: {
-            '@type': 'Person',
-            name: 'Andy Rosado',
-            url: 'https://vitaglossrd.com/sobre-nosotros',
-            jobTitle: 'Distribuidor Independiente Certificado Amway',
-            worksFor: { '@type': 'Organization', name: 'VitaGloss RD' },
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'VitaGloss RD',
-            url: 'https://vitaglossrd.com',
-            logo: { '@type': 'ImageObject', url: 'https://vitaglossrd.com/logo.png' },
-          },
-          mainEntityOfPage: {
-            '@type': 'WebPage',
-            '@id': typeof window !== 'undefined' ? window.location.href : '',
-          },
-          ...(post.faqs && post.faqs.length > 0 && {
-            '@type': ['Article', 'FAQPage'],
-            mainEntity: post.faqs.map(faq => ({
-              '@type': 'Question',
-              name: faq.pregunta,
-              acceptedAnswer: { '@type': 'Answer', text: faq.respuesta },
-            })),
-          }),
-        }
-      : null,
+    canonical:   canonicalUrl,
+    ogImage:     ogImageUrl,
+    jsonLdList,
   })
 
   // Scroll al top en cada navegación
@@ -197,9 +232,27 @@ export default function BlogPost() {
                 </p>
               </div>
             )}
+            {/* ── Tabla de Contenido (mobile) ── */}
+            {headings.length >= 3 && (
+              <nav className="mb-8 bg-blue-50 border border-blue-100 rounded-2xl px-5 py-4">
+                <p className="text-xs font-bold text-blue-700 uppercase tracking-wide mb-3">📋 En este artículo</p>
+                <ol className="space-y-1.5">
+                  {headings.filter(h => h.level === 2).map((h, i) => (
+                    <li key={h.id}>
+                      <a
+                        href={`#${h.id}`}
+                        className="text-sm text-blue-700 hover:text-blue-900 hover:underline leading-snug block"
+                      >
+                        {i + 1}. {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )}
             <div
               className="prose-custom"
-              dangerouslySetInnerHTML={{ __html: post.contenido }}
+              dangerouslySetInnerHTML={{ __html: htmlWithIds }}
             />
           </motion.article>
 
@@ -224,6 +277,25 @@ export default function BlogPost() {
                   🔗 Copiar enlace
                 </button>
               </div>
+
+              {/* TOC Sidebar */}
+              {headings.length >= 3 && (
+                <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5">
+                  <p className="text-xs font-bold text-blue-700 uppercase tracking-wide mb-3">📋 Contenido</p>
+                  <ol className="space-y-2">
+                    {headings.filter(h => h.level === 2).map((h, i) => (
+                      <li key={h.id}>
+                        <a
+                          href={`#${h.id}`}
+                          className="text-xs text-blue-700 hover:text-blue-900 hover:underline leading-snug block"
+                        >
+                          {i + 1}. {h.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
 
               {/* Tags */}
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5">

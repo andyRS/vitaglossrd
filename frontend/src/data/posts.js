@@ -12,7 +12,7 @@ export const posts = [
     fecha: '2026-02-10',
     tiempoLectura: '5 min',
     imagen: '/109741CO-690px-01.png',
-    autor: 'Equipo VitaGloss RD',
+    autor: 'Andy Rosado',
     tags: ['vitamina c', 'suplementos', 'nutrilite', 'salud'],
     contenido: `
       <p>Si estás tomando Vitamina C de la farmacia y no notas mejoría en tu sistema inmune, en tu energía ni en tu piel, hay una razón técnica muy concreta: <strong>la mayoría de los suplementos baratos usan ácido ascórbico sintético de liberación inmediata</strong>, lo que significa que el cuerpo absorbe lo que puede en la primera hora y el resto lo elimina.</p>
@@ -61,7 +61,7 @@ export const posts = [
     fecha: '2026-02-14',
     tiempoLectura: '6 min',
     imagen: '/124106SP-690px-01.jpg',
-    autor: 'Equipo VitaGloss RD',
+    autor: 'Andy Rosado',
     tags: ['pasta dental', 'glister', 'salud bucal', 'blanqueamiento'],
     contenido: `
       <p>Cuando compras una pasta dental en el supermercado, probablemente miras el precio y el sabor. Pocos leen la lista de ingredientes al reverso. Y si la lees, probablemente no reconoces la mitad. Eso es exactamente el problema.</p>
@@ -110,7 +110,7 @@ export const posts = [
     tiempoLectura: '7 min',
     imagen: '/esmalte-dientes.jpg',
     imagenCover: true,
-    autor: 'Equipo VitaGloss RD',
+    autor: 'Andy Rosado',
     tags: ['blanqueamiento dental', 'esmalte', 'dientes blancos', 'salud bucal'],
     contenido: `
       <p>Los dientes blancos se han convertido en un símbolo de salud y confianza. No es vanidad —múltiples estudios muestran que una sonrisa blanca mejora la percepción que otros tienen de ti en entrevistas de trabajo, reuniones sociales y primeras citas. El problema es que la industria del blanqueamiento está llena de métodos que funcionan rápido pero cobran un precio alto a largo plazo.</p>
@@ -161,7 +161,7 @@ export const posts = [
     fecha: '2026-02-20',
     tiempoLectura: '5 min',
     imagen: '/Solucion de nutricion Diaria.png',
-    autor: 'Equipo VitaGloss RD',
+    autor: 'Andy Rosado',
     tags: ['suplementos', 'vitaminas', 'republica dominicana', 'compra inteligente'],
     contenido: `
       <p>El mercado de suplementos en República Dominicana ha explotado en los últimos años. Hay vitaminas en farmacias, colmados, redes sociales y hasta en los mismos semáforos. El problema es que la regulación no ha crecido al mismo ritmo, y muchas personas terminan gastando dinero en productos que no funcionan —o que en el peor caso, pueden hacerles daño.</p>
@@ -208,7 +208,7 @@ export const posts = [
     tiempoLectura: '4 min',
     imagen: '/salud-bucal.jpg',
     imagenCover: true,
-    autor: 'Equipo VitaGloss RD',
+    autor: 'Andy Rosado',
     tags: ['salud bucal', 'hábitos', 'caries', 'higiene dental'],
     contenido: `
       <p>Según datos de la Organización Panamericana de la Salud, República Dominicana tiene una de las tasas de caries dental más altas de América Latina. La razón principal no es genética —es cultural. Nuestros hábitos de higiene bucal, formados desde pequeños, dejan mucho que desear. La buena noticia es que cambiarlos es más simple de lo que crees.</p>
@@ -243,7 +243,7 @@ export const posts = [
     fecha: '2026-02-24',
     tiempoLectura: '6 min',
     imagen: '/109741CO-690px-01.png',
-    autor: 'Equipo VitaGloss RD',
+    autor: 'Andy Rosado',
     tags: ['sistema inmune', 'clima caribeño', 'vitaminas', 'nutrilite', 'República Dominicana'],
     contenido: `
       <p>Vivir en el Caribe tiene muchas ventajas: el sol, la naturaleza, la cultura. Pero el mismo ambiente que hace a República Dominicana tan especial también crea demandas únicas para el cuerpo humano que pocos médicos mencionan en sus consultas.</p>
