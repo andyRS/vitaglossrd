@@ -509,7 +509,7 @@ export const posts = [
     categoria: 'Salud bucal',
     fecha: '2026-02-19',
     tiempoLectura: '4 min',
-    imagen: '/124106SP-690px-03.jpg',
+    imagen: '/124106SP-690px-01.jpg',
     autor: 'Andy Rosado',
     tags: ['rutina dental', 'higiene bucal', 'glister', 'cepillado', 'hilo dental'],
     contenido: `
@@ -554,7 +554,7 @@ export const posts = [
     categoria: 'Salud bucal',
     fecha: '2026-02-20',
     tiempoLectura: '5 min',
-    imagen: '/124108-690px-02.jpg',
+    imagen: '/124108-690px-01.jpg',
     autor: 'Andy Rosado',
     tags: ['placa bacteriana', 'caries', 'salud bucal', 'glister', 'encías'],
     contenido: `
@@ -661,7 +661,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-22',
     tiempoLectura: '6 min',
-    imagen: '/Multivitamina Double X de Nutrilite – Reemplazo para 31 días.jpg',
+    imagen: '/Multivitamina Double X de Nutrilite-reemplazo para 31 días-transpart.png',
     autor: 'Andy Rosado',
     tags: ['double x', 'nutrilite', 'multivitamínico', 'vitaminas', 'suplementos'],
     faqs: [
@@ -780,7 +780,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-23',
     tiempoLectura: '7 min',
-    imagen: '/Nutrilite Cal Mag D.jpg',
+    imagen: '/Nutrilite Cal Mag D-transparente.png',
     autor: 'Andy Rosado',
     tags: ['calcio', 'magnesio', 'vitamina d', 'huesos', 'nutrilite', 'suplementos'],
     faqs: [
@@ -1152,7 +1152,7 @@ export const posts = [
     categoria: 'Bienestar',
     fecha: '2026-02-25',
     tiempoLectura: '6 min',
-    imagen: '/Nutrilite Fibra en polvo.jpg',
+    imagen: '/Nutrilite Fibra en polvo-transparente.png',
     autor: 'Andy Rosado',
     tags: ['fibra', 'digestión', 'microbioma', 'nutrilite', 'bienestar'],
     faqs: [
