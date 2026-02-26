@@ -58,10 +58,11 @@ export default function ProductoDetalle() {
   const producto = productos.find(p => p.id === parseInt(id))
   const [imgActiva, setImgActiva] = useState(0)
   const [agregado, setAgregado] = useState(false)
+  const [qty, setQty] = useState(1)
   const { addItem } = useCart()
 
   const handleAgregar = () => {
-    addItem(producto)
+    for (let i = 0; i < qty; i++) addItem(producto)
     setAgregado(true)
     setTimeout(() => setAgregado(false), 2000)
     // Meta Pixel
@@ -170,7 +171,7 @@ export default function ProductoDetalle() {
           <div className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
             {/* Imagen principal */}
             <div
-              className="relative bg-[#f7f7f7] rounded-2xl overflow-hidden select-none"
+              className="relative bg-white rounded-2xl overflow-hidden select-none border border-gray-100"
               style={{ aspectRatio: '1/1' }}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
@@ -184,13 +185,13 @@ export default function ProductoDetalle() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.18 }}
-                  className="w-full h-full object-contain p-8 pointer-events-none"
+                  className="w-full h-full object-contain p-4 pointer-events-none"
                 />
               </AnimatePresence>
 
               {/* Badge sobre imagen */}
               {producto.precioOriginal && (
-                <span className="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
                   -{Math.round(((producto.precioOriginal - producto.precio) / producto.precioOriginal) * 100)}% OFF
                 </span>
               )}
@@ -227,7 +228,7 @@ export default function ProductoDetalle() {
                   <button
                     key={i}
                     onClick={() => setImgActiva(i)}
-                    className={`w-16 h-16 rounded-xl overflow-hidden bg-[#f7f7f7] p-1.5 transition-all duration-200 flex-shrink-0 ${
+                    className={`w-16 h-16 rounded-xl overflow-hidden bg-white border border-gray-100 p-1.5 transition-all duration-200 flex-shrink-0 ${
                       imgActiva === i ? 'ring-2 ring-primary' : 'opacity-50 hover:opacity-100'
                     }`}
                   >
@@ -257,21 +258,26 @@ export default function ProductoDetalle() {
           {/* === INFO DERECHA === */}
           <div className="flex flex-col">
 
-            {/* Categoría + Disponibilidad */}
-            <div className="flex items-center gap-3 mb-3">
+            {/* Marca + Categoría */}
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-md">Amway</span>
+              <span className="text-gray-300">·</span>
               <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{producto.categoria}</span>
-              <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-green-600">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                {producto.stock}
-              </span>
             </div>
 
             {/* Nombre */}
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-1">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-2">
               {producto.nombre}
             </h1>
-            <p className="text-gray-400 text-sm mb-5">N.º de artículo {producto.articulo}</p>
+
+            {/* Artículo + Disponibilidad */}
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-gray-400 text-sm">Art. {producto.articulo}</span>
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-green-600">
+                <span className="w-2 h-2 bg-green-500 rounded-full inline-block"></span>
+                Disponible
+              </span>
+            </div>
 
             {/* Alertas urgencia */}
             {(producto.stockUnidades <= 6 || producto.ventasSemana) && (
@@ -290,20 +296,25 @@ export default function ProductoDetalle() {
             )}
 
             {/* Precio */}
-            <div className="mb-5">
-              <div className="flex items-baseline gap-3 mb-1">
-                <span className="text-3xl font-black text-gray-900">
+            <div className="py-4 border-y border-gray-100 mb-5">
+              <div className="flex items-baseline gap-3 mb-1.5">
+                <span className="text-4xl font-black text-gray-900 tracking-tight">
                   RD${producto.precio.toLocaleString('es-DO', { minimumFractionDigits: producto.precio % 1 !== 0 ? 2 : 0, maximumFractionDigits: 2 })}
                 </span>
                 {producto.precioOriginal && (
-                  <span className="text-gray-400 text-base line-through">
+                  <span className="text-gray-400 text-lg line-through">
                     RD${producto.precioOriginal.toLocaleString('es-DO')}
+                  </span>
+                )}
+                {producto.precioOriginal && (
+                  <span className="text-xs font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
+                    -{Math.round(((producto.precioOriginal - producto.precio) / producto.precioOriginal) * 100)}%
                   </span>
                 )}
               </div>
               <p className="text-gray-400 text-sm">
                 ó 3 cuotas de <strong className="text-gray-700">RD${Math.round(producto.precio / 3).toLocaleString('es-DO')}</strong>
-                <span className="ml-3 text-xs text-blue-500 font-medium">📦 Envío gratis desde RD$2,500</span>
+                <span className="ml-3 text-xs text-blue-500">Envío gratis desde RD$2,500</span>
               </p>
             </div>
 
@@ -354,6 +365,25 @@ export default function ProductoDetalle() {
                 </Link>
               </div>
             )}
+
+            {/* Selector de cantidad */}
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-sm font-medium text-gray-600">Cantidad</span>
+              <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setQty(q => Math.max(1, q - 1))}
+                  className="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors text-lg font-light"
+                >−</button>
+                <span className="w-10 text-center text-sm font-semibold text-gray-800">{qty}</span>
+                <button
+                  onClick={() => setQty(q => q + 1)}
+                  className="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors text-lg font-light"
+                >+</button>
+              </div>
+              {producto.stockUnidades && producto.stockUnidades <= 6 && (
+                <span className="text-xs text-red-500 font-medium">{producto.stockUnidades} disp.</span>
+              )}
+            </div>
 
             {/* Botón WhatsApp — principal */}
             <a
