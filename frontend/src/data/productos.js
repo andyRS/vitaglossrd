@@ -314,8 +314,8 @@ export const productos = [
   },
   {
     id: 5,
-    nombre: "Double X™ Nutrilite",
-    nombreCorto: "Nutrilite™ Double X™ Concentrado de Frutas y Verduras",
+    nombre: "Nutrilite™ Concentrado de frutas y verduras",
+    nombreCorto: "Nutrilite™ Concentrado de frutas y verduras",
     categoria: "Suplementos",
     articulo: "109966CO",
     precio: 3052.35,
