@@ -285,7 +285,8 @@ export const posts = [
     categoria: 'Salud bucal',
     fecha: '2026-02-15',
     tiempoLectura: '10 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/guia-definitiva-bucal.jpg',
+    imagenCover: true,
     autor: 'Andy Rosado',
     tags: ['salud bucal', 'glister', 'rutina dental', 'caries', 'encías'],
     faqs: [
