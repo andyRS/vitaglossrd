@@ -56,6 +56,19 @@ export default function ProductoCard({ producto }) {
           {producto.descripcion}
         </p>
 
+        {/* Rating */}
+        {producto.rating && (
+          <div className="flex items-center gap-1.5 mb-2">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, s) => (
+                <span key={s} className={`text-sm ${s < Math.round(producto.rating) ? 'text-yellow-400' : 'text-gray-200'}`}>★</span>
+              ))}
+            </div>
+            <span className="text-xs font-bold text-gray-600">{producto.rating}</span>
+            <span className="text-xs text-gray-400">({producto.reviewCount})</span>
+          </div>
+        )}
+
         {/* Contador ventas */}
         {producto.ventasSemana && (
           <div className="flex items-center gap-1.5 text-xs text-orange-500 font-semibold mb-3">
@@ -64,13 +77,16 @@ export default function ProductoCard({ producto }) {
           </div>
         )}
 
-
-
         {/* Precio */}
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
           <span className="text-xl font-extrabold text-primary">RD${producto.precio}</span>
           {producto.precioOriginal && (
-            <span className="text-gray-300 text-xs line-through">RD${producto.precioOriginal}</span>
+            <>
+              <span className="text-gray-300 text-xs line-through">RD${producto.precioOriginal}</span>
+              <span className="bg-red-100 text-red-500 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                -{Math.round(((producto.precioOriginal - producto.precio) / producto.precioOriginal) * 100)}%
+              </span>
+            </>
           )}
         </div>
 

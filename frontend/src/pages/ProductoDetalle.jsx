@@ -287,8 +287,7 @@ export default function ProductoDetalle() {
 
             {/* Calculadora costo/día */}
             {(() => {
-              const usoDetalle = producto.detalles.find(d => d.label === 'Contenido' || d.label === 'Rendimiento')
-              const usos = producto.id === 1 ? 198 : producto.id === 2 ? 223 : producto.id === 3 ? 100 : 60
+              const usos = producto.usosPorEnvase ?? 1
               const costoDia = (producto.precio / usos).toFixed(1)
               const unidadDia = producto.categoria === 'Suplementos' ? 'comprimido' : 'uso'
               return (
@@ -329,7 +328,7 @@ export default function ProductoDetalle() {
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-bold text-gray-800">Kit Glister™ Completo</p>
-                    <p className="text-xs text-gray-500">Pasta + Enjuague + Spray — <span className="text-green-600 font-bold">ahorra RD$298</span></p>
+                    <p className="text-xs text-gray-500">Pasta + Enjuague + Spray — <span className="text-green-600 font-bold">ahorra RD$188</span></p>
                   </div>
                   <Link
                     to="/combos"

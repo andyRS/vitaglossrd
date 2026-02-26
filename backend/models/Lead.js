@@ -4,7 +4,8 @@ const leadSchema = new mongoose.Schema({
   vendedor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: false,  // Opcional para leads capturados desde la web pública
+    default: null,
   },
   nombre: {
     type: String,
@@ -38,6 +39,12 @@ const leadSchema = new mongoose.Schema({
   fechaContacto: {
     type: Date,
     default: Date.now,
+  },
+  // Atribución de referido (código del vendedor que redirigó al cliente)
+  refCode: {
+    type: String,
+    default: '',
+    trim: true,
   },
 }, {
   timestamps: true,

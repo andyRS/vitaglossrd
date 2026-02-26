@@ -20,6 +20,8 @@ import Combos from './pages/Combos'
 import Dashboard from './pages/Dashboard'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
+import Privacidad from './pages/Privacidad'
+import Terminos from './pages/Terminos'
 
 // Páginas que NO deben mostrar el Navbar/Footer público
 const DASHBOARD_ROUTES = ['/dashboard']
@@ -57,6 +59,8 @@ function Layout() {
           <Route path="/combos" element={<Combos />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/privacidad" element={<Privacidad />} />
+          <Route path="/terminos" element={<Terminos />} />
           <Route
             path="/dashboard"
             element={

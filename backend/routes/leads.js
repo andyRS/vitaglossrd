@@ -2,7 +2,27 @@ const router = require('express').Router()
 const Lead = require('../models/Lead')
 const protect = require('../middleware/auth')
 
-// Todos los endpoints requieren autenticación
+// ── POST /api/leads/public — Captura pública (LeadPopup, JoinCTA, etc.) ──────
+// No requiere autenticación. vendedor queda null (lead sin asignar).
+router.post('/public', async (req, res) => {
+  try {
+    const { nombre, telefono, productoInteres, nota, origen, refCode } = req.body
+    if (!nombre) return res.status(400).json({ error: 'El nombre es requerido' })
+    const lead = await Lead.create({
+      nombre:          nombre.trim().substring(0, 60),
+      telefono:        (telefono || '').trim().substring(0, 20),
+      productoInteres: productoInteres || 'Catálogo general',
+      nota:            nota || '',
+      origen:          origen || 'web',
+      refCode:         refCode || '',
+    })
+    res.status(201).json({ ok: true, leadId: lead._id })
+  } catch (err) {
+    res.status(500).json({ error: 'Error al guardar lead' })
+  }
+})
+
+// Todos los demás endpoints requieren autenticación
 router.use(protect)
 
 // ── GET /api/leads — Mis leads (o todos si admin) ─────────────────────────

@@ -200,6 +200,8 @@ export default function Home() {
                     alt="Producto"
                     className="w-44 sm:w-60 md:w-72 lg:w-80 h-44 sm:h-60 md:h-72 lg:h-80 object-contain"
                     style={{ filter: `drop-shadow(0 20px 30px ${slide.acento}70)` }}
+                    fetchPriority={slideActivo === 0 ? 'high' : 'low'}
+                    loading={slideActivo === 0 ? 'eager' : 'lazy'}
                   />
                 </div>
 
@@ -209,7 +211,7 @@ export default function Home() {
                   transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
                   className="absolute top-2 sm:top-4 right-0 sm:right-2 bg-white rounded-2xl px-3 sm:px-4 py-2 sm:py-3 shadow-2xl"
                 >
-                  <p className="text-xs text-gray-400 font-medium">Precio IBO</p>
+                  <p className="text-xs text-gray-400 font-medium">Precio especial</p>
                   <p className="text-primary font-black text-base sm:text-lg">RD${slidePrecio}</p>
                 </motion.div>
 
@@ -497,8 +499,8 @@ export default function Home() {
                 ciudad: 'San Pedro de Macorís',
                 producto: 'Spray Bucal Glister™',
                 foto: 'https://randomuser.me/api/portraits/men/75.jpg',
-                estrellas: 5,
-                texto: 'El spray es increíble para tenerlo en el bolsillo. Reunión de trabajo, cita, en cualquier momento. El aliento siempre fresco. Un must-have.',
+                estrellas: 4,
+                texto: 'Muy bueno para el día a día. Lo uso antes de reuniones y citas. El aliento se mantiene fresco bastante tiempo. Me gustaría que el envase fuera un poco más grande, pero el producto es excelente.',
               },
               {
                 nombre: 'Patricia Gómez',
@@ -513,8 +515,8 @@ export default function Home() {
                 ciudad: 'Higüey',
                 producto: 'Vitamina C Nutrilite™',
                 foto: 'https://randomuser.me/api/portraits/men/61.jpg',
-                estrellas: 5,
-                texto: 'Soy deportista y la Vitamina C me ayuda con la recuperación. Noto que me canso menos y me recupero más rápido. El precio vale la pena.',
+                estrellas: 4,
+                texto: 'Llevo dos meses tomándola. Noto que me recupero mejor después de entrenar. El envío tardó un día más de lo esperado, pero el producto en sí es muy bueno. Lo sigo comprando.',
               },
             ].map((t, i) => (
               <motion.div
@@ -527,10 +529,11 @@ export default function Home() {
                 className="bg-white rounded-3xl p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 {/* Estrellas */}
-                <div className="flex gap-0.5 mb-4">
-                  {[...Array(t.estrellas)].map((_, s) => (
-                    <span key={s} className="text-yellow-400 text-lg">★</span>
+                <div className="flex items-center gap-0.5 mb-4">
+                  {[...Array(5)].map((_, s) => (
+                    <span key={s} className={`text-lg ${s < t.estrellas ? 'text-yellow-400' : 'text-gray-200'}`}>★</span>
                   ))}
+                  <span className="ml-1.5 text-xs text-gray-400 font-semibold">{t.estrellas}.0</span>
                 </div>
                 {/* Texto */}
                 <p className="text-gray-600 text-sm leading-relaxed mb-5 italic">"{t.texto}"</p>
@@ -961,7 +964,7 @@ export default function Home() {
                 {/* Footer verificado */}
                 <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
                   <span className="text-xs text-gray-400 flex items-center gap-1">
-                    <span className="text-green-500">✓</span> Conversación verificada
+                    <span className="text-green-500">✓</span> Testimonio de cliente
                   </span>
                   <span className="text-xs text-secondary font-semibold">{chat.producto}</span>
                 </div>

@@ -20,14 +20,15 @@ export default function Navbar() {
 
   useEffect(() => { setMenuOpen(false) }, [location])
 
+  // primaryOnly: se muestra en desktop. Todos aparecen en el menú mobile.
   const links = [
-    { to: '/', label: 'Inicio' },
-    { to: '/catalogo', label: 'Catálogo' },
-    { to: '/combos', label: 'Combos', emoji: '🔥' },
-    { to: '/faq', label: 'Preguntas' },
-    { to: '/equipo', label: 'Únete al equipo', emoji: '✨' },
-    { to: '/sobre-nosotros', label: 'Nosotros' },
-    { to: '/contacto', label: 'Contacto' },
+    { to: '/', label: 'Inicio', primary: true },
+    { to: '/catalogo', label: 'Catálogo', primary: true },
+    { to: '/combos', label: 'Combos', emoji: '🔥', primary: true },
+    { to: '/faq', label: 'Preguntas', primary: true },
+    { to: '/equipo', label: 'Únete al equipo', emoji: '✨', primary: true },
+    { to: '/sobre-nosotros', label: 'Nosotros', primary: false },
+    { to: '/contacto', label: 'Contacto', primary: false },
   ]
 
   const isActive = (path) => location.pathname === path
@@ -58,9 +59,9 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop links */}
+          {/* Desktop links — solo primarios */}
           <div className="hidden md:flex items-center gap-1">
-            {links.map((link) => (
+            {links.filter(l => l.primary).map((link) => (
               <Link
                 key={link.to}
                 to={link.to}

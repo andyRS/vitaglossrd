@@ -1,23 +1,37 @@
 import { useState, useEffect } from 'react'
 
-// Calcula tiempo restante hasta el próximo domingo a medianoche
+// Calcula el próximo domingo a medianoche
 function getNextSunday() {
   const now = new Date()
-  const day = now.getDay() // 0 = domingo
+  const day = now.getDay()
   const daysUntilSunday = day === 0 ? 7 : 7 - day
   const next = new Date(now)
   next.setDate(now.getDate() + daysUntilSunday)
   next.setHours(23, 59, 59, 0)
+  return next.getTime()
+}
+
+// Devuelve la fecha objetivo guardada en localStorage, o crea una nueva
+function getOrCreateTarget() {
+  const key = 'vg_offer_deadline'
+  const stored = localStorage.getItem(key)
+  if (stored) {
+    const ts = parseInt(stored, 10)
+    // Si la fecha guardada ya pasó, genera una nueva
+    if (ts > Date.now()) return ts
+  }
+  const next = getNextSunday()
+  localStorage.setItem(key, String(next))
   return next
 }
 
 export default function CountdownTimer({ label = 'Oferta válida por:', afterMsg = 'Los precios vuelven a precio normal el lunes' }) {
-  const [target] = useState(getNextSunday)
+  const [target] = useState(getOrCreateTarget)
   const [timeLeft, setTimeLeft] = useState({})
 
   useEffect(() => {
     const calc = () => {
-      const diff = target - new Date()
+      const diff = target - Date.now()
       if (diff <= 0) return setTimeLeft({ d: 0, h: 0, m: 0, s: 0 })
       setTimeLeft({
         d: Math.floor(diff / 86400000),

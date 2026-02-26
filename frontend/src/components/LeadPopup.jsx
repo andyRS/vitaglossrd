@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { api } from '../services/api'
 
 export default function LeadPopup() {
   const [visible, setVisible] = useState(false)
@@ -59,6 +60,15 @@ export default function LeadPopup() {
     e.preventDefault()
     if (!nombre.trim() || !whatsapp.trim()) return
     const refCode = sessionStorage.getItem('vg_ref')
+    // Guardar lead en DB (fire-and-forget — no bloquea el flujo)
+    api.createPublicLead({
+      nombre:          nombre.trim(),
+      telefono:        whatsapp.trim(),
+      productoInteres: 'Catálogo general',
+      origen:          'web',
+      nota:            'Lead capturado desde el popup de la web',
+      refCode:         refCode || '',
+    }).catch(() => {}) // silencioso si falla
     const refTexto = refCode ? ` Me recomendó el representante: *${refCode}*.` : ''
     const msg = encodeURIComponent(
       `Hola VitaGloss RD! 👋 Soy *${nombre}* y me registré desde la web. Me interesa recibir la *Guía de los 3 productos más pedidos* y mi *10% de descuento en mi primer pedido*.${refTexto} ¡Gracias!`

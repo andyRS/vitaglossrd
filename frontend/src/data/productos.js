@@ -82,6 +82,9 @@ export const productos = [
       "/124106SP-690px-04.jpg"
     ],
     imagen: "/124106SP-690px-01.jpg",
+    rating: 4.8,
+    reviewCount: 47,
+    usosPorEnvase: 198,
     badge: "Más vendido",
     badgeColor: "bg-secondary"
   },
@@ -153,6 +156,9 @@ export const productos = [
       "/124111-690px-04.jpg"
     ],
     imagen: "/124111-690px-01.jpg",
+    rating: 4.7,
+    reviewCount: 23,
+    usosPorEnvase: 223,
     badge: "Nuevo",
     badgeColor: "bg-green-500"
   },
@@ -224,6 +230,9 @@ export const productos = [
       "/124108-690px-03.jpg"
     ],
     imagen: "/124108-690px-01.jpg",
+    rating: 4.9,
+    reviewCount: 38,
+    usosPorEnvase: 100,
     badge: "Premium",
     badgeColor: "bg-primary"
   },
@@ -297,6 +306,9 @@ export const productos = [
       "/109741CO-690px-01.png"
     ],
     imagen: "/109741CO-690px-01.png",
+    rating: 4.9,
+    reviewCount: 62,
+    usosPorEnvase: 60,
     badge: "Natural",
     badgeColor: "bg-yellow-500"
   }

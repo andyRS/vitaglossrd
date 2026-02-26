@@ -25,8 +25,8 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$root\fronten
 Start-Sleep -Seconds 2
 
 # 3. WhatsApp Service
-Write-Host "▶ Iniciando Servicio WhatsApp (puerto 3001)..." -ForegroundColor Yellow
-Write-Host "  → Luego abre http://localhost:3001/qr?key=vitagloss_wa_2026 para escanear el QR" -ForegroundColor Yellow
+Write-Host "▶ Iniciando Servicio WhatsApp (puerto 3002)..." -ForegroundColor Yellow
+Write-Host "  → Luego abre http://localhost:3002/qr?key=vitagloss_wa_2026 para escanear el QR" -ForegroundColor Yellow
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$root\whatsapp-service'; npm run dev" -WindowStyle Normal
 
 Start-Sleep -Seconds 2
@@ -48,7 +48,7 @@ Write-Host "══════════════════════�
 Write-Host "  Servicios arrancando en ventanas separadas:" -ForegroundColor White
 Write-Host "  🔷 Backend API    →  http://localhost:4000" -ForegroundColor Cyan
 Write-Host "  🔷 Frontend       →  http://localhost:5174" -ForegroundColor Cyan
-Write-Host "  📱 WhatsApp QR    →  http://localhost:3001/qr?key=vitagloss_wa_2026" -ForegroundColor Green
+Write-Host "  📱 WhatsApp QR    →  http://localhost:3002/qr?key=vitagloss_wa_2026" -ForegroundColor Green
 Write-Host "  🔧 n8n Panel      →  http://localhost:5678  (admin / vitagloss2026)" -ForegroundColor Magenta
 Write-Host "══════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host ""

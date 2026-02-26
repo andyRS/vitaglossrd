@@ -125,9 +125,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-blue-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-2">
+        <div className="border-t border-blue-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-3">
           <p>© 2025 VitaGloss RD. Todos los derechos reservados.</p>
-          <p>Distribuidor independiente Amway — No somos Amway Corp.</p>
+          <div className="flex items-center gap-4 flex-wrap justify-center">
+            <Link to="/privacidad" className="hover:text-secondary transition-colors">Política de Privacidad</Link>
+            <span className="opacity-30">·</span>
+            <Link to="/terminos" className="hover:text-secondary transition-colors">Términos de Uso</Link>
+            <span className="opacity-30">·</span>
+            <p>Distribuidor independiente Amway — No somos Amway Corp.</p>
+          </div>
         </div>
       </div>
     </footer>

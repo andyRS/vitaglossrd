@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend",
+      "runtimeExecutable": "C:\\Windows\\System32\\cmd.exe",
+      "runtimeArgs": ["/c", "C:\\Users\\Andy3\\AppData\\Roaming\\npm\\npx.cmd vite --port 5176"],
+      "port": 5176,
+      "cwd": "frontend"
+    }
+  ]
+}
