@@ -11,7 +11,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-10',
     tiempoLectura: '5 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/109741CO-690px-01.png',
     autor: 'Equipo VitaGloss RD',
     tags: ['vitamina c', 'suplementos', 'nutrilite', 'salud'],
     contenido: `
@@ -108,7 +108,7 @@ export const posts = [
     categoria: 'Salud bucal',
     fecha: '2026-02-18',
     tiempoLectura: '7 min',
-    imagen: '/124108-690px-01.jpg',
+    imagen: '/124106SP-690px-01.jpg',
     autor: 'Equipo VitaGloss RD',
     tags: ['blanqueamiento dental', 'esmalte', 'dientes blancos', 'salud bucal'],
     contenido: `
@@ -159,7 +159,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-20',
     tiempoLectura: '5 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/Solucion de nutricion Diaria.png',
     autor: 'Equipo VitaGloss RD',
     tags: ['suplementos', 'vitaminas', 'republica dominicana', 'compra inteligente'],
     contenido: `
@@ -240,7 +240,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-24',
     tiempoLectura: '6 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/109741CO-690px-01.png',
     autor: 'Equipo VitaGloss RD',
     tags: ['sistema inmune', 'clima caribeño', 'vitaminas', 'nutrilite', 'República Dominicana'],
     contenido: `
@@ -603,7 +603,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-21',
     tiempoLectura: '9 min',
-    imagen: '/124106SP-690px-04.jpg',
+    imagen: '/Solucion de nutricion Diaria.png',
     autor: 'Andy Rosado',
     tags: ['nutrilite', 'suplementos', 'vitaminas', 'principiantes', 'república dominicana'],
     faqs: [
@@ -661,7 +661,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-22',
     tiempoLectura: '6 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/Multivitamina Double X de Nutrilite – Reemplazo para 31 días.jpg',
     autor: 'Andy Rosado',
     tags: ['double x', 'nutrilite', 'multivitamínico', 'vitaminas', 'suplementos'],
     faqs: [
@@ -724,7 +724,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-23',
     tiempoLectura: '6 min',
-    imagen: '/124106SP-690px-02.jpg',
+    imagen: '/Nutrilite Ácido fólico.jpg',
     autor: 'Andy Rosado',
     tags: ['ácido fólico', 'folato', 'embarazo', 'nutrilite', 'vitaminas'],
     faqs: [
@@ -780,7 +780,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-23',
     tiempoLectura: '7 min',
-    imagen: '/124106SP-690px-03.jpg',
+    imagen: '/Nutrilite Cal Mag D.jpg',
     autor: 'Andy Rosado',
     tags: ['calcio', 'magnesio', 'vitamina d', 'huesos', 'nutrilite', 'suplementos'],
     faqs: [
@@ -840,7 +840,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-24',
     tiempoLectura: '7 min',
-    imagen: '/124106SP-690px-04.jpg',
+    imagen: '/Omega Nutrilite.jpg',
     autor: 'Andy Rosado',
     tags: ['omega 3', 'dha', 'epa', 'cardiovascular', 'nutrilite', 'suplementos'],
     faqs: [
@@ -887,7 +887,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-24',
     tiempoLectura: '6 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/Nutrilite™ Vitamina D.jpg',
     autor: 'Andy Rosado',
     tags: ['vitamina d', 'sol', 'caribe', 'suplementos', 'nutrilite', 'inmunidad'],
     faqs: [
@@ -939,7 +939,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-25',
     tiempoLectura: '6 min',
-    imagen: '/124106SP-690px-02.jpg',
+    imagen: '/Nutrilite Defensa inmunológica Zinc+albahaca sagrada.jpg',
     autor: 'Andy Rosado',
     tags: ['zinc', 'inmunidad', 'sistema inmune', 'nutrilite', 'suplementos'],
     faqs: [
@@ -998,7 +998,7 @@ export const posts = [
     categoria: 'Bienestar',
     fecha: '2026-02-25',
     tiempoLectura: '8 min',
-    imagen: '/124106SP-690px-03.jpg',
+    imagen: '/Solución de envejecimiento saludable KITS.png',
     autor: 'Andy Rosado',
     tags: ['envejecimiento saludable', 'antioxidantes', 'kit envejecimiento', 'nutrilite', 'bienestar'],
     faqs: [
@@ -1055,7 +1055,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-25',
     tiempoLectura: '6 min',
-    imagen: '/124106SP-690px-04.jpg',
+    imagen: '/Proteína vegetal en polvo Nutrilite.jpg',
     autor: 'Andy Rosado',
     tags: ['proteína vegetal', 'suplemento proteico', 'nutrilite', 'músculo', 'nutrición'],
     faqs: [
@@ -1105,7 +1105,7 @@ export const posts = [
     categoria: 'Bienestar',
     fecha: '2026-02-25',
     tiempoLectura: '5 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/Pelo, Piel y Uñas Nutrilite.jpg',
     autor: 'Andy Rosado',
     tags: ['pelo piel uñas', 'biotina', 'colágeno', 'nutrilite', 'belleza'],
     faqs: [
@@ -1152,7 +1152,7 @@ export const posts = [
     categoria: 'Bienestar',
     fecha: '2026-02-25',
     tiempoLectura: '6 min',
-    imagen: '/124106SP-690px-02.jpg',
+    imagen: '/Nutrilite Fibra en polvo.jpg',
     autor: 'Andy Rosado',
     tags: ['fibra', 'digestión', 'microbioma', 'nutrilite', 'bienestar'],
     faqs: [
@@ -1220,7 +1220,7 @@ export const posts = [
     categoria: 'Bienestar',
     fecha: '2026-02-25',
     tiempoLectura: '5 min',
-    imagen: '/124106SP-690px-03.jpg',
+    imagen: '/Nutrilite Suplemento nutricional Slimmetry Ideal para bajar de peso.jpg',
     autor: 'Andy Rosado',
     tags: ['slimmetry', 'peso', 'nutrilite', 'metabolismo', 'bienestar'],
     faqs: [
@@ -1271,7 +1271,7 @@ export const posts = [
     categoria: 'Bienestar',
     fecha: '2026-02-25',
     tiempoLectura: '5 min',
-    imagen: '/124106SP-690px-04.jpg',
+    imagen: '/Nutrilite™ Glucosamina – Suministro para 30 días Articulaciones.jpg',
     autor: 'Andy Rosado',
     tags: ['glucosamina', 'articulaciones', 'cartílago', 'nutrilite', 'bienestar'],
     faqs: [
@@ -1321,7 +1321,7 @@ export const posts = [
     categoria: 'Nutrición',
     fecha: '2026-02-25',
     tiempoLectura: '7 min',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/Multivitamínico diario para niños Nutrilite.jpg',
     autor: 'Andy Rosado',
     tags: ['vitaminas niños', 'multivitamínico niños', 'nutrilite', 'nutrición infantil'],
     faqs: [
