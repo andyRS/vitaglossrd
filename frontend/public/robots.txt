@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /dashboard
 
-Sitemap: https://vitagloss-rd.com/sitemap.xml
+Sitemap: https://vitaglossrd.com/sitemap.xml

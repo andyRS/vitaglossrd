@@ -23,6 +23,7 @@ const catColors = {
   'Nutrición':   { bg: 'bg-green-100',  text: 'text-green-700' },
   'Productos':   { bg: 'bg-blue-100',   text: 'text-blue-700' },
   'Tips':        { bg: 'bg-orange-100', text: 'text-orange-700' },
+  'Bienestar':   { bg: 'bg-purple-100', text: 'text-purple-700' },
 }
 function catStyle(cat) {
   return catColors[cat] || { bg: 'bg-gray-100', text: 'text-gray-600' }
@@ -34,6 +35,8 @@ export default function BlogPost() {
   const post = getPostBySlug(slug)
   const relacionados = post ? getPostsRelacionados(slug) : []
 
+  const isYMYL = post && ['Nutrición', 'Suplementos', 'Vitaminas', 'Salud bucal'].includes(post.categoria)
+
   useSEO({
     title: post ? post.titulo : 'Artículo no encontrado',
     description: post ? post.excerpt : '',
@@ -43,13 +46,33 @@ export default function BlogPost() {
           '@type': 'Article',
           headline: post.titulo,
           description: post.excerpt,
-          author: { '@type': 'Organization', name: 'VitaGloss RD' },
           datePublished: post.fecha,
+          dateModified: post.fechaActualizacion || post.fecha,
+          author: {
+            '@type': 'Person',
+            name: 'Andy Rosado',
+            url: 'https://vitaglossrd.com/sobre-nosotros',
+            jobTitle: 'Distribuidor Independiente Certificado Amway',
+            worksFor: { '@type': 'Organization', name: 'VitaGloss RD' },
+          },
           publisher: {
             '@type': 'Organization',
             name: 'VitaGloss RD',
             url: 'https://vitaglossrd.com',
+            logo: { '@type': 'ImageObject', url: 'https://vitaglossrd.com/logo.png' },
           },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': typeof window !== 'undefined' ? window.location.href : '',
+          },
+          ...(post.faqs && post.faqs.length > 0 && {
+            '@type': ['Article', 'FAQPage'],
+            mainEntity: post.faqs.map(faq => ({
+              '@type': 'Question',
+              name: faq.pregunta,
+              acceptedAnswer: { '@type': 'Answer', text: faq.respuesta },
+            })),
+          }),
         }
       : null,
   })
@@ -116,11 +139,14 @@ export default function BlogPost() {
               {post.excerpt}
             </p>
 
-            <div className="flex items-center gap-3 text-sm text-white/50">
-              <div className="w-8 h-8 bg-secondary/20 border border-secondary/30 rounded-full flex items-center justify-center text-xs font-bold text-secondary">
-                VG
+            <div className="flex items-center gap-3 text-sm text-white/50 flex-wrap">
+              <div className="w-9 h-9 bg-secondary rounded-full flex items-center justify-center text-xs font-black text-white flex-shrink-0">
+                AR
               </div>
-              <span>{post.autor}</span>
+              <div>
+                <p className="text-white/80 text-sm font-bold leading-none">Andy Rosado</p>
+                <p className="text-white/40 text-xs mt-0.5">Distribuidor Independiente Certificado Amway · VitaGloss RD</p>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -134,9 +160,22 @@ export default function BlogPost() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="prose-custom"
-            dangerouslySetInnerHTML={{ __html: post.contenido }}
-          />
+            className="min-w-0"
+          >
+            {/* Disclaimer médico — solo en categorías YMYL */}
+            {isYMYL && (
+              <div className="mb-8 flex gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
+                <span className="text-amber-500 text-xl flex-shrink-0 mt-0.5">⚕️</span>
+                <p className="text-amber-800 text-xs leading-relaxed">
+                  <strong>Aviso médico:</strong> Este artículo tiene fines informativos y educativos únicamente. No constituye consejo médico, diagnóstico ni tratamiento. Consulta siempre a un profesional de la salud antes de iniciar, modificar o suspender cualquier suplementación o tratamiento.
+                </p>
+              </div>
+            )}
+            <div
+              className="prose-custom"
+              dangerouslySetInnerHTML={{ __html: post.contenido }}
+            />
+          </motion.article>
 
           {/* Sidebar sticky */}
           <aside className="hidden lg:block">

@@ -24,6 +24,7 @@ const catColors = {
   'Nutrición':   { bg: 'bg-green-100', text: 'text-green-700', dot: 'bg-green-400' },
   'Productos':   { bg: 'bg-blue-100',  text: 'text-blue-700',  dot: 'bg-blue-400' },
   'Tips':        { bg: 'bg-orange-100', text: 'text-orange-700', dot: 'bg-orange-400' },
+  'Bienestar':   { bg: 'bg-purple-100', text: 'text-purple-700', dot: 'bg-purple-400' },
 }
 function catStyle(cat) {
   return catColors[cat] || { bg: 'bg-gray-100', text: 'text-gray-600', dot: 'bg-gray-400' }
