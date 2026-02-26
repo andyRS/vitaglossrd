@@ -90,7 +90,7 @@ export default function ProductoDetalle() {
       sku: producto.articulo,
       offers: {
         '@type': 'Offer',
-        url: `https://vitagloss-rd.com/producto/${producto.id}`,
+        url: `https://vitaglossrd.com/producto/${producto.id}`,
         priceCurrency: 'DOP',
         price: producto.precio,
         availability: producto.disponible
