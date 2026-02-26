@@ -487,6 +487,48 @@ export default function ProductoDetalle() {
                 </div>
               </Accordion>
 
+              {/* Certificaciones — solo si el producto las tiene */}
+              {producto.certificaciones && producto.certificaciones.length > 0 && (
+                <Accordion
+                  titulo="Certificaciones"
+                  icono={
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  }
+                >
+                  <div className="flex flex-wrap gap-6 items-center">
+                    {producto.certificaciones.map((cert, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        {cert.nombre === 'Halal' && (
+                          <div className="w-10 h-10 rounded-full border-2 border-gray-900 flex items-center justify-center flex-shrink-0 bg-white">
+                            <svg viewBox="0 0 40 40" className="w-8 h-8">
+                              <circle cx="20" cy="20" r="14" fill="none" stroke="#111" strokeWidth="2.5"/>
+                              <path d="M15 20 a8 8 0 1 0 10-7.7" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round"/>
+                              <text x="20" y="25" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#111">M</text>
+                            </svg>
+                          </div>
+                        )}
+                        {cert.nombre === 'Kosher' && (
+                          <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
+                            <svg viewBox="0 0 40 40" className="w-10 h-10">
+                              <polygon points="20,3 24,14 36,14 26,21 30,33 20,26 10,33 14,21 4,14 16,14" fill="none" stroke="#111" strokeWidth="2"/>
+                              <text x="20" y="23" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#111">K</text>
+                            </svg>
+                          </div>
+                        )}
+                        {cert.nombre === 'NSF' && (
+                          <div className="w-10 h-10 rounded flex items-center justify-center flex-shrink-0 bg-gray-900">
+                            <span className="text-white text-[8px] font-black leading-tight text-center">NSF<br/>CERT</span>
+                          </div>
+                        )}
+                        <span className="text-gray-600 text-sm">{cert.descripcion}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Accordion>
+              )}
+
               <Accordion
                 titulo="Descripción"
                 icono={
@@ -495,10 +537,14 @@ export default function ProductoDetalle() {
                   </svg>
                 }
               >
-                <p className="leading-relaxed mb-4">{producto.descripcionLarga}</p>
+                <div className="space-y-3 mb-4">
+                  {producto.descripcionLarga.split('\n\n').map((parrafo, i) => (
+                    <p key={i} className="leading-relaxed">{parrafo}</p>
+                  ))}
+                </div>
                 {producto.categoria === 'Suplementos' && (
                   <p className="text-xs text-gray-400 bg-gray-50 rounded-xl p-3 leading-relaxed border border-gray-100">
-                    <strong>Aviso:</strong> Los niños menores de 12 años, las mujeres embarazadas o que amamantan, o cualquier persona con alguna enfermedad deben consultar a su médico antes de usar este producto. † Esta declaración no fue evaluada por la FDA. Este producto no pretende diagnosticar, tratar, curar ni prevenir ninguna enfermedad.
+                    <strong>Aviso:</strong> {producto.advertencia || 'Los niños menores de 12 años, las mujeres embarazadas o que amamantan, o cualquier persona con alguna enfermedad deben consultar a su médico antes de usar este producto.'} † Esta declaración no fue evaluada por la FDA. Este producto no pretende diagnosticar, tratar, curar ni prevenir ninguna enfermedad.
                   </p>
                 )}
               </Accordion>

@@ -311,5 +311,88 @@ export const productos = [
     usosPorEnvase: 60,
     badge: "Natural",
     badgeColor: "bg-yellow-500"
+  },
+  {
+    id: 5,
+    nombre: "Double X™ Nutrilite",
+    nombreCorto: "Nutrilite™ Double X™ Concentrado de Frutas y Verduras",
+    categoria: "Suplementos",
+    articulo: "109966CO",
+    precio: 3052.35,
+    precioOriginal: 3600,
+    pv: 11.00,
+    bv: 1570.0,
+    disponible: true,
+    stock: "En stock",
+    stockUnidades: 3,
+    ventasSemana: 8,
+    descripcion: "Nuestra multivitamina más avanzada. 22 vitaminas y minerales + 22 nutrientes de frutas, verduras y hierbas. Más de 40 nutrientes para apoyar corazón, cerebro, huesos, ojos, inmunidad, piel, energía y vitalidad. Suministro para 31 días.",
+    descripcionLarga: "Nuestra multivitamina más avanzada. Impulsado por las propiedades de las plantas. Creado para ti.\n\nContiene 22 vitaminas y minerales que incluyen vitaminas de la A a la E, calcio, zinc, magnesio, selenio y más, además de 22 nutrientes de frutas, verduras y hierbas cultivadas en nuestras granjas Nutrilite™ y en granjas asociadas. Este multivitamínico supremo te brinda más de 40 nutrientes para apoyar corazón, cerebro, hueso, ojo, inmunidad, piel, energía, envejecimiento saludable, salud celular y vitalidad.",
+    beneficios: [
+      "Salud del cerebro — apoya función cerebral saludable con vitaminas E, B6, B12 y folato",
+      "Salud del corazón — vitaminas B (B6 y B12), E y minerales como ácido fólico y selenio",
+      "Energía — cinco vitaminas B (tiamina, riboflavina, niacina, biotina y ác. pantoténico)",
+      "Salud inmunológica — 200 mg de vitamina C, 800 IU de vitamina D3 y 100% VD de zinc",
+      "Salud de los ojos — vitamina A y luteína de flor de caléndula para la salud visual",
+      "Salud de los huesos — 8 vitaminas y minerales para huesos fuertes (calcio, magnesio, cobre, zinc, manganeso, vitaminas D, C y A)",
+      "Salud de la piel — vitaminas A, C, biotina y niacina para una piel saludable",
+      "Salud celular — vitamina E, ácido pantoténico y selenio apoyan la función normal de las células",
+      "22 nutrientes de plantas cultivadas en granjas propias Nutrilite™",
+      "Certificado Halal, Kosher y NSF Contents Certified"
+    ],
+    instrucciones: [
+      "Toma una tableta multivitamínica, una multimineral y una de fitonutriente dos veces al día con las comidas.",
+      "Se recomiendan por la mañana y por la noche, siempre con alimentos.",
+      "Los niños menores de 12 años, mujeres embarazadas o en lactancia deben consultar a su médico antes de consumir.",
+      "Mantener fuera del alcance de los niños.",
+      "No exceder la dosis diaria recomendada."
+    ],
+    advertencia: "Los niños menores de 12 años, las mujeres embarazadas o que amamantan, o cualquier persona que padezca una enfermedad deben consultar con su médico antes de consumir este producto. Mantener fuera del alcance de los niños.",
+    faqs: [
+      {
+        pregunta: "¿Qué es un fitonutriente y por qué hay tantos en el suplemento Double X™?",
+        respuesta: "Los fitonutrientes son compuestos químicos naturales en las plantas y defienden contra el estrés ambiental. La marca Nutrilite™ los incluye en sus fórmulas debido a sus beneficios en los seres humanos. Los fitonutrientes de los 22 concentrados de plantas del Double X™ brindan protección antioxidante amplia y específica, ayudando a que tu cuerpo se defienda contra el exceso de radicales libres que causan estrés oxidativo."
+      },
+      {
+        pregunta: "¿Por qué son importantes los antioxidantes?",
+        respuesta: "Nuestro cuerpo necesita radicales libres, pero demasiados causarían estrés oxidativo, resultando en daño celular y envejecimiento. Para contrarrestar esto, nuestro cuerpo procesa antioxidantes para equilibrar los radicales libres. Mantener ese equilibrio es clave para nuestro ecosistema interno y la salud óptima."
+      },
+      {
+        pregunta: "¿Qué es la certificación NSF contenido?",
+        respuesta: "Elegir un producto certificado por NSF significa que la empresa cumple con normas y procedimientos estrictos: pruebas extensas de productos, análisis de materiales e inspecciones a instalaciones sin previo aviso. Es la garantía de que los productos cumplen normas estrictas para proteger la salud pública."
+      },
+      {
+        pregunta: "¿Double X™ de Nutrilite™ tiene certificación Kosher?",
+        respuesta: "Sí, el suplemento Double X™ de Nutrilite™ cuenta con certificación Kosher."
+      },
+      {
+        pregunta: "¿Double X™ de Nutrilite™ tiene certificación Halal?",
+        respuesta: "Sí, el suplemento Double X™ de Nutrilite™ cuenta con certificación Halal."
+      }
+    ],
+    detalles: [
+      { label: "Contenido", valor: "Suministro para 31 días" },
+      { label: "Vitaminas", valor: "22 vitaminas y minerales" },
+      { label: "Nutrientes", valor: "22 de frutas, verduras y hierbas" },
+      { label: "Total nutrientes", valor: "Más de 40" },
+      { label: "Uso", valor: "3 tabletas × 2 veces al día" },
+      { label: "Origen", valor: "Base de plantas · Granjas Nutrilite™" },
+      { label: "Certificaciones", valor: "NSF · Kosher · Halal" },
+      { label: "Artículo", valor: "109966CO" }
+    ],
+    certificaciones: [
+      { nombre: "Halal", descripcion: "Halal" },
+      { nombre: "Kosher", descripcion: "Certificación Kosher" },
+      { nombre: "NSF", descripcion: "Certificación de contenido NSF" }
+    ],
+    imagenes: [
+      "/doublex-01.jpg"
+    ],
+    imagen: "/doublex-01.jpg",
+    rating: 4.9,
+    reviewCount: 41,
+    usosPorEnvase: 31,
+    badge: "Premium",
+    badgeColor: "bg-purple-600"
   }
 ]
