@@ -31,7 +31,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div className="mb-5 bg-white rounded-2xl p-3 inline-block shadow-lg">
               <img
-                src="/logo-footer-nuevo.png"
+                src="/logo-footer-n.png"
                 alt="VitaGloss RD"
                 className="w-44 h-auto max-w-full object-contain"
               />
