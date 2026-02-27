@@ -30,13 +30,11 @@ export default function Footer() {
           {/* Marca */}
           <div className="col-span-2 md:col-span-1">
             <div className="mb-2">
-              <div className="bg-white rounded-full w-24 h-24 flex items-center justify-center shadow-lg">
-                <img
-                  src="/logo-footer-n.png"
-                  alt="VitaGloss RD"
-                  className="h-20 w-20 object-contain"
-                />
-              </div>
+              <img
+                src="/logo-footer-n.png"
+                alt="VitaGloss RD"
+                className="h-24 w-auto object-contain drop-shadow-lg"
+              />
             </div>
             <p className="font-bold text-xl text-white leading-tight">VitaGloss RD</p>
             <p className="text-secondary text-sm mb-4">Tu salud, tu sonrisa</p>
