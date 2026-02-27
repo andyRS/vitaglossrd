@@ -29,11 +29,11 @@ export default function Footer() {
 
           {/* Marca */}
           <div className="col-span-2 md:col-span-1">
-            <div className="mb-4">
+            <div className="mb-5">
               <img
                 src="/logo_final.png"
                 alt="VitaGloss RD"
-                className="h-16 w-auto object-contain"
+                className="h-24 w-auto object-contain drop-shadow-lg"
               />
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
