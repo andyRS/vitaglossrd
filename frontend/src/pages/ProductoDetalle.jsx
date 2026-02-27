@@ -53,13 +53,160 @@ function Accordion({ titulo, icono, children, defaultOpen = false }) {
   )
 }
 
+// ─── Tabs desktop ──────────────────────────────────────────────────────────
+function TabsInfoSection({ producto }) {
+  const [tab, setTab] = useState(0)
+  const TABS = ['Detalles', 'Descripción', 'Beneficios', 'Instrucciones', 'Preguntas']
+  return (
+    <div>
+      {/* Barra de tabs */}
+      <div className="border-b border-gray-200 mb-8">
+        <div className="flex overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+          {TABS.map((t, i) => (
+            <button
+              key={i}
+              onClick={() => setTab(i)}
+              className={`flex-shrink-0 px-7 py-4 text-sm font-semibold border-b-2 transition-all whitespace-nowrap ${
+                tab === i ? 'border-primary text-primary' : 'border-transparent text-gray-400 hover:text-gray-700'
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tab}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18 }}
+        >
+          {/* Detalles */}
+          {tab === 0 && (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {producto.detalles.map((d, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
+                  <p className="text-gray-400 text-xs mb-0.5">{d.label}</p>
+                  <p className="text-gray-800 font-semibold text-sm">{d.valor}</p>
+                </div>
+              ))}
+              <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
+                <p className="text-gray-400 text-xs mb-0.5">Marca</p>
+                <p className="text-gray-800 font-semibold text-sm">Amway</p>
+              </div>
+              <div className="bg-green-50 rounded-xl px-4 py-3 border border-green-100">
+                <p className="text-gray-400 text-xs mb-0.5">Disponibilidad</p>
+                <p className="text-green-600 font-semibold text-sm">{producto.stock}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Descripción */}
+          {tab === 1 && (
+            <div className="max-w-3xl space-y-4 text-gray-600 text-[15px] leading-relaxed">
+              {producto.descripcionLarga.split('\n\n').map((parrafo, i) => (
+                <p key={i}>{parrafo}</p>
+              ))}
+              {producto.categoria === 'Suplementos' && (
+                <p className="text-xs text-gray-400 bg-gray-50 rounded-xl p-4 leading-relaxed border border-gray-100 mt-4">
+                  <strong>Aviso:</strong> {producto.advertencia || 'Los niños menores de 12 años, las mujeres embarazadas o que amamantan, o cualquier persona con alguna enfermedad deben consultar a su médico antes de usar este producto.'} † Esta declaración no fue evaluada por la FDA. Este producto no pretende diagnosticar, tratar, curar ni prevenir ninguna enfermedad.
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Beneficios */}
+          {tab === 2 && (
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-4xl">
+              {producto.beneficios.map((b, i) => (
+                <li key={i} className="flex items-start gap-3 bg-green-50 rounded-xl px-4 py-3 border border-green-100">
+                  <span className="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+                  <span className="text-gray-700 text-sm">{b}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Instrucciones */}
+          {tab === 3 && (
+            <div className="space-y-4 max-w-2xl">
+              {producto.instrucciones ? (
+                producto.instrucciones.map((paso, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <span className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">{i + 1}</span>
+                    <p className="text-gray-600 pt-1">{paso}</p>
+                  </div>
+                ))
+              ) : producto.categoria === 'Salud Bucal' ? (
+                [['Aplica una pequeña cantidad del producto en tu cepillo dental.'],['Cepilla suavemente durante 2 minutos cubriendo todas las superficies.'],['Enjuaga bien con agua.'],['Para mejores resultados, úsalo ' + (producto.detalles.find(d => d.label === 'Uso')?.valor ?? 'según indicación') + '.']].map(([paso], i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <span className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">{i + 1}</span>
+                    <p className="text-gray-600 pt-1">{paso}</p>
+                  </div>
+                ))
+              ) : (
+                [['Toma ' + (producto.detalles.find(d => d.label === 'Uso')?.valor ?? 'la dosis indicada') + ' con un vaso de agua.'],['Preferiblemente con las comidas.'],['No exceder la dosis diaria recomendada.'],['Mantener fuera del alcance de los niños.']].map(([paso], i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <span className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">{i + 1}</span>
+                    <p className="text-gray-600 pt-1">{paso}</p>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* FAQs */}
+          {tab === 4 && (
+            <div className="space-y-5 max-w-3xl">
+              {producto.faqs && producto.faqs.map((faq, i) => (
+                <div key={i} className="border-l-4 border-secondary pl-5">
+                  <p className="font-semibold text-gray-800 mb-1">{faq.pregunta}</p>
+                  <p className="text-gray-500 text-sm">{faq.respuesta}</p>
+                </div>
+              ))}
+              {producto.faqs && producto.faqs.length > 0 && (
+                <div className="border-t border-gray-100 pt-5">
+                  <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-3">Sobre el pedido</p>
+                </div>
+              )}
+              {[['¿Cómo hago mi pedido?','Haz clic en el botón de WhatsApp, te responderemos de inmediato con el proceso de pago y entrega.'],['¿Cuánto tiempo tarda el envío?','El tiempo de entrega varía según tu ubicación en República Dominicana. Normalmente entre 1 y 3 días hábiles.'],['¿Los productos son originales?','Sí, somos distribuidores independientes certificados de Amway. Todos los productos son 100% originales y auténticos.'],['¿Cuáles son los métodos de pago?','Aceptamos transferencia bancaria, depósito y pago en efectivo. Te indicaremos los detalles al confirmar tu pedido por WhatsApp.']].map(([q, a], i) => (
+                <div key={i} className="border-l-4 border-primary/30 pl-5">
+                  <p className="font-semibold text-gray-800 mb-1">{q}</p>
+                  <p className="text-gray-500 text-sm">{a}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function ProductoDetalle() {
   const { id } = useParams()
   const producto = productos.find(p => p.id === parseInt(id))
   const [imgActiva, setImgActiva] = useState(0)
   const [agregado, setAgregado] = useState(false)
   const [qty, setQty] = useState(1)
+  const [showStickyBar, setShowStickyBar] = useState(false)
+  const buyRef = useRef(null)
   const { addItem } = useCart()
+
+  useEffect(() => {
+    const el = buyRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { threshold: 0 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [producto?.id])
 
   const handleAgregar = () => {
     for (let i = 0; i < qty; i++) addItem(producto)
@@ -389,6 +536,7 @@ export default function ProductoDetalle() {
 
             {/* Botón WhatsApp — principal */}
             <a
+              ref={buyRef}
               href={whatsappURL}
               target="_blank"
               rel="noopener noreferrer"
@@ -434,8 +582,17 @@ export default function ProductoDetalle() {
           </div>
         </div>
 
-        {/* ===== ACCORDIONS ===== */}
-        <div className="mt-16 max-w-2xl">
+        {/* ===== INFO: Tabs (desktop) / Acordeones (móvil) ===== */}
+
+        {/* DESKTOP: Tabs */}
+        <div className="mt-16 hidden md:block">
+          <h2 className="text-2xl font-bold text-gray-900 mb-1">Información del producto</h2>
+          <p className="text-gray-400 text-sm mb-6">Conoce todos los detalles antes de hacer tu pedido.</p>
+          <TabsInfoSection producto={producto} />
+        </div>
+
+        {/* MÓVIL: Acordeones */}
+        <div className="mt-16 md:hidden">
           <h2 className="text-xl font-bold text-gray-900 mb-1">Información del producto</h2>
           <p className="text-gray-400 text-sm mb-6">Conoce todos los detalles antes de hacer tu pedido.</p>
 

@@ -309,51 +309,88 @@ export default function Home() {
       </div>
 
       {/* ====== PROBLEMA → SOLUCIÓN ====== */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-20 px-4 bg-gradient-to-b from-[#060e1f] to-[#0a1628] overflow-hidden">
         <div className="max-w-5xl mx-auto">
+
+          {/* Header */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <span className="inline-block bg-red-100 text-red-500 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4">
+            <span className="inline-block bg-red-500/10 text-red-400 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-5 border border-red-500/20">
               ¿Te identificas?
             </span>
-            <h2 className="text-3xl md:text-4xl font-black text-primary leading-tight">
-              ¿Gastas en productos que no te dan resultados?
+            <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
+              ¿Gastas en productos que{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+                no te dan resultados?
+              </span>
             </h2>
+            <p className="text-white/40 mt-3 text-base">Hay una diferencia entre lo que compras hoy y lo que realmente funciona.</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Cards */}
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-5">
+
             {/* Problema */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="bg-red-50 border border-red-100 rounded-3xl p-7"
+              className="relative bg-white/[0.03] border border-red-500/20 rounded-3xl p-7 backdrop-blur-sm overflow-hidden"
             >
-              <div className="flex items-center gap-3 mb-5">
-                <span className="w-10 h-10 bg-red-100 rounded-2xl flex items-center justify-center text-xl flex-shrink-0">😤</span>
-                <h3 className="font-black text-red-700 text-lg">El problema habitual</h3>
+              {/* Glow fondo */}
+              <div className="absolute -top-16 -left-16 w-48 h-48 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs text-red-400/70 uppercase tracking-widest font-semibold">Sin VitaGloss</p>
+                  <h3 className="font-black text-red-300 text-base">El problema habitual</h3>
+                </div>
               </div>
-              <ul className="space-y-3">
+
+              <ul className="space-y-3.5">
                 {[
                   'Pasta dental que mancha en vez de blanquear',
                   'Vitaminas baratas que el cuerpo no absorbe',
                   'Productos con químicos que irritan o dañan',
                   'Marcas que prometen mucho y entregan poco',
-                  'Compras en farmacia sin saber qué lleva adentro',
+                  'Compras sin saber qué lleva adentro',
                 ].map((p, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-red-600 text-sm">
-                    <span className="w-5 h-5 bg-red-200 rounded-full flex items-center justify-center text-xs flex-shrink-0">✗</span>
-                    {p}
-                  </li>
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className="flex items-start gap-3"
+                  >
+                    <span className="w-5 h-5 mt-0.5 bg-red-500/15 border border-red-500/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </span>
+                    <span className="text-white/50 text-sm leading-relaxed line-through decoration-red-500/40">{p}</span>
+                  </motion.li>
                 ))}
               </ul>
             </motion.div>
+
+            {/* Badge VS — solo desktop */}
+            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-secondary to-primary border-2 border-white/10 flex items-center justify-center shadow-2xl shadow-primary/40">
+                <span className="text-white text-[11px] font-black tracking-tight">VS</span>
+              </div>
+            </div>
 
             {/* Solución */}
             <motion.div
@@ -362,24 +399,46 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true }}
               custom={1}
-              className="bg-green-50 border border-green-100 rounded-3xl p-7"
+              className="relative bg-white/[0.03] border border-emerald-500/20 rounded-3xl p-7 backdrop-blur-sm overflow-hidden"
             >
-              <div className="flex items-center gap-3 mb-5">
-                <span className="w-10 h-10 bg-green-100 rounded-2xl flex items-center justify-center text-xl flex-shrink-0">✨</span>
-                <h3 className="font-black text-green-700 text-lg">Con VitaGloss RD</h3>
+              {/* Glow fondo */}
+              <div className="absolute -top-16 -right-16 w-48 h-48 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs text-emerald-400/70 uppercase tracking-widest font-semibold">Con VitaGloss RD</p>
+                  <h3 className="font-black text-emerald-300 text-base">La diferencia real</h3>
+                </div>
               </div>
-              <ul className="space-y-3">
+
+              <ul className="space-y-3.5">
                 {[
                   'Glister™ blanquea sin peróxido ni abrasivos dañinos',
                   'Nutrilite™ libera vitaminas durante 8 horas reales',
                   'Fórmulas limpias: sin parabenos, SLS ni colorantes',
                   '90+ años de investigación científica comprobada',
-                  'Distribuidor certificado — productos 100% originales',
+                  'Distribuidor certificado — producto 100% original',
                 ].map((s, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-green-700 text-sm">
-                    <span className="w-5 h-5 bg-green-200 rounded-full flex items-center justify-center text-xs flex-shrink-0">✓</span>
-                    {s}
-                  </li>
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: 12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className="flex items-start gap-3"
+                  >
+                    <span className="w-5 h-5 mt-0.5 bg-emerald-500/15 border border-emerald-500/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <span className="text-white/80 text-sm leading-relaxed font-medium">{s}</span>
+                  </motion.li>
                 ))}
               </ul>
             </motion.div>
@@ -391,12 +450,13 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-center mt-8"
+            className="text-center mt-10"
           >
-            <p className="text-gray-500 text-base mb-4">
+            <p className="text-white/30 text-sm">
               Mira los productos que ya están cambiando la rutina de cientos de dominicanos 👇
             </p>
           </motion.div>
+
         </div>
       </section>
 
