@@ -93,14 +93,14 @@ const BIENVENIDA_BTNS = [
 
 const MENU_PRODUCTOS = `🛒 *Productos más populares:*
 
-1️⃣ Pasta Dental Glister™ — RD$694
-2️⃣ Spray Bucal Glister™  — RD$510
-3️⃣ Enjuague Bucal Glister™ — RD$738
-4️⃣ Vitamina C Nutrilite™ — RD$985
-5️⃣ Double X Nutrilite™ (31 días) — RD$2,010
-6️⃣ Cal Mag D Nutrilite™ — RD$820
-7️⃣ Vitamina D Nutrilite™ — RD$1,090
-8️⃣ Omega-3 Nutrilite™ — RD$1,290
+1️⃣ Pasta Dental Glister™ — RD$899
+2️⃣ Spray Bucal Glister™  — RD$820
+3️⃣ Enjuague Bucal Glister™ — RD$1,169
+4️⃣ Vitamina C Nutrilite™ — RD$1,099
+5️⃣ Double X Nutrilite™ (31 días) — RD$4,040
+6️⃣ Cal Mag D Nutrilite™ — RD$948
+7️⃣ Vitamina D Nutrilite™ — RD$1,245
+8️⃣ Omega-3 Nutrilite™ — RD$1,640
 
 👉 Catálogo completo: https://vitaglossrd.com/catalogo
 
@@ -152,14 +152,14 @@ Puedes escribir:
 O escríbeme directo y te respondo personalmente 😊`
 
 const DETALLE_PRODUCTOS = {
-  '1': { nombre: 'Pasta Dental Glister™', precio: 'RD$694', desc: 'La única pastal dental con fluoristat. Protege el esmalte, blanquea y previene caries. Sin SLS.' },
-  '2': { nombre: 'Spray Bucal Glister™',  precio: 'RD$510', desc: 'Refresca el aliento al instante. Mata bacterias sin alcohol. Ideal para llevar a todos lados.' },
-  '3': { nombre: 'Enjuague Bucal Glister™', precio: 'RD$738', desc: 'Sin alcohol. Protege encías, combate la placa y deja el aliento fresco hasta 12 horas.' },
-  '4': { nombre: 'Vitamina C Nutrilite™', precio: 'RD$985', desc: 'Fórmula de liberación prolongada 8h. Con bioflavonoides orgánicos. 40-60% mejor absorción que la farmacia.' },
-  '5': { nombre: 'Double X Nutrilite™',   precio: 'RD$2,010', desc: 'El multivitamínico más completo del mundo. 12 vitaminas, 10 minerales, 22 concentrados vegetales. Renovación celular total.' },
-  '6': { nombre: 'Cal Mag D Nutrilite™',  precio: 'RD$820', desc: 'El trío esencial para huesos y músculos: calcio, magnesio y vitamina D en una sola cápsula.' },
-  '7': { nombre: 'Vitamina D Nutrilite™', precio: 'RD$1,090', desc: 'Aunque en el Caribe hay sol, la vitamina D insuficiente es epidemia. Apoya inmunidad, ánimo y huesos.' },
-  '8': { nombre: 'Omega-3 Nutrilite™',    precio: 'RD$1,290', desc: 'EPA + DHA de fuentes marinas. Sin olor a pescado. Protege el corazón, cerebro y articulaciones.' },
+  '1': { nombre: 'Pasta Dental Glister™', precio: 'RD$899', desc: 'La única pasta dental con menta certificada Nutrilite™. Protege el esmalte, blanquea y previene caries. Sin SLS ni parabenos.' },
+  '2': { nombre: 'Spray Bucal Glister™',  precio: 'RD$820', desc: 'Refresca el aliento al instante. Sin aerosol, hasta 223 usos por envase. Ideal para llevar a todos lados.' },
+  '3': { nombre: 'Enjuague Bucal Glister™', precio: 'RD$1,169', desc: 'Sin alcohol. Fórmula concentrada (100 usos). Protege encías, combate la placa y deja el aliento fresco.' },
+  '4': { nombre: 'Vitamina C Nutrilite™', precio: 'RD$1,099', desc: 'Fórmula de liberación prolongada 8h con cerezas acerola. Certificado NSF, Kosher y Halal.' },
+  '5': { nombre: 'Double X Nutrilite™ (31 días)', precio: 'RD$4,040', desc: 'El multivitamínico más completo. 22 vitaminas/minerales + 22 concentrados vegetales. Más de 40 nutrientes.' },
+  '6': { nombre: 'Cal Mag D Nutrilite™',  precio: 'RD$948', desc: 'El trío esencial: calcio, magnesio y vitamina D3 para huesos fuertes y función muscular.' },
+  '7': { nombre: 'Vitamina D Nutrilite™', precio: 'RD$1,245', desc: '90 tabletas. Vitamina D3 biodisponible para huesos, inmunidad y estado de ánimo.' },
+  '8': { nombre: 'Omega Nutrilite™',      precio: 'RD$1,640', desc: '3x mayor absorción. EPA + DHA. Sin olor a pescado. Protege corazón, cerebro y articulaciones.' },
 }
 
 // ── Estado de pedidos en memoria (simple, stateless) ─────────────────────────
