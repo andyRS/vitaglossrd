@@ -29,15 +29,17 @@ export default function Footer() {
 
           {/* Marca */}
           <div className="col-span-2 md:col-span-1">
-            <div className="mb-3">
+            <div className="flex items-center gap-3 mb-4">
               <img
                 src="/logo-footer-n.png"
                 alt="VitaGloss RD"
-                className="w-44 h-auto max-w-full object-contain drop-shadow-lg"
+                className="w-14 h-14 object-contain drop-shadow-lg flex-shrink-0"
               />
+              <div>
+                <p className="font-bold text-lg text-white leading-tight">VitaGloss RD</p>
+                <p className="text-secondary text-sm">Tu salud, tu sonrisa</p>
+              </div>
             </div>
-            <p className="font-bold text-lg text-white">VitaGloss RD</p>
-            <p className="text-secondary text-sm mb-3">Tu salud, tu sonrisa</p>
             <p className="text-gray-300 text-sm leading-relaxed">
               Distribuidores independientes Amway en República Dominicana. Productos originales para tu bienestar.
             </p>
