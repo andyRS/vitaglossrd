@@ -391,11 +391,19 @@ export default function BlogPost() {
                       className="group flex flex-col bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full"
                     >
                       <div className="bg-gradient-to-br from-[#0a1628] to-[#1B3A6B] h-36 flex items-center justify-center relative overflow-hidden">
-                        <img
-                          src={rel.imagen}
-                          alt={rel.titulo}
-                          className="h-24 w-24 object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-500"
-                        />
+                        {rel.imagenCover ? (
+                          <img
+                            src={rel.imagen}
+                            alt={rel.titulo}
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <img
+                            src={rel.imagen}
+                            alt={rel.titulo}
+                            className="h-24 w-24 object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-500"
+                          />
+                        )}
                         <div className="absolute top-2 left-2">
                           <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${rcs.bg} ${rcs.text}`}>
                             {rel.categoria}
