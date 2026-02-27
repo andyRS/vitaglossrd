@@ -1,25 +1,8 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 import { posts, categorias } from '../data/posts'
-
-// Google AdSense — solo en la página del Blog
-function useAdSense() {
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9316456690005068'
-    script.async = true
-    script.crossOrigin = 'anonymous'
-    script.setAttribute('data-adsense-blog', 'true')
-    document.head.appendChild(script)
-
-    return () => {
-      // Limpiar al salir de la página del blog
-      document.head.querySelectorAll('[data-adsense-blog]').forEach(el => el.remove())
-    }
-  }, [])
-}
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -48,7 +31,6 @@ function catStyle(cat) {
 }
 
 export default function Blog() {
-  useAdSense()
   useSEO({
     title:       'Blog — Salud, Nutrición y Bienestar en República Dominicana',
     description: 'Artículos sobre salud bucal, nutrición, vitaminas y bienestar para República Dominicana. Consejos basados en ciencia de los especialistas de VitaGloss RD.',
