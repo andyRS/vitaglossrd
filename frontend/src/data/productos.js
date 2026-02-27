@@ -14,7 +14,7 @@ export const productos = [
     stockUnidades: 5,
     ventasSemana: 12,
     descripcion: "Pasta dental con flúor y menta certificada Nutrilite™. Previene caries, elimina placa, blanquea y refresca el aliento. Cada tubo de 200 g rinde hasta 198 usos.",
-    descripcionLarga: "La Pasta Dental con Flúor de Acción Múltiple Glister™ limpia los dientes de forma efectiva, ya sea que te guste el café o el té. El cepillado regular ayuda a eliminar la placa que causa caries y manchas para dejar tu sonrisa reluciente. Con flúor poderoso e ingredientes basados en plantas — un agente pulidor de sílice y menta certificada Nutrilite™ — te encantará desde el primer uso. No altera tu microbioma oral. Su fórmula no contiene parabenos, alcohol, peróxido, azúcar ni ingredientes de origen animal. Cada tubo de 200 g rinde hasta 198 usos. Certificación Kosher.",
+    descripcionLarga: "La Pasta Dental con Flúor de Acción Múltiple Glister™ limpia los dientes de forma efectiva, ya sea que te guste el café o el té. El cepillado regular ayuda a eliminar la placa que causa caries y manchas para dejarte una sonrisa reluciente.\n\nCon flúor poderoso e ingredientes basados en plantas — un agente pulidor de sílice y menta certificada Nutrilite™ — te encantará desde el primer uso. No altera tu microbioma oral y su fórmula no contiene parabenos, alcohol, peróxido, azúcar ni ingredientes de origen animal.\n\nCada tubo de 200 g rinde hasta 198 usos. Certificación Kosher.",
     beneficios: [
       "Previene las caries con flúor de sodio conforme a normas FDA",
       "Ayuda a eliminar la placa con un cepillado regular",
@@ -103,7 +103,7 @@ export const productos = [
     stockUnidades: 8,
     ventasSemana: 7,
     descripcion: "Refresca tu aliento al instante con menta certificada Nutrilite™. Portátil, sin aerosol, hasta 223 usos por envase. Ideal para llevar a cualquier lugar.",
-    descripcionLarga: "El Refrescante Bucal en Spray Glister™ Menta refresca tu aliento al instante, ¡en cualquier momento y en cualquier lugar! Usa el rociador para mantener un aliento fresco que perdura, con menta certificada Nutrilite™. Este miniproducto esencial para la salud bucal es portátil e ideal para refrescar el aliento en cualquier lugar. Su fórmula no contiene colorantes artificiales, azúcar, parabenos ni ingredientes de origen animal. Sin aerosol. Cada envase rinde hasta 223 usos.",
+    descripcionLarga: "El Refrescante Bucal en Spray Glister™ Menta refresca tu aliento al instante — en cualquier momento y cualquier lugar. Con menta certificada Nutrilite™, este miniproducto esencial es la solución perfecta para mantener la frescura durante todo el día.\n\nSu diseño portátil cabe en cualquier bolsillo o cartera. Rociador de bomba sin aerosol, seguro y preciso. Cada envase rinde hasta 223 usos.\n\nFórmula sin colorantes artificiales, azúcar, parabenos ni ingredientes de origen animal.",
     beneficios: [
       "Refresca el aliento al instante en cualquier lugar",
       "Brinda frescura duradera con menta certificada Nutrilite™",
@@ -177,7 +177,7 @@ export const productos = [
     stockUnidades: 4,
     ventasSemana: 9,
     descripcion: "Enjuague bucal concentrado con sabor a menta certificada Nutrilite™. Fórmula de acción múltiple que remueve placa, elimina bacterias y ofrece aliento fresco de larga duración.",
-    descripcionLarga: "El Enjuague Bucal de Acción Múltiple Glister concentrado sabor a menta certificada Nutrilite™ ofrece larga duración de aliento fresco. Úsalo después del cepillado para ayudar a limpiar entre los dientes, remover la placa y las bacterias que causan el mal aliento. Cada conveniente botella de tamaño de viaje rinde hasta 100 usos. Su fórmula concentrada no contiene alcohol, colorantes artificiales, peróxido, azúcar, parabenos, lauril sulfato de sodio (SLS) ni ingredientes de origen animal. El 96% de los consumidores estuvo de acuerdo en que refresca el aliento.",
+    descripcionLarga: "El Enjuague Bucal de Acción Múltiple Glister™ concentrado, sabor menta certificada Nutrilite™, ofrece una frescura de larga duración que va mucho más allá del cepillado. El 96% de los consumidores confirmó que refresca el aliento de forma notoria.\n\nÚsalo después del cepillado para limpiar entre los dientes, remover la placa y eliminar las bacterias que causan el mal aliento. Su fórmula concentrada rinde hasta 100 usos por botella con el dosificador y vaso mezclador integrados.\n\nSin alcohol, colorantes artificiales, peróxido, azúcar, parabenos, SLS ni ingredientes de origen animal. Apto para veganos. Certificación Kosher.",
     beneficios: [
       "Ayuda a remover más placa que solo el cepillado al usarse después de él",
       "Limpia entre los dientes y remueve bacterias que causan mal aliento",
@@ -251,7 +251,7 @@ export const productos = [
     stockUnidades: 6,
     ventasSemana: 15,
     descripcion: "Suplemento de Vitamina C de acción prolongada con 250 mg derivado de cerezas acerola. Apoya tu sistema inmunológico con liberación gradual durante 8 horas.",
-    descripcionLarga: "Suplemento con 250 mg de Vitamina C derivado de plantas para apoyo inmunológico todo el día. Elaborado con cerezas acerola, una de las fuentes naturales más concentradas de vitamina C, cultivada en las granjas propias de Nutrilite. Su fórmula de liberación lenta y constante actúa durante un período de 8 horas para mejorar la utilización de la vitamina C. Contiene ácido ascórbico y fitonutrientes que brindan protección antioxidante contra radicales libres. Una ración diaria proporciona más vitamina C que la equivalente a siete naranjas, 16 limones o seis toronjas. Sin lactosa, sin fructosa, sin colorantes, conservantes ni edulcorantes artificiales. Certificado NSF, Kosher y Halal.",
+    descripcionLarga: "La Vitamina C de Acción Prolongada Nutrilite™ proporciona 250 mg derivados de plantas para apoyar el sistema inmunológico durante todo el día. Elaborada con cerezas acerola — una de las fuentes naturales más concentradas de vitamina C — cultivadas en las granjas propias de Nutrilite™.\n\nSu fórmula de liberación lenta actúa de forma constante durante 8 horas para maximizar la utilización del nutriente. Una ración diaria equivale a más vitamina C que 7 naranjas, 16 limones o 6 toronjas.\n\nSin lactosa, fructosa, colorantes, conservantes ni edulcorantes artificiales. Certificado NSF, Kosher y Halal.",
     beneficios: [
       "Apoya el sistema inmunológico todo el día con 250 mg de Vitamina C",
       "Elaborado con cerezas acerola, una de las fuentes naturales más concentradas de Vitamina C",
@@ -327,7 +327,7 @@ export const productos = [
     stockUnidades: 3,
     ventasSemana: 8,
     descripcion: "Nuestra multivitamina más avanzada. 22 vitaminas y minerales + 22 nutrientes de frutas, verduras y hierbas. Más de 40 nutrientes para apoyar corazón, cerebro, huesos, ojos, inmunidad, piel, energía y vitalidad. Suministro para 31 días.",
-    descripcionLarga: "Nuestra multivitamina más avanzada. Impulsado por las propiedades de las plantas. Creado para ti.\n\nContiene 22 vitaminas y minerales que incluyen vitaminas de la A a la E, calcio, zinc, magnesio, selenio y más, además de 22 nutrientes de frutas, verduras y hierbas cultivadas en nuestras granjas Nutrilite™ y en granjas asociadas. Este multivitamínico supremo te brinda más de 40 nutrientes para apoyar corazón, cerebro, hueso, ojo, inmunidad, piel, energía, envejecimiento saludable, salud celular y vitalidad.",
+    descripcionLarga: "Nuestra multivitamina más avanzada. Impulsado por las propiedades de las plantas, creado para ti.\n\nContiene 22 vitaminas y minerales — vitaminas de la A a la E, calcio, zinc, magnesio, selenio y más — junto a 22 nutrientes de frutas, verduras y hierbas cultivadas en las granjas propias Nutrilite™. Más de 40 nutrientes en total para apoyar corazón, cerebro, huesos, ojos, inmunidad, piel, energía, envejecimiento saludable y vitalidad.\n\nCertificado Halal, Kosher y NSF Contents Certified. Suministro para 31 días.",
     beneficios: [
       "Salud del cerebro — apoya función cerebral saludable con vitaminas E, B6, B12 y folato",
       "Salud del corazón — vitaminas B (B6 y B12), E y minerales como ácido fólico y selenio",
@@ -410,7 +410,7 @@ export const productos = [
     stockUnidades: 5,
     ventasSemana: 10,
     descripcion: "Recarga de Multivitamina Double X™ de Nutrilite para suministro de 31 días. Más de 40 nutrientes: 22 vitaminas y minerales + 22 nutrientes de plantas. Apoya corazón, cerebro, huesos, inmunidad, energía y más.",
-    descripcionLarga: "El paquete de reemplazo Double X™ de Nutrilite te permite continuar con tu rutina de salud sin interrupciones. Con más de 40 nutrientes esenciales, incluyendo 22 vitaminas y minerales más 22 concentrados de plantas cultivadas en las granjas propias Nutrilite™, este suplemento integral es la opción más completa para apoyar tu bienestar diario. Certificado Halal, Kosher y NSF.",
+    descripcionLarga: "El paquete de reemplazo Double X™ de Nutrilite™ te permite continuar tu rutina de salud sin interrupciones. Con más de 40 nutrientes esenciales en una sola fórmula, es la multivitamina más completa disponible.\n\nIncluye 22 vitaminas y minerales más 22 concentrados de plantas cultivadas en las granjas propias Nutrilite™, diseñados para apoyar corazón, cerebro, huesos, inmunidad, energía y vitalidad celular.\n\nCertificado Halal, Kosher y NSF. Suministro para 31 días.",
     beneficios: [
       "Más de 40 nutrientes en una sola fórmula integral",
       "22 vitaminas y minerales esenciales",
@@ -457,7 +457,7 @@ export const productos = [
     stockUnidades: 8,
     ventasSemana: 14,
     descripcion: "Paquete de inicio de Multivitamina Double X™ de Nutrilite para 10 días. Ideal para probar la fórmula más completa de vitaminas y minerales con base de plantas.",
-    descripcionLarga: "El suministro para 10 días de Double X™ de Nutrilite es perfecto para quienes desean comenzar con la multivitamina más reconocida de Amway. Contiene más de 40 nutrientes esenciales, incluyendo 22 vitaminas y minerales más 22 concentrados de plantas cultivadas en granjas propias. Una excelente manera de experimentar los beneficios antes de adquirir el suministro completo.",
+    descripcionLarga: "El suministro para 10 días de Double X™ de Nutrilite™ es la opción ideal para comenzar a experimentar la multivitamina más completa de Amway antes de comprometerte con el suministro mensual.\n\nEn solo 10 días recibirás más de 40 nutrientes esenciales: 22 vitaminas y minerales más 22 concentrados de plantas de granjas propias Nutrilite™, diseñados para apoyar tu bienestar integral.\n\nCertificado NSF, Kosher y Halal.",
     beneficios: [
       "Formato de inicio: ideal para probar Double X™ por primera vez",
       "Más de 40 nutrientes en 10 días de suministro",
@@ -502,7 +502,7 @@ export const productos = [
     stockUnidades: 7,
     ventasSemana: 18,
     descripcion: "Vitaminas diarias para niños con base en plantas. Apoya el crecimiento, el sistema inmunológico y el desarrollo saludable. Fórmula masticable con sabores naturales.",
-    descripcionLarga: "El Multivitamínico diario para niños Nutrilite™ está especialmente formulado para apoyar el crecimiento y desarrollo saludable de los más pequeños. Con vitaminas y minerales esenciales de base vegetal, esta fórmula masticable es fácil de tomar y tiene sabores que los niños amarán. Apoya el sistema inmunológico, los huesos y la salud general.",
+    descripcionLarga: "El Multivitamínico Diario para Niños Nutrilite™ está formulado especialmente para apoyar el crecimiento y desarrollo saludable de los más pequeños desde los 2 años. Con vitaminas y minerales esenciales de base vegetal en una presentación masticable que los niños amarán.\n\nApoya el sistema inmunológico, los huesos y la salud general durante las etapas clave del desarrollo. Sin colorantes artificiales ni edulcorantes para una opción limpia y segura.\n\nDisponible en tabletas masticables con sabores naturales. 60 comprimidos por envase.",
     beneficios: [
       "Fórmula diseñada específicamente para niños",
       "Vitaminas y minerales de base vegetal",
@@ -549,7 +549,7 @@ export const productos = [
     stockUnidades: 6,
     ventasSemana: 11,
     descripcion: "Suplemento de ácido fólico (vitamina B9) de Nutrilite. Esencial para el desarrollo celular, la salud cardiovascular y especialmente recomendado para mujeres en etapa reproductiva.",
-    descripcionLarga: "El Ácido Fólico Nutrilite™ proporciona una dosis diaria de folato, fundamental para la producción de ADN y el correcto desarrollo celular. Especialmente recomendado para mujeres en edad fértil y durante el embarazo para apoyar el desarrollo saludable del bebé. También contribuye a la salud cardiovascular y al funcionamiento del sistema nervioso.",
+    descripcionLarga: "El Ácido Fólico Nutrilite™ proporciona folato (vitamina B9), fundamental para la producción de ADN y el correcto desarrollo celular. Es uno de los suplementos más recomendados para mujeres en etapa reproductiva y durante el embarazo.\n\nTambién contribuye a la salud cardiovascular al apoyar los niveles normales de homocisteína, y favorece el funcionamiento saludable del sistema nervioso.\n\nFormulado con la calidad certificada de Nutrilite™ y libre de aditivos innecesarios.",
     beneficios: [
       "Apoya la producción saludable de ADN y células",
       "Esencial durante el embarazo para el desarrollo del bebé",
@@ -593,7 +593,7 @@ export const productos = [
     stockUnidades: 5,
     ventasSemana: 13,
     descripcion: "Fórmula triple de Calcio, Magnesio y Vitamina D de Nutrilite. Refuerza huesos y dientes, apoya la función muscular y mejora la absorción de calcio gracias a la vitamina D.",
-    descripcionLarga: "El suplemento Cal Mag D de Nutrilite combina tres nutrientes esenciales para la salud ósea: calcio, magnesio y vitamina D3. El calcio y el magnesio son fundamentales para mantener huesos y dientes fuertes, mientras que la vitamina D3 mejora la absorción del calcio y regula la función muscular. Fórmula de base vegetal con la calidad Nutrilite™.",
+    descripcionLarga: "Cal Mag D de Nutrilite™ combina tres nutrientes esenciales en una sola fórmula potente: calcio, magnesio y vitamina D3. El calcio y el magnesio son los pilares de la salud ósea, mientras que la vitamina D3 activa su absorción eficiente en el organismo.\n\nJuntos, estos tres nutrientes fortalecen huesos y dientes, regulan la función muscular y ayudan a prevenir la pérdida ósea con el paso del tiempo.\n\nFórmula de base vegetal con la calidad y respaldo científico de Nutrilite™.",
     beneficios: [
       "Fortalece huesos y dientes con calcio y magnesio",
       "La vitamina D3 mejora la absorción del calcio",
@@ -638,7 +638,7 @@ export const productos = [
     stockUnidades: 6,
     ventasSemana: 16,
     descripcion: "Suplemento de zinc con albahaca sagrada de Nutrilite. Refuerza el sistema inmunológico, apoya la respuesta natural del organismo ante enfermedades y contribuye a la salud celular.",
-    descripcionLarga: "La fórmula Defensa Inmunológica de Nutrilite combina zinc con extracto de albahaca sagrada (Tulsi), reconocida por sus propiedades adaptógenas e inmunomoduladoras. El zinc es un mineral esencial para el correcto funcionamiento del sistema inmune, la cicatrización de heridas y la síntesis de proteínas. Juntos ayudan a fortalecer las defensas naturales del cuerpo.",
+    descripcionLarga: "La fórmula Defensa Inmunológica de Nutrilite™ combina zinc con extracto de albahaca sagrada (Tulsi), una planta reconocida por sus propiedades adaptógenas e inmunomoduladoras en la medicina tradicional y la ciencia moderna.\n\nEl zinc es un mineral esencial para el correcto funcionamiento del sistema inmune, la cicatrización de heridas y la síntesis de proteínas. Juntos forman una combinación única de mineral y planta funcional diseñada para fortalecer tus defensas naturales.\n\nCalidad certificada Nutrilite™ con ingredientes de base vegetal.",
     beneficios: [
       "Refuerza el sistema inmunológico con zinc",
       "Albahaca sagrada con propiedades adaptógenas",
@@ -683,7 +683,7 @@ export const productos = [
     stockUnidades: 4,
     ventasSemana: 12,
     descripcion: "Suplemento de fibra soluble en polvo de Nutrilite. Apoya la salud digestiva, regula el tránsito intestinal, ayuda a controlar el colesterol y favorece la sensación de saciedad.",
-    descripcionLarga: "La Fibra en Polvo Nutrilite™ es una fuente concentrada de fibra dietética soluble de origen vegetal. Se disuelve fácilmente en agua o bebidas sin alterar su sabor. Apoya el correcto funcionamiento del sistema digestivo, ayuda a regular los niveles de colesterol y glucosa en sangre, y contribuye a la sensación de saciedad para el control de peso.",
+    descripcionLarga: "La Fibra en Polvo Nutrilite™ es una fuente concentrada de fibra dietética soluble de origen vegetal diseñada para apoyar el correcto funcionamiento del sistema digestivo. Se disuelve fácilmente en agua o cualquier bebida sin alterar su sabor.\n\nAyuda a regular los niveles de colesterol y glucosa en sangre, favorece el tránsito intestinal y contribuye a la sensación de saciedad — ideal como apoyo en el control de peso.\n\nDe origen 100% vegetal, sin sabor artificial. Fácil de incorporar a tu rutina diaria.",
     beneficios: [
       "Apoya la salud digestiva y el tránsito intestinal",
       "Ayuda a reducir niveles de colesterol",
@@ -729,7 +729,7 @@ export const productos = [
     stockUnidades: 5,
     ventasSemana: 9,
     descripcion: "Suplemento nutricional Slimmetry de Nutrilite. Diseñado para apoyar el control de peso saludable, incrementar la sensación de saciedad y favorecer el metabolismo de grasas.",
-    descripcionLarga: "Nutrilite™ Slimmetry es un suplemento formulado para acompañar un estilo de vida saludable y apoyar el proceso de control de peso. Su combinación de ingredientes activos ayuda a modular el apetito, incrementar la sensación de saciedad y favorecer el metabolismo de los lípidos. Ideal como complemento de una dieta equilibrada y actividad física regular.",
+    descripcionLarga: "Nutrilite™ Slimmetry es un suplemento formulado para acompañar un estilo de vida activo y apoyar el proceso de control de peso de manera saludable. Su combinación de ingredientes activos está diseñada para modular el apetito y favorecer el metabolismo de los lípidos.\n\nAyuda a incrementar la sensación de saciedad, lo que facilita mantener porciones adecuadas en cada comida. Ideal como complemento de una dieta equilibrada y actividad física regular.\n\nNo es un sustituto de comidas. Recomendado para adultos mayores de 18 años con supervisión médica.",
     beneficios: [
       "Apoya el control de peso saludable",
       "Incrementa la sensación de saciedad",
@@ -774,7 +774,7 @@ export const productos = [
     stockUnidades: 6,
     ventasSemana: 10,
     descripcion: "Vitamina E masticable de Nutrilite. Poderoso antioxidante que protege las células del daño oxidativo, apoya la salud de la piel, el corazón y el sistema inmunológico.",
-    descripcionLarga: "La Vitamina E Masticable Nutrilite™ ofrece uno de los antioxidantes más potentes en una presentación cómoda y agradable. La vitamina E protege a las células del daño causado por los radicales libres, apoya la salud cardiovascular, favorece una piel saludable y luminosa, y refuerza el sistema inmunológico. Su forma masticable la hace ideal para quienes tienen dificultad para tragar tabletas.",
+    descripcionLarga: "La Vitamina E Masticable Nutrilite™ ofrece uno de los antioxidantes más potentes en una presentación cómoda y agradable, perfecta para quienes tienen dificultad para tragar tabletas convencionales.\n\nLa vitamina E protege a las células del daño causado por los radicales libres, apoya la salud cardiovascular y favorece una piel saludable y luminosa. También refuerza el sistema inmunológico y actúa como defensa antioxidante de amplio espectro.\n\nCalidad Nutrilite™ en formato masticable. 270 porciones por envase.",
     beneficios: [
       "Potente antioxidante: protege células del daño oxidativo",
       "Apoya la salud cardiovascular",
@@ -820,7 +820,7 @@ export const productos = [
     stockUnidades: 4,
     ventasSemana: 8,
     descripcion: "Glucosamina Nutrilite para la salud de las articulaciones. Suministro para 30 días. Apoya el cartílago, reduce la rigidez y mejora la movilidad articular.",
-    descripcionLarga: "La Glucosamina Nutrilite™ es un suplemento esencial para quienes buscan mantener articulaciones sanas y activas. La glucosamina es un componente natural del cartílago que ayuda a mantener su estructura, reduce la rigidez articular y apoya la movilidad. Ideal para adultos activos y personas mayores que buscan cuidar sus articulaciones a largo plazo.",
+    descripcionLarga: "La Glucosamina Nutrilite™ es un suplemento esencial para mantener articulaciones sanas y móviles. La glucosamina es un componente natural del cartílago que ayuda a mantener su estructura y función a lo largo del tiempo.\n\nAyuda a reducir la rigidez articular, apoya la movilidad y la flexibilidad, y es especialmente recomendado para adultos activos y personas mayores que buscan cuidar sus articulaciones a largo plazo.\n\nSuministro para 30 días. Calidad Nutrilite™ con ingredientes de confianza.",
     beneficios: [
       "Apoya la salud y regeneración del cartílago",
       "Reduce la rigidez y el malestar articular",
@@ -867,7 +867,7 @@ export const productos = [
     stockUnidades: 7,
     ventasSemana: 11,
     descripcion: "Complejo de Vitamina B de acción doble de Nutrilite. Combinación de vitaminas del grupo B para apoyar la energía, la función nerviosa, el metabolismo y la salud mental.",
-    descripcionLarga: "La Vitamina B de Acción Doble Nutrilite™ ofrece una fórmula completa del complejo B con liberación extendida para una absorción óptima. Las vitaminas del grupo B son esenciales para la producción de energía, el funcionamiento del sistema nervioso, el metabolismo de carbohidratos, proteínas y grasas, y el mantenimiento de la salud mental y emocional.",
+    descripcionLarga: "La Vitamina B de Acción Doble Nutrilite™ ofrece una fórmula completa del complejo B con liberación extendida, diseñada para una absorción óptima durante todo el día. Las vitaminas del grupo B son esenciales para la producción de energía a nivel celular.\n\nApoya el funcionamiento del sistema nervioso, favorece el metabolismo de carbohidratos, proteínas y grasas, y contribuye al mantenimiento de la salud mental y emocional. Su fórmula de acción doble garantiza una liberación constante.\n\nCalidad Nutrilite™. 1 tableta al día para una energía sostenida.",
     beneficios: [
       "Apoya la producción de energía celular",
       "Contribuye al funcionamiento del sistema nervioso",
@@ -913,7 +913,7 @@ export const productos = [
     stockUnidades: 8,
     ventasSemana: 20,
     descripcion: "Vitamina D3 de Nutrilite. Esencial para la absorción del calcio, la salud ósea, el sistema inmunológico fuerte y la regulación del estado de ánimo.",
-    descripcionLarga: "La Vitamina D Nutrilite™ proporciona vitamina D3, la forma más biodisponible de esta vitamina fundamental. La vitamina D es esencial para la absorción eficiente del calcio y el fósforo, el mantenimiento de huesos y dientes fuertes, el correcto funcionamiento del sistema inmunológico y la regulación del estado de ánimo. Muchas personas presentan deficiencia de vitamina D, especialmente en zonas con poca exposición solar.",
+    descripcionLarga: "La Vitamina D Nutrilite™ proporciona vitamina D3, la forma más biodisponible de esta vitamina fundamental para el organismo. Sin ella, el calcio no puede absorberse de manera eficiente, lo que compromete la salud ósea y muscular.\n\nEsencial para el mantenimiento de huesos y dientes fuertes, el correcto funcionamiento del sistema inmunológico y la regulación del estado de ánimo. Muchas personas presentan deficiencia por baja exposición solar.\n\nCalidad Nutrilite™. 1 tableta al día para corregir y mantener niveles óptimos.",
     beneficios: [
       "Mejora la absorción de calcio y fósforo",
       "Fortalece huesos y dientes",
@@ -958,7 +958,7 @@ export const productos = [
     stockUnidades: 6,
     ventasSemana: 14,
     descripcion: "Suplemento de ácidos grasos omega de Nutrilite. Rico en omega-3 (EPA y DHA) para apoyar la salud cardiovascular, la función cerebral, la visión y reducir la inflamación.",
-    descripcionLarga: "El Omega Nutrilite™ proporciona ácidos grasos omega-3 esenciales EPA y DHA de alta calidad. Estos ácidos grasos son fundamentales para la salud cardiovascular, contribuyen al mantenimiento de una función cerebral normal, apoyan la visión y tienen propiedades antiinflamatorias naturales. Formulado con aceite de pescado purificado de calidad farmacéutica.",
+    descripcionLarga: "El Omega Nutrilite™ proporciona ácidos grasos esenciales EPA y DHA de alta calidad, derivados de aceite de pescado purificado de calidad farmacéutica. El cuerpo no puede producirlos por sí mismo, por lo que su suplementación es clave.\n\nSon fundamentales para la salud cardiovascular, contribuyen al mantenimiento de una función cerebral normal, apoyan la salud visual y ejercen propiedades antiinflamatorias naturales que benefician articulaciones y tejidos.\n\nCalidad Nutrilite™. Suministro para 30 días con 1-2 cápsulas al día.",
     beneficios: [
       "Apoya la salud cardiovascular con EPA y DHA",
       "Contribuye a la función cerebral normal",
@@ -1004,7 +1004,7 @@ export const productos = [
     stockUnidades: 7,
     ventasSemana: 17,
     descripcion: "Suplemento Nutrilite para cabello, piel y uñas. Con biotina, zinc, vitamina C y otros nutrientes clave para fortalecer el cabello, mejorar la apariencia de la piel y endurecer las uñas.",
-    descripcionLarga: "El suplemento Pelo, Piel y Uñas Nutrilite™ está formulado con una combinación de nutrientes específicamente seleccionados para apoyar la belleza desde adentro. La biotina contribuye al mantenimiento del cabello y las uñas normales, la vitamina C participa en la síntesis de colágeno para la piel, y el zinc apoya la salud de la piel. Una fórmula integral para lucir radiante.",
+    descripcionLarga: "El suplemento Pelo, Piel y Uñas Nutrilite™ está formulado con una combinación de nutrientes específicamente seleccionados para apoyar la belleza desde adentro. La biotina contribuye al mantenimiento del cabello y las uñas, la vitamina C participa en la síntesis de colágeno para la piel, y el zinc apoya la salud de la dermis.\n\nCon uso continuo de 4 a 6 semanas empezarás a notar cabello más fuerte, piel más luminosa y uñas más duras. Una fórmula integral para lucir tu mejor versión.\n\nBase vegetal. Calidad Nutrilite™. 1 tableta al día.",
     beneficios: [
       "Fortalecer el cabello y reduce su caída",
       "Mejora la elasticidad y luminosidad de la piel",
@@ -1050,7 +1050,7 @@ export const productos = [
     stockUnidades: 5,
     ventasSemana: 9,
     descripcion: "Proteína vegetal en polvo de Nutrilite. Fuente de proteína completa de soya y trigo para apoyar el crecimiento muscular, la recuperación y un estilo de vida activo y saludable.",
-    descripcionLarga: "La Proteína Vegetal en Polvo Nutrilite™ ofrece una fuente completa de proteínas de origen vegetal, derivada principalmente de concentrado de proteína de soya. Proporciona todos los aminoácidos esenciales necesarios para el crecimiento y la reparación muscular, la recuperación post-ejercicio y el mantenimiento de un estilo de vida activo. Sin sabor artificial, se mezcla fácilmente con agua, leche o batidos.",
+    descripcionLarga: "La Proteína Vegetal en Polvo Nutrilite™ ofrece una fuente completa de proteínas de origen vegetal, derivada principalmente de concentrado de proteína de soya. Proporciona todos los aminoácidos esenciales para el crecimiento, la recuperación muscular y el mantenimiento de un estilo de vida activo.\n\nSin sabor artificial, se mezcla fácilmente con agua, leche o batidos. Bajo en grasas y azúcar, es una alternativa limpia y conveniente para cubrir tus requerimientos proteicos diarios.\n\nCalidad Nutrilite™. Suministro para 30 días.",
     beneficios: [
       "Fuente completa de proteína de origen vegetal",
       "Apoya el crecimiento y la recuperación muscular",
@@ -1096,7 +1096,7 @@ export const productos = [
     stockUnidades: 3,
     ventasSemana: 5,
     descripcion: "Kit completo de suplementos Nutrilite para el envejecimiento saludable. Incluye fórmulas clave para apoyar la vitalidad, la salud celular, la piel y la energía a largo plazo.",
-    descripcionLarga: "El Kit de Solución de Envejecimiento Saludable de Nutrilite reúne los suplementos más importantes para enfrentar el paso del tiempo con vitalidad. Esta solución integral combina fórmulas diseñadas para apoyar la salud celular, la elasticidad de la piel, la función cognitiva, la energía y la salud cardiovascular. Ideal para adultos mayores de 40 años que buscan mantener su calidad de vida.",
+    descripcionLarga: "El Kit de Solución de Envejecimiento Saludable de Nutrilite™ reúne los suplementos más importantes para enfrentar el paso del tiempo con vitalidad y energía. Una solución integral diseñada para adultos mayores de 40 años.\n\nCombina fórmulas que apoyan la salud celular, la elasticidad de la piel, la función cognitiva, la energía sostenida y la salud cardiovascular — las áreas que más se ven afectadas con el envejecimiento.\n\nUso continuo para mejores resultados. Consulta a tu médico si tienes condiciones médicas preexistentes.",
     beneficios: [
       "Kit integral para el envejecimiento saludable",
       "Apoya la salud celular y la vitalidad",
@@ -1140,7 +1140,7 @@ export const productos = [
     stockUnidades: 4,
     ventasSemana: 7,
     descripcion: "Kit de nutrición diaria Nutrilite. Solución completa con suplementos esenciales para cubrir los requerimientos nutricionales básicos del día a día con la calidad y respaldo de Nutrilite.",
-    descripcionLarga: "La Solución de Nutrición Diaria Nutrilite™ es un kit diseñado para simplificar y optimizar tu rutina de suplementación. Reúne los nutrientes más importantes para el bienestar diario: vitaminas, minerales, antioxidantes y compuestos de origen vegetal. Una solución práctica y completa para quienes buscan cubrir sus necesidades nutricionales con la calidad y el respaldo científico de Nutrilite.",
+    descripcionLarga: "La Solución de Nutrición Diaria Nutrilite™ es un kit diseñado para simplificar y optimizar tu rutina de suplementación sin complicaciones. Reúne los nutrientes más importantes para el bienestar diario en una sola solución práctica.\n\nIncluye vitaminas, minerales, antioxidantes y compuestos de origen vegetal que cubren las necesidades nutricionales básicas que la alimentación cotidiana muchas veces no puede proporcionar por sí sola.\n\nCon el respaldo científico de más de 90 años de Nutrilite™, la marca de suplementos más respetada y vendida en el mundo.",
     beneficios: [
       "Cubre las necesidades nutricionales básicas del día",
       "Kit completo con vitaminas, minerales y antioxidantes",
