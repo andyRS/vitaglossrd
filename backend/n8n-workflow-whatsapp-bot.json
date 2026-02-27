@@ -1,0 +1,104 @@
+{
+  "name": "VitaGloss RD – Notificaciones de Pedidos WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nuevo-pedido-wa",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson"
+      },
+      "id": "webhook-entrada",
+      "name": "Recibir Pedido del Bot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "vitagloss-pedido-wa"
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\n\nconst emoji = d.tipo === 'PEDIDO_WA' ? '🛒' : '📋';\n\nconst texto = `${emoji} *NUEVO PEDIDO – VitaGloss RD*\n\n👤 Cliente: ${d.nombre}\n📱 WhatsApp: +${d.telefono}\n📦 Producto: ${d.producto}\n🔢 Cantidad: ${d.cantidad}\n🏙️ Ciudad: ${d.ciudad}\n⏰ Hora: ${new Date(d.timestamp).toLocaleString('es-DO', { timeZone: 'America/Santo_Domingo' })}\n\nResponde al cliente: https://wa.me/${d.telefono}`;\n\nreturn [{ json: { texto, telefono: d.telefono, nombre: d.nombre } }];"
+      },
+      "id": "formatear-mensaje",
+      "name": "Formatear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v20.0/{{ $env.WA_PHONE_ID }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $env.WA_ADMIN_NUMBER }}"
+            },
+            {
+              "name": "type",
+              "value": "text"
+            },
+            {
+              "name": "text",
+              "value": "={{ JSON.stringify({ body: $json.texto, preview_url: false }) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "notificar-admin",
+      "name": "Notificar a Andy por WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://vitaglossrd-production.up.railway.app/api/leads",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "name",    "value": "={{ $('Formatear Mensaje').item.json.nombre }}" },
+            { "name": "phone",   "value": "={{ $('Recibir Pedido del Bot').item.json.telefono }}" },
+            { "name": "source",  "value": "whatsapp-bot" },
+            { "name": "message", "value": "=Pedido via bot: {{ $('Recibir Pedido del Bot').item.json.producto }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "guardar-lead",
+      "name": "Guardar Lead en CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 480]
+    }
+  ],
+  "connections": {
+    "Recibir Pedido del Bot": {
+      "main": [
+        [{ "node": "Formatear Mensaje", "type": "main", "index": 0 }]
+      ]
+    },
+    "Formatear Mensaje": {
+      "main": [
+        [
+          { "node": "Notificar a Andy por WhatsApp", "type": "main", "index": 0 },
+          { "node": "Guardar Lead en CRM",           "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": ["vitagloss", "whatsapp", "pedidos"]
+}
