@@ -33,7 +33,7 @@ export default function Footer() {
               <img
                 src="/logo-footer.png"
                 alt="VitaGloss RD"
-                className="h-36 w-auto object-contain drop-shadow-lg"
+                className="w-52 h-auto max-w-full object-contain drop-shadow-lg"
               />
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
