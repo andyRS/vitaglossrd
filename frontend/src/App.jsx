@@ -1,5 +1,14 @@
 import { BrowserRouter, Routes, Route, useLocation, useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
+
+// Scroll al inicio en cada cambio de ruta
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [pathname])
+  return null
+}
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { api } from './services/api'
@@ -45,6 +54,7 @@ function Layout() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
       <RefTracker />
       {!isDashboard && <Navbar />}
       <main className="flex-1">
