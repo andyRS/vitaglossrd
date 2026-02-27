@@ -25,6 +25,7 @@ export default function Navbar() {
     { to: '/', label: 'Inicio', primary: true },
     { to: '/catalogo', label: 'Catálogo', primary: true },
     { to: '/combos', label: 'Combos', emoji: '🔥', primary: true },
+    { to: '/blog', label: 'Blog', primary: true },
     { to: '/faq', label: 'Preguntas', primary: true },
     { to: '/equipo', label: 'Únete al equipo', emoji: '✨', primary: true },
     { to: '/sobre-nosotros', label: 'Nosotros', primary: false },
@@ -185,7 +186,6 @@ export default function Navbar() {
                     }`}
                   >
                     <span>
-                      {link.emoji && <span aria-hidden="true" className="mr-1">{link.emoji}</span>}
                       {link.label}
                     </span>
                     {isActive(link.to) && <span className="w-2 h-2 bg-secondary rounded-full" aria-hidden="true" />}
