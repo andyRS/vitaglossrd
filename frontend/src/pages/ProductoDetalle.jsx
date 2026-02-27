@@ -86,21 +86,20 @@ function TabsInfoSection({ producto }) {
         >
           {/* Detalles */}
           {tab === 0 && (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              {producto.detalles.map((d, i) => (
-                <div key={i} className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
-                  <p className="text-gray-400 text-xs mb-0.5">{d.label}</p>
-                  <p className="text-gray-800 font-semibold text-sm">{d.valor}</p>
+            <div className="rounded-2xl border border-gray-100 overflow-hidden max-w-2xl">
+              {[...producto.detalles, { label: 'Marca', valor: 'Amway' }, { label: 'Disponibilidad', valor: producto.stock, highlight: true }].map((d, i, arr) => (
+                <div
+                  key={i}
+                  className={`flex items-center justify-between px-5 py-3.5 gap-6 ${
+                    i < arr.length - 1 ? 'border-b border-gray-100' : ''
+                  } ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
+                >
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 flex-shrink-0 w-40">{d.label}</span>
+                  <span className={`font-semibold text-sm text-right ${
+                    d.highlight ? 'text-green-600' : 'text-gray-900'
+                  }`}>{d.valor}</span>
                 </div>
               ))}
-              <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
-                <p className="text-gray-400 text-xs mb-0.5">Marca</p>
-                <p className="text-gray-800 font-semibold text-sm">Amway</p>
-              </div>
-              <div className="bg-green-50 rounded-xl px-4 py-3 border border-green-100">
-                <p className="text-gray-400 text-xs mb-0.5">Disponibilidad</p>
-                <p className="text-green-600 font-semibold text-sm">{producto.stock}</p>
-              </div>
             </div>
           )}
 
@@ -120,11 +119,15 @@ function TabsInfoSection({ producto }) {
 
           {/* Beneficios */}
           {tab === 2 && (
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-4xl">
-              {producto.beneficios.map((b, i) => (
-                <li key={i} className="flex items-start gap-3 bg-green-50 rounded-xl px-4 py-3 border border-green-100">
-                  <span className="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
-                  <span className="text-gray-700 text-sm">{b}</span>
+            <ul className="max-w-2xl space-y-0 rounded-2xl border border-gray-100 overflow-hidden">
+              {producto.beneficios.map((b, i, arr) => (
+                <li key={i} className={`flex items-center gap-4 px-5 py-3.5 ${i < arr.length - 1 ? 'border-b border-gray-100' : ''} ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
+                  <span className="w-6 h-6 bg-emerald-500 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </span>
+                  <span className="text-gray-800 text-sm font-medium">{b}</span>
                 </li>
               ))}
             </ul>
@@ -473,11 +476,13 @@ export default function ProductoDetalle() {
             </p>
 
             {/* Detalles rápidos */}
-            <div className="grid grid-cols-2 gap-2 mb-6">
+            <div className="mb-6 rounded-2xl border border-gray-100 overflow-hidden">
               {producto.detalles.slice(0, 4).map((d, i) => (
-                <div key={i} className="flex flex-col py-3 px-4 bg-gray-50 rounded-xl">
-                  <span className="text-gray-400 text-xs mb-0.5">{d.label}</span>
-                  <span className="text-gray-800 font-semibold text-sm">{d.valor}</span>
+                <div key={i} className={`flex items-center justify-between px-4 py-3 gap-4 ${
+                  i < 3 ? 'border-b border-gray-100' : ''
+                } ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'}`}>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 flex-shrink-0">{d.label}</span>
+                  <span className="text-gray-900 font-semibold text-sm text-right">{d.valor}</span>
                 </div>
               ))}
             </div>
@@ -608,27 +613,20 @@ export default function ProductoDetalle() {
                   </svg>
                 }
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {producto.detalles.map((d, i) => (
-                    <div key={i} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
-                      <div>
-                        <p className="text-gray-400 text-xs">{d.label}</p>
-                        <p className="text-dark font-semibold text-sm">{d.valor}</p>
-                      </div>
+                <div className="rounded-xl border border-gray-100 overflow-hidden">
+                  {[...producto.detalles, { label: 'Marca', valor: 'Amway' }, { label: 'Disponibilidad', valor: producto.stock, highlight: true }].map((d, i, arr) => (
+                    <div
+                      key={i}
+                      className={`flex items-center justify-between px-4 py-3 gap-4 ${
+                        i < arr.length - 1 ? 'border-b border-gray-100' : ''
+                      } ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'}`}
+                    >
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 flex-shrink-0">{d.label}</span>
+                      <span className={`font-semibold text-sm text-right ${
+                        d.highlight ? 'text-green-600' : 'text-gray-900'
+                      }`}>{d.valor}</span>
                     </div>
                   ))}
-                  <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
-                    <div>
-                      <p className="text-gray-400 text-xs">Marca</p>
-                      <p className="text-dark font-semibold text-sm">Amway</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
-                    <div>
-                      <p className="text-gray-400 text-xs">Disponibilidad</p>
-                      <p className="text-green-600 font-semibold text-sm">{producto.stock}</p>
-                    </div>
-                  </div>
                 </div>
               </Accordion>
 
@@ -702,11 +700,15 @@ export default function ProductoDetalle() {
                   </svg>
                 }
               >
-                <ul className="space-y-3">
-                  {producto.beneficios.map((b, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="w-5 h-5 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
-                      <span>{b}</span>
+                <ul className="space-y-0 rounded-xl border border-gray-100 overflow-hidden">
+                  {producto.beneficios.map((b, i, arr) => (
+                    <li key={i} className={`flex items-center gap-3 px-4 py-3 ${i < arr.length - 1 ? 'border-b border-gray-100' : ''} ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'}`}>
+                      <span className="w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
+                        </svg>
+                      </span>
+                      <span className="text-gray-800 text-sm font-medium">{b}</span>
                     </li>
                   ))}
                 </ul>
