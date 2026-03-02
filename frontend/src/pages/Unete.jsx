@@ -72,6 +72,8 @@ export default function Unete() {
     e.preventDefault()
     if (!form.nombre || !form.telefono) { setError('Por favor ingresa tu nombre y teléfono.'); return }
     setSending(true); setError('')
+
+    // Intentar guardar en backend; si falla, igual completamos el flujo por WA
     try {
       await api.createPublicLead({
         nombre: form.nombre,
@@ -80,12 +82,23 @@ export default function Unete() {
         nota: form.email ? `Email: ${form.email}` : '',
         origen: 'webinar',
       })
-      setDone(true)
     } catch {
-      setError('Hubo un error. Escríbeme directamente al WhatsApp.')
-    } finally {
-      setSending(false)
+      // Backend no disponible — continuamos igual, el contacto llega por WA
     }
+
+    // Abrir WhatsApp con los datos del prospecto para no perder ningún registro
+    const msg = encodeURIComponent(
+      `🎙️ *Registro Webinar Amway*\n\n` +
+      `👤 Nombre: ${form.nombre}\n` +
+      `📲 Teléfono: ${form.telefono}\n` +
+      (form.email ? `📧 Email: ${form.email}\n` : '') +
+      (form.horario ? `🕐 Horario: ${form.horario}\n` : '') +
+      `\n¡Quiero reservar mi lugar!`
+    )
+    window.open(`https://wa.me/18492763532?text=${msg}`, '_blank')
+
+    setDone(true)
+    setSending(false)
   }
 
   return (
@@ -272,7 +285,7 @@ export default function Unete() {
               >
                 <span className="text-5xl block mb-4">🎉</span>
                 <h3 className="text-2xl font-black text-green-800 mb-2">¡Estás registrado/a!</h3>
-                <p className="text-green-700 mb-6">Te enviaré el link del webinar por WhatsApp antes del evento. ¡Nos vemos el 15 de marzo!</p>
+                <p className="text-green-700 mb-6">Te abrió WhatsApp con tu registro. Envía el mensaje y te confirmo tu lugar al instante. ¡Nos vemos el 15 de marzo!</p>
                 <a
                   href="https://wa.me/18492763532?text=Hola! Me registré para el webinar de Amway"
                   target="_blank" rel="noopener noreferrer"
