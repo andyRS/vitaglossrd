@@ -493,7 +493,7 @@ export const productos = [
     nombreCorto: "Multivitamínico diario para niños Nutrilite™",
     categoria: "Vitaminas",
     articulo: "123043CO",
-    precio: 1094,
+    precio: 1100,
     precioOriginal: 1690,
     pv: 5.66,
     bv: 810.0,
