@@ -1409,7 +1409,7 @@ export default function Dashboard() {
                             <p style={{ fontWeight: '700', fontSize: '13px', color: '#111', marginBottom: '6px' }}>Información del vendedor</p>
                             <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>{user?.nombre || 'VitaGloss RD'}</p>
                             <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>(849) 276-3532</p>
-                            <p style={{ fontSize: '13px', color: '#222', marginBottom: '6px' }}>andy337@hotmail.es</p>
+                            <p style={{ fontSize: '13px', color: '#222', marginBottom: '6px' }}>vitaglossrd@hotmail.com</p>
                             <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>
                               Fecha de la venta:&nbsp;
                               {new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '/')}
