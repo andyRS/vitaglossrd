@@ -5,44 +5,103 @@ import { useSEO } from '../hooks/useSEO'
 
 const faqs = [
   {
-    categoria: '🛍️ Pedidos y Compra',
+    categoria: '🦷 Pasta Dental y Salud Bucal (Glister™)',
     preguntas: [
       {
-        p: '¿Cómo hago un pedido?',
-        r: 'Es muy sencillo: elige tu producto en el catálogo, haz clic en "Pedir por WhatsApp" y te conectamos directamente. Respondemos en menos de 1 hora en horario laboral (Lun–Sáb, 8am–8pm).',
+        p: '¿Cuál es la pasta dental número 1 del mundo?',
+        r: 'La Pasta Dental Glister™ de Amway es la pasta dental más vendida en el mundo. Contiene fluoruro de sodio, menta certificada Nutrilite™ y un agente pulidor de sílice de origen natural. Elimina manchas, previene caries y no altera el microbioma oral.',
       },
       {
-        p: '¿Puedo pedir varios productos a la vez?',
-        r: 'Sí, de hecho te recomendamos los kits combo para ahorrar más. Puedes pedir cualquier combinación de productos en un solo mensaje de WhatsApp.',
+        p: '¿La Pasta Dental Glister™ blanquea los dientes?',
+        r: 'Sí. Glister™ elimina manchas superficiales del esmalte mediante su agente pulidor de sílice natural, dejando los dientes con un brillo notablemente más blanco con el uso regular. No usa blanqueamiento agresivo, lo que la hace segura para uso diario.',
       },
       {
-        p: '¿Cuáles son los métodos de pago aceptados?',
-        r: 'Aceptamos transferencia bancaria (BanReservas, Popular, BHD), pago móvil, efectivo en mano y tarjeta de crédito/débito con Azul (para pedidos mayores a RD$1,000). Coordinamos el método más conveniente para ti.',
+        p: '¿Glister™ es para toda la familia?',
+        r: 'Sí. Adultos y niños mayores de 2 años pueden usarla. Para niños de 2 a 6 años, usa una cantidad del tamaño de un guisante y supervisa el cepillado. Menores de 2 años deben consultar antes al pediatra.',
       },
       {
-        p: '¿Necesito crear una cuenta para comprar?',
-        r: 'No. El proceso completo es por WhatsApp. Sin formularios, sin contraseñas, sin complicaciones.',
+        p: '¿Contiene flúor la pasta dental Glister™?',
+        r: 'Sí, contiene fluoruro de sodio al 0.21%, conforme a las normas de la FDA. Es suficiente para proteger el esmalte y prevenir caries en adultos y niños. Además, no tiene parabenos, alcohol, peróxido ni azúcar.',
+      },
+      {
+        p: '¿Cuántos usos tiene un tubo de Glister™?',
+        r: 'Cada tubo de 200 g rinde hasta 198 usos con la cantidad recomendada (tamaño de un guisante). Es una de las razones por las que Glister™ es tan rentable comparado con otras marcas.',
       },
     ],
   },
   {
-    categoria: '🚚 Envíos y Entregas',
+    categoria: '💊 Vitamina C Nutrilite™',
     preguntas: [
       {
+        p: '¿Para qué sirve la Vitamina C Nutrilite™?',
+        r: 'La Vitamina C Nutrilite™ refuerza el sistema inmunológico, estimula la producción de colágeno para piel y articulaciones, actúa como antioxidante contra el envejecimiento celular y ayuda a absorber mejor el hierro. Cada tableta aporta 500 mg de vitamina C con extracto de acerola.',
+      },
+      {
+        p: '¿Cuánto tiempo tarda en hacer efecto la Vitamina C?',
+        r: 'La vitamina C es hidrosoluble y entra al torrente sanguíneo en minutos. Los efectos visibles en la piel (mayor luminosidad, firmeza) se notan a las 3–6 semanas de uso diario constante. Para el sistema inmune, el efecto es inmediato.',
+      },
+      {
+        p: '¿Cuándo se toma la Vitamina C Nutrilite™?',
+        r: 'Se recomienda tomar 1 tableta al día, preferiblemente con alguna comida para mejor absorción y menor posibilidad de molestia gástrica. Puede dividirse en dos tomas si se prefiere.',
+      },
+      {
+        p: '¿La Vitamina C Nutrilite™ ayuda al colágeno de la cara?',
+        r: 'Sí. La vitamina C es cofactor esencial para la síntesis de colágeno. Con el uso regular ayuda a mejorar la firmeza de la piel, reducir arrugas finas y mantener una apariencia más joven. Es uno de los suplementos más recomendados para la salud de la piel.',
+      },
+    ],
+  },
+  {
+    categoria: '🐟 Omega-3 y Double X™ Nutrilite™',
+    preguntas: [
+      {
+        p: '¿Para qué sirve el Omega-3 de Nutrilite™?',
+        r: 'El Omega Nutrilite™ aporta EPA y DHA de origen marino que apoyan la salud cardiovascular, reducen la inflamación, mejoran la función cerebral y la memoria, y apoyan la salud articular. Es ideal para adultos mayores, mujeres embarazadas y personas con estilo de vida activo.',
+      },
+      {
+        p: '¿Qué es el Double X™ de Nutrilite™?',
+        r: 'Double X™ es el multivitamínico más completo de Nutrilite™: incluye 12 vitaminas esenciales, 10 minerales y 22 concentrados de frutas, verduras y plantas. Cubre los requerimientos nutricionales que la alimentación diaria muchas veces no alcanza a cubrir.',
+      },
+      {
+        p: '¿Cuánto tiempo se tarda en ver resultados con Double X™?',
+        r: 'La mayoría de usuarios reportan mejoras en energía y bienestar general en las primeras 2–3 semanas. Los beneficios en piel, cabello y uñas son más notorios entre 4 y 8 semanas de uso continuo.',
+      },
+    ],
+  },
+  {
+    categoria: '💪 Proteína Vegetal y Control de Peso',
+    preguntas: [
+      {
+        p: '¿Para qué sirve la proteína vegetal en polvo Nutrilite™?',
+        r: 'La Proteína Vegetal Nutrilite™ aporta proteína de soya, trigo y guisante de alta calidad. Ayuda a ganar músculo, recuperarse del ejercicio, controlar el apetito y mantener un peso saludable. Es ideal para mezclarse con jugos, batidos o leche. Suministro de 30 servings.',
+      },
+      {
+        p: '¿El CLA 500 de Nutrilite™ funciona para bajar de peso?',
+        r: 'El CLA (ácido linoleico conjugado) en combo con ejercicio y dieta equilibrada ayuda a reducir la grasa corporal y a mantener la masa muscular magra. No es una pastilla milagrosa, pero es uno de los suplementos más respaldados científicamente para la composición corporal.',
+      },
+      {
+        p: '¿Qué hace la Fibra en Polvo Nutrilite™?',
+        r: 'La Fibra en Polvo Nutrilite™ aumenta la ingesta de fibra dietética, mejora el tránsito intestinal, ayuda a controlar el apetito y contribuye a mantener niveles saludables de colesterol y azúcar en sangre. Es insípida e inodora, se mezcla fácilmente con agua o bebidas.',
+      },
+    ],
+  },
+  {
+    categoria: '🛍️ Pedidos, Envíos y Pagos',
+    preguntas: [
+      {
+        p: '¿Cómo hago un pedido en VitaGloss RD?',
+        r: 'Es muy sencillo: elige tu producto en el catálogo, haz clic en "Pedir por WhatsApp" y te conectamos directamente al (849) 276-3532. Respondemos en menos de 1 hora en horario laboral (Lun–Sáb, 8am–8pm).',
+      },
+      {
+        p: '¿Cuáles son los métodos de pago?',
+        r: 'Aceptamos transferencia bancaria (BanReservas, Popular, BHD), pago móvil, efectivo en mano y tarjeta de crédito/débito con Azul (pedidos mayores a RD$1,000). Coordinamos el método más conveniente para ti.',
+      },
+      {
         p: '¿Hacen envíos a todo el país?',
-        r: 'Sí. Hacemos envíos a todo el territorio de República Dominicana. Usamos servicios de mensajería de confianza como MotoVelo, RapiDomicilio y Caribe Express según tu zona.',
+        r: 'Sí, a todo el territorio de República Dominicana. Santo Domingo: mismo día o siguiente hábil (envío gratis en pedidos de RD$2,500+). Interior del país: 1–3 días hábiles con Caribe Express, MotoVelo o RapiDomicilio.',
       },
       {
-        p: '¿Cuánto cuesta el envío?',
-        r: 'El costo de envío varía según tu ubicación: Santo Domingo y Gran Santos: RD$150–250. Interior del país: RD$250–400. Realizando pedidos de RD$2,500 o más, el envío es GRATIS dentro de Santo Domingo.',
-      },
-      {
-        p: '¿Cuánto tiempo tarda en llegar?',
-        r: 'Santo Domingo y área metropolitana: mismo día o siguiente día hábil. Interior del país: 1–3 días hábiles. Te enviamos el tracking del paquete por WhatsApp.',
-      },
-      {
-        p: '¿El producto viene en empaque original?',
-        r: 'Sí, 100%. Todos los productos vienen en su empaque original de fábrica Amway, sellados y con todos los documentos del producto.',
+        p: '¿Puedo comprar más de un producto a la vez?',
+        r: 'Sí. Puedes combinar cualquier producto en un solo pedido. Tenemos kits y combos con descuentos especiales armados para que ahorres más.',
       },
     ],
   },
@@ -51,53 +110,15 @@ const faqs = [
     preguntas: [
       {
         p: '¿Son productos originales de Amway?',
-        r: 'Absolutamente. Somos distribuidores independientes certificados de Amway. Compramos directamente a la compañía y todos los productos tienen número de artículo oficial verificable en el sitio de Amway.',
+        r: 'Absolutamente. Somos distribuidores independientes certificados de Amway. Compramos directamente a la compañía y todos los productos tienen número de artículo oficial verificable en el sitio de Amway (amway.com).',
       },
       {
         p: '¿Tienen garantía de satisfacción?',
-        r: 'Sí. Amway respalda todos sus productos con garantía de satisfacción. Si el producto llega en mal estado o dañado, lo reemplazamos sin costo. Contáctanos por WhatsApp con una foto del problema.',
+        r: 'Sí. Amway respalda todos sus productos con garantía de satisfacción. Si el producto llega en mal estado o dañado, lo reemplazamos sin costo. Contáctanos por WhatsApp con foto del problema dentro de las 24 h de recibir el pedido.',
       },
       {
-        p: '¿Cómo verifico que el producto es original?',
-        r: 'Cada producto tiene su código de artículo (ej. 124106SP para la Pasta Dental) que puedes verificar directamente en el website oficial de Amway. Además, el empaque incluye el sello holográfico de autenticidad.',
-      },
-      {
-        p: '¿Qué hago si recibo un producto dañado?',
-        r: 'Toma una foto del empaque y el producto dañado y envíanosla por WhatsApp al (849) 276-3532 dentro de las 24 horas de recibir el paquete. Gestionamos el reemplazo o reembolso de inmediato.',
-      },
-    ],
-  },
-  {
-    categoria: '💊 Sobre los Productos',
-    preguntas: [
-      {
-        p: '¿Los productos tienen fecha de vencimiento?',
-        r: 'Sí. Todos los productos Amway tienen fecha de vencimiento impresa en el empaque. Garantizamos que los productos que enviamos tienen al menos 12 meses de vigencia.',
-      },
-      {
-        p: '¿La Vitamina C es apta para niños?',
-        r: 'La Vitamina C Nutrilite™ en comprimidos está recomendada para mayores de 12 años. Para niños menores, consulta con su pediatra antes de usar.',
-      },
-      {
-        p: '¿La pasta dental Glister™ es para uso familiar?',
-        r: 'Sí, con algunas consideraciones: adultos y niños mayores de 2 años pueden usarla. Para niños de 2–6 años, usa cantidad del tamaño de un guisante y supervisa el cepillado. Menores de 2 años, consultá al dentista.',
-      },
-      {
-        p: '¿Los productos Glister™ blanquean los dientes?',
-        r: 'El sistema Glister™ ayuda a eliminar manchas superficiales del esmalte mediante el pulidor de sílice de origen natural. No es un tratamiento de blanqueamiento agresivo, sino una limpieza profunda y segura para uso diario.',
-      },
-    ],
-  },
-  {
-    categoria: '🤝 Distribuidor / Negocio',
-    preguntas: [
-      {
-        p: '¿Puedo convertirme en distribuidor Amway también?',
-        r: '¡Sí! Si te interesa unirte al equipo y generar ingresos con Amway, podemos orientarte. Escríbenos al WhatsApp con el mensaje "Quiero información sobre el negocio" y con gusto te explicamos todo.',
-      },
-      {
-        p: '¿Cuál es la diferencia entre precio IBO y precio de venta sugerido?',
-        r: 'El precio IBO (Independient Business Owner) es el precio al que los distribuidores como nosotros compramos el producto a Amway. El precio de venta sugerido al consumidor es el precio de lista oficial de Amway, que suele ser mayor. Los precios que mostramos en VitaGloss RD son los precios IBO, lo que significa que obtienes el mejor precio posible.',
+        p: '¿Qué es VitaGloss RD?',
+        r: 'VitaGloss RD es una distribuidora independiente certificada de productos Amway en República Dominicana. Nos especializamos en suplementos Nutrilite™, salud bucal Glister™ y nutrición deportiva. Llevamos los productos directamente a tu puerta en todo el país.',
       },
     ],
   },
@@ -142,9 +163,25 @@ function FaqItem({ pregunta, respuesta }) {
 }
 
 export default function FAQ() {
+  // Aplanar todas las preguntas para el JSON-LD
+  const allQA = faqs.flatMap(bloque => bloque.preguntas)
+
   useSEO({
     title: 'Preguntas Frecuentes',
-    description: 'Resolvemos todas tus dudas sobre pedidos, envíos, autenticidad y productos Amway en VitaGloss RD. Envío a todo el país.',
+    description: 'Resolvemos tus dudas sobre Pasta Dental Glister™, Vitamina C, Omega, Double X™ y todos los productos Amway Nutrilite™ en VitaGloss RD. Envío a todo el país.',
+    canonical: 'https://www.vitaglossrd.com/faq',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: allQA.map(item => ({
+        '@type': 'Question',
+        name: item.p,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.r,
+        },
+      })),
+    },
   })
 
   return (

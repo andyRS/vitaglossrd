@@ -321,63 +321,77 @@ export default function ProductoDetalle() {
         ? (producto.imagenes?.[0] ?? producto.imagen)
         : `https://www.vitaglossrd.com${producto.imagenes?.[0] ?? producto.imagen}`
     ) : undefined,
-    jsonLd: producto ? {
-      '@context': 'https://schema.org/',
-      '@type': 'Product',
-      name: producto.nombre,
-      description: producto.descripcion,
-      image: (producto.imagenes ?? [producto.imagen]).map(img =>
-        img.startsWith('http') ? img : `https://www.vitaglossrd.com${img}`
-      ),
-      brand: { '@type': 'Brand', name: 'Amway' },
-      sku: producto.articulo,
-      offers: {
-        '@type': 'Offer',
-        url: `https://www.vitaglossrd.com/producto/${producto.id}`,
-        priceCurrency: 'DOP',
-        price: producto.precio,
-        priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        availability: producto.disponible
-          ? 'https://schema.org/InStock'
-          : 'https://schema.org/OutOfStock',
-        seller: { '@type': 'Organization', name: 'VitaGloss RD' },
-        hasMerchantReturnPolicy: {
-          '@type': 'MerchantReturnPolicy',
-          applicableCountry: 'DO',
-          returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-          merchantReturnDays: 30,
-          returnMethod: 'https://schema.org/ReturnByMail',
-          returnFees: 'https://schema.org/FreeReturn',
-        },
-        shippingDetails: {
-          '@type': 'OfferShippingDetails',
-          shippingRate: {
-            '@type': 'MonetaryAmount',
-            value: '0',
-            currency: 'DOP',
+    jsonLdList: producto ? [
+      {
+        '@context': 'https://schema.org/',
+        '@type': 'Product',
+        name: producto.nombre,
+        description: producto.descripcion,
+        image: (producto.imagenes ?? [producto.imagen]).map(img =>
+          img.startsWith('http') ? img : `https://www.vitaglossrd.com${img}`
+        ),
+        brand: { '@type': 'Brand', name: 'Amway' },
+        sku: producto.articulo,
+        offers: {
+          '@type': 'Offer',
+          url: `https://www.vitaglossrd.com/producto/${producto.id}`,
+          priceCurrency: 'DOP',
+          price: producto.precio,
+          priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          availability: producto.disponible
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+          seller: { '@type': 'Organization', name: 'VitaGloss RD' },
+          hasMerchantReturnPolicy: {
+            '@type': 'MerchantReturnPolicy',
+            applicableCountry: 'DO',
+            returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+            merchantReturnDays: 30,
+            returnMethod: 'https://schema.org/ReturnByMail',
+            returnFees: 'https://schema.org/FreeReturn',
           },
-          shippingDestination: {
-            '@type': 'DefinedRegion',
-            addressCountry: 'DO',
-          },
-          deliveryTime: {
-            '@type': 'ShippingDeliveryTime',
-            handlingTime: {
-              '@type': 'QuantitativeValue',
-              minValue: 0,
-              maxValue: 1,
-              unitCode: 'DAY',
+          shippingDetails: {
+            '@type': 'OfferShippingDetails',
+            shippingRate: {
+              '@type': 'MonetaryAmount',
+              value: '0',
+              currency: 'DOP',
             },
-            transitTime: {
-              '@type': 'QuantitativeValue',
-              minValue: 2,
-              maxValue: 5,
-              unitCode: 'DAY',
+            shippingDestination: {
+              '@type': 'DefinedRegion',
+              addressCountry: 'DO',
+            },
+            deliveryTime: {
+              '@type': 'ShippingDeliveryTime',
+              handlingTime: {
+                '@type': 'QuantitativeValue',
+                minValue: 0,
+                maxValue: 1,
+                unitCode: 'DAY',
+              },
+              transitTime: {
+                '@type': 'QuantitativeValue',
+                minValue: 2,
+                maxValue: 5,
+                unitCode: 'DAY',
+              },
             },
           },
         },
       },
-    } : null,
+      ...(producto.faqs?.length ? [{
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: producto.faqs.map(faq => ({
+          '@type': 'Question',
+          name: faq.pregunta,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.respuesta,
+          },
+        })),
+      }] : []),
+    ] : null,
   })
 
   // Meta Pixel: ViewContent event
