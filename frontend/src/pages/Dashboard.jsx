@@ -154,6 +154,9 @@ export default function Dashboard() {
   // invoice
   const [facturaModal, setFacturaModal] = useState(false)
   const [facturaOrder, setFacturaOrder] = useState(null)
+  const [facturaEditMode, setFacturaEditMode] = useState(false)
+  const [facturaEditData, setFacturaEditData] = useState(null)
+  const [savingFactura, setSavingFactura] = useState(false)
 
   // templates copy feedback
   const [copied, setCopied] = useState(null)
@@ -1094,6 +1097,22 @@ export default function Dashboard() {
                         </button>
                         <button
                           onClick={() => {
+                            setFacturaEditData({
+                              nombre: facturaOrder.nombre || '',
+                              whatsapp: facturaOrder.whatsapp || '',
+                              direccionEntrega: facturaOrder.direccionEntrega || '',
+                              items: facturaOrder.items.map(i => ({ nombre: i.nombre, cantidad: i.cantidad, precio: i.precio })),
+                              pagado: facturaOrder.pagado || 'pendiente',
+                              notas: facturaOrder.notas || '',
+                            })
+                            setFacturaEditMode(true)
+                          }}
+                          className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 shadow-lg"
+                        >
+                          ✏️ Editar factura
+                        </button>
+                        <button
+                          onClick={() => {
                             const lineas = subtotalItems.map(i => `  • ${i.nombre}  ×${i.cantidad}  →  RD$${i.subtotal.toLocaleString()}`)
                             const txt = [
                               `╔══════════════════════════════╗`,
@@ -1129,6 +1148,148 @@ export default function Dashboard() {
                         </button>
                         <button onClick={() => setFacturaModal(false)} className="bg-white/90 hover:bg-white text-gray-600 font-bold px-5 rounded-2xl text-lg transition-colors shadow-lg">✕</button>
                       </div>
+
+                      {/* ─────────── PANEL EDICIÓN ─────────── */}
+                      {facturaEditMode && facturaEditData && (
+                        <div className="bg-white rounded-2xl shadow-2xl p-6 mb-4 border border-amber-200 print:hidden">
+                          <div className="flex items-center justify-between mb-5">
+                            <h3 className="text-lg font-extrabold text-gray-800">✏️ Editar factura {numFactura}</h3>
+                            <button onClick={() => setFacturaEditMode(false)} className="text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
+                          </div>
+
+                          {/* Datos del cliente */}
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Datos del cliente</p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-600 mb-1">Nombre</label>
+                              <input
+                                value={facturaEditData.nombre}
+                                onChange={e => setFacturaEditData(d => ({ ...d, nombre: e.target.value }))}
+                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
+                              <input
+                                value={facturaEditData.whatsapp}
+                                onChange={e => setFacturaEditData(d => ({ ...d, whatsapp: e.target.value }))}
+                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                              />
+                            </div>
+                            <div className="sm:col-span-2">
+                              <label className="block text-xs font-semibold text-gray-600 mb-1">Dirección de entrega</label>
+                              <input
+                                value={facturaEditData.direccionEntrega}
+                                onChange={e => setFacturaEditData(d => ({ ...d, direccionEntrega: e.target.value }))}
+                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Productos */}
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Productos</p>
+                          <div className="space-y-2 mb-3">
+                            {facturaEditData.items.map((item, idx) => (
+                              <div key={idx} className="grid grid-cols-[1fr_60px_90px_32px] gap-2 items-center">
+                                <input
+                                  value={item.nombre}
+                                  onChange={e => setFacturaEditData(d => {
+                                    const items = [...d.items]; items[idx] = { ...items[idx], nombre: e.target.value }; return { ...d, items }
+                                  })}
+                                  placeholder="Nombre del producto"
+                                  className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                />
+                                <input
+                                  type="number" min="1"
+                                  value={item.cantidad}
+                                  onChange={e => setFacturaEditData(d => {
+                                    const items = [...d.items]; items[idx] = { ...items[idx], cantidad: Number(e.target.value) }; return { ...d, items }
+                                  })}
+                                  placeholder="Cant."
+                                  className="border border-gray-200 rounded-xl px-2 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                />
+                                <input
+                                  type="number" min="0"
+                                  value={item.precio}
+                                  onChange={e => setFacturaEditData(d => {
+                                    const items = [...d.items]; items[idx] = { ...items[idx], precio: e.target.value }; return { ...d, items }
+                                  })}
+                                  placeholder="Precio"
+                                  className="border border-gray-200 rounded-xl px-2 py-2 text-sm text-right focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                />
+                                <button
+                                  onClick={() => setFacturaEditData(d => ({ ...d, items: d.items.filter((_, i) => i !== idx) }))}
+                                  className="text-red-400 hover:text-red-600 text-lg font-bold leading-none"
+                                  title="Eliminar línea"
+                                >×</button>
+                              </div>
+                            ))}
+                          </div>
+                          <button
+                            onClick={() => setFacturaEditData(d => ({ ...d, items: [...d.items, { nombre: '', cantidad: 1, precio: '' }] }))}
+                            className="text-xs text-amber-600 hover:text-amber-700 font-bold border border-amber-300 rounded-xl px-3 py-1.5 transition-colors mb-5"
+                          >
+                            + Agregar línea
+                          </button>
+
+                          {/* Estado de pago + notas */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-600 mb-1">Estado de pago</label>
+                              <select
+                                value={facturaEditData.pagado}
+                                onChange={e => setFacturaEditData(d => ({ ...d, pagado: e.target.value }))}
+                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                              >
+                                <option value="pendiente">⏳ Pendiente</option>
+                                <option value="parcial">⚠️ Pago parcial</option>
+                                <option value="pagado">✅ Pagado</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-600 mb-1">Observaciones</label>
+                              <input
+                                value={facturaEditData.notas}
+                                onChange={e => setFacturaEditData(d => ({ ...d, notas: e.target.value }))}
+                                placeholder="Notas internas..."
+                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Acciones */}
+                          <div className="flex gap-3">
+                            <button
+                              onClick={async () => {
+                                setSavingFactura(true)
+                                try {
+                                  const newTotal = facturaEditData.items.reduce((s, i) => s + Number(i.precio) * Number(i.cantidad), 0)
+                                  const body = { ...facturaEditData, total: newTotal }
+                                  const res = await api.updateOrder(facturaOrder._id, body)
+                                  const updated = res.order || { ...facturaOrder, ...body }
+                                  setFacturaOrder(updated)
+                                  setOrders(prev => prev.map(o => o._id === updated._id ? updated : o))
+                                  setFacturaEditMode(false)
+                                } catch (err) {
+                                  alert('Error al guardar: ' + (err.message || err))
+                                } finally {
+                                  setSavingFactura(false)
+                                }
+                              }}
+                              disabled={savingFactura}
+                              className="flex-1 bg-[#1B3A6B] hover:bg-[#0a1628] text-white font-bold py-3 rounded-2xl text-sm transition-colors disabled:opacity-60"
+                            >
+                              {savingFactura ? 'Guardando...' : '💾 Guardar cambios'}
+                            </button>
+                            <button
+                              onClick={() => setFacturaEditMode(false)}
+                              className="px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl text-sm transition-colors"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </div>
+                      )}
 
                       {/* ─────────── DOCUMENTO DE FACTURA ─────────── */}
                       <div id="factura-print" className="bg-white shadow-2xl overflow-hidden" style={{ borderRadius: '16px', fontFamily: "'Inter', sans-serif" }}>
