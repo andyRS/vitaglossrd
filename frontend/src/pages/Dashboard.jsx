@@ -157,6 +157,7 @@ export default function Dashboard() {
   const [facturaEditMode, setFacturaEditMode] = useState(false)
   const [facturaEditData, setFacturaEditData] = useState(null)
   const [savingFactura, setSavingFactura] = useState(false)
+  const [facturaDropdownIdx, setFacturaDropdownIdx] = useState(null)
 
   // templates copy feedback
   const [copied, setCopied] = useState(null)
@@ -1189,16 +1190,49 @@ export default function Dashboard() {
                           {/* Productos */}
                           <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Productos</p>
                           <div className="space-y-2 mb-3">
-                            {facturaEditData.items.map((item, idx) => (
-                              <div key={idx} className="grid grid-cols-[1fr_60px_90px_32px] gap-2 items-center">
-                                <input
-                                  value={item.nombre}
-                                  onChange={e => setFacturaEditData(d => {
-                                    const items = [...d.items]; items[idx] = { ...items[idx], nombre: e.target.value }; return { ...d, items }
-                                  })}
-                                  placeholder="Nombre del producto"
-                                  className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                                />
+                            {facturaEditData.items.map((item, idx) => {
+                              const sugerencias = item.nombre.trim().length > 0
+                                ? productos.filter(p => p.nombre.toLowerCase().includes(item.nombre.toLowerCase())).slice(0, 6)
+                                : productos.slice(0, 6)
+                              return (
+                              <div key={idx} className="grid grid-cols-[1fr_60px_90px_32px] gap-2 items-start">
+                                {/* Autocomplete nombre */}
+                                <div className="relative">
+                                  <input
+                                    value={item.nombre}
+                                    onChange={e => {
+                                      setFacturaEditData(d => {
+                                        const items = [...d.items]; items[idx] = { ...items[idx], nombre: e.target.value }; return { ...d, items }
+                                      })
+                                      setFacturaDropdownIdx(idx)
+                                    }}
+                                    onFocus={() => setFacturaDropdownIdx(idx)}
+                                    onBlur={() => setTimeout(() => setFacturaDropdownIdx(null), 150)}
+                                    placeholder="Escribe para buscar producto..."
+                                    className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                  />
+                                  {facturaDropdownIdx === idx && sugerencias.length > 0 && (
+                                    <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-56 overflow-y-auto">
+                                      {sugerencias.map(p => (
+                                        <li
+                                          key={p.id}
+                                          onMouseDown={() => {
+                                            setFacturaEditData(d => {
+                                              const items = [...d.items]
+                                              items[idx] = { ...items[idx], nombre: p.nombre, precio: p.precio }
+                                              return { ...d, items }
+                                            })
+                                            setFacturaDropdownIdx(null)
+                                          }}
+                                          className="flex items-center justify-between px-4 py-2.5 hover:bg-amber-50 cursor-pointer border-b border-gray-50 last:border-0"
+                                        >
+                                          <span className="text-sm font-medium text-gray-800 truncate pr-2">{p.nombre}</span>
+                                          <span className="text-xs font-bold text-amber-600 whitespace-nowrap">RD${Number(p.precio).toLocaleString()}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </div>
                                 <input
                                   type="number" min="1"
                                   value={item.cantidad}
@@ -1219,11 +1253,12 @@ export default function Dashboard() {
                                 />
                                 <button
                                   onClick={() => setFacturaEditData(d => ({ ...d, items: d.items.filter((_, i) => i !== idx) }))}
-                                  className="text-red-400 hover:text-red-600 text-lg font-bold leading-none"
+                                  className="text-red-400 hover:text-red-600 text-lg font-bold leading-none mt-2"
                                   title="Eliminar línea"
                                 >×</button>
                               </div>
-                            ))}
+                            )})
+                            }
                           </div>
                           <button
                             onClick={() => setFacturaEditData(d => ({ ...d, items: [...d.items, { nombre: '', cantidad: 1, precio: '' }] }))}
