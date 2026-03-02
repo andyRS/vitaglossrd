@@ -196,7 +196,7 @@ function TabsInfoSection({ producto }) {
             <div className="max-w-2xl">
               <RichDescription
                 text={producto.descripcionLarga}
-                esSuplemento={producto.categoria === 'Suplementos'}
+                esSuplemento={producto.categoria === 'Vitaminas'}
                 advertencia={producto.advertencia}
               />
             </div>
@@ -870,7 +870,7 @@ export default function ProductoDetalle() {
               >
                 <RichDescription
                   text={producto.descripcionLarga}
-                  esSuplemento={producto.categoria === 'Suplementos'}
+                  esSuplemento={producto.categoria === 'Vitaminas'}
                   advertencia={producto.advertencia}
                 />
               </Accordion>
