@@ -1085,7 +1085,7 @@ export default function Dashboard() {
                   >
                     <motion.div
                       initial={{ scale: 0.96, y: 24 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.96, y: 24 }}
-                      className="w-full max-w-2xl my-8"
+                      className="w-full max-w-4xl my-8"
                     >
                       {/* ─ Barra de acciones (no se imprime) ─ */}
                       <div className="flex gap-2 mb-3 print:hidden">
@@ -1373,126 +1373,130 @@ export default function Dashboard() {
                         </div>
                       )}
 
-                      {/* ─────────── DOCUMENTO DE FACTURA (estilo recibo Amway) ─────────── */}
-                      <div id="factura-print" className="bg-white shadow-2xl" style={{ borderRadius: '4px', fontFamily: "'Helvetica Neue', Arial, sans-serif", border: '1px solid #e0e0e0' }}>
+                      {/* ─────────── DOCUMENTO DE FACTURA ─────────── */}
+                      <div id="factura-print" className="bg-white shadow-2xl overflow-hidden" style={{ borderRadius: '12px', fontFamily: "'Helvetica Neue', Arial, sans-serif" }}>
 
-                        {/* HEADER — logo izquierda + "Páginas del recibo" derecha */}
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '24px 40px 18px' }}>
-                          <img src="/logo_final.png" alt="VitaGloss RD" style={{ height: '44px', width: 'auto', objectFit: 'contain' }} />
-                          <p style={{ fontSize: '12px', color: '#555', textAlign: 'right', marginTop: '4px' }}>Páginas del recibo&nbsp;<strong>1/1</strong></p>
+                        {/* HEADER bicolor: panel blanco logo | panel oscuro número + "Páginas del recibo" */}
+                        <div style={{ display: 'flex', alignItems: 'stretch', minHeight: '80px' }}>
+                          {/* Logo */}
+                          <div style={{ background: '#ffffff', padding: '18px 32px', display: 'flex', alignItems: 'center', borderRight: '1px solid #e5e7eb', flexShrink: 0 }}>
+                            <img src="/logo_final.png" alt="VitaGloss RD" style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
+                          </div>
+                          {/* Datos recibo */}
+                          <div style={{ flex: 1, background: 'linear-gradient(135deg, #0a1628 0%, #1B3A6B 100%)', padding: '18px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div>
+                              <p style={{ color: '#2EC4B6', fontSize: '10px', fontWeight: '700', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '3px' }}>Recibo de Compra</p>
+                              <p style={{ color: '#ffffff', fontSize: '26px', fontWeight: '900', letterSpacing: '-0.5px', lineHeight: 1 }}>{numFactura}</p>
+                            </div>
+                            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '12px', textAlign: 'right' }}>Páginas del recibo&nbsp;<strong style={{ color: 'rgba(255,255,255,0.85)' }}>1/1</strong></p>
+                          </div>
                         </div>
 
-                        {/* Línea divisoria */}
-                        <div style={{ height: '1px', background: '#222', margin: '0 40px' }} />
+                        {/* Banda teal */}
+                        <div style={{ height: '4px', background: 'linear-gradient(90deg, #2EC4B6, #1B3A6B)' }} />
 
-                        {/* SECCIÓN DOS COLUMNAS: Cliente | Información del vendedor */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '20px 40px 16px' }}>
-                          {/* Columna Cliente */}
+                        {/* DOS COLUMNAS: Cliente | Información del vendedor */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '24px 40px 20px' }}>
                           <div>
-                            <p style={{ fontWeight: '700', fontSize: '13px', color: '#111', marginBottom: '6px' }}>Cliente</p>
-                            <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>{facturaOrder.nombre}</p>
+                            <p style={{ fontWeight: '700', fontSize: '13px', color: '#1B3A6B', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '11px' }}>Cliente</p>
+                            <p style={{ fontSize: '14px', fontWeight: '700', color: '#111', marginBottom: '3px' }}>{facturaOrder.nombre}</p>
                             {facturaOrder.whatsapp && (
-                              <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>
+                              <p style={{ fontSize: '13px', color: '#444', marginBottom: '2px' }}>
                                 {facturaOrder.whatsapp.replace(/^(\d{3})(\d{3})(\d{4})$/, '($1) $2-$3')}
                               </p>
                             )}
                             {facturaOrder.direccionEntrega && (
-                              <p style={{ fontSize: '13px', color: '#555', marginBottom: '2px' }}>{facturaOrder.direccionEntrega}</p>
+                              <p style={{ fontSize: '13px', color: '#666', marginBottom: '2px' }}>{facturaOrder.direccionEntrega}</p>
                             )}
-                            <p style={{ fontSize: '13px', color: '#222', marginTop: '6px' }}>
+                            <p style={{ fontSize: '13px', color: '#444', marginTop: '6px' }}>
                               Período de bonificación:&nbsp;
                               {new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { month: 'long', year: 'numeric' })}
                             </p>
                           </div>
-                          {/* Columna Vendedor */}
                           <div>
-                            <p style={{ fontWeight: '700', fontSize: '13px', color: '#111', marginBottom: '6px' }}>Información del vendedor</p>
-                            <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>{user?.nombre || 'VitaGloss RD'}</p>
-                            <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>(849) 276-3532</p>
-                            <p style={{ fontSize: '13px', color: '#222', marginBottom: '6px' }}>vitaglossrd@hotmail.com</p>
-                            <p style={{ fontSize: '13px', color: '#222', marginBottom: '2px' }}>
+                            <p style={{ fontWeight: '700', fontSize: '11px', color: '#1B3A6B', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Información del vendedor</p>
+                            <p style={{ fontSize: '14px', fontWeight: '700', color: '#111', marginBottom: '3px' }}>{user?.nombre || 'VitaGloss RD'}</p>
+                            <p style={{ fontSize: '13px', color: '#444', marginBottom: '2px' }}>(849) 276-3532</p>
+                            <p style={{ fontSize: '13px', color: '#444', marginBottom: '8px' }}>vitaglossrd@hotmail.com</p>
+                            <p style={{ fontSize: '13px', color: '#444', marginBottom: '2px' }}>
                               Fecha de la venta:&nbsp;
-                              {new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '/')}
+                              {new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { day: '2-digit', month: '2-digit', year: '2-digit' })}
                             </p>
-                            <p style={{ fontSize: '13px', color: '#222' }}>Número del recibo:&nbsp;<strong>{numFactura}</strong></p>
+                            <p style={{ fontSize: '13px', color: '#444' }}>Número del recibo:&nbsp;<strong style={{ color: '#111' }}>{numFactura}</strong></p>
                           </div>
                         </div>
 
-                        {/* Línea divisoria */}
-                        <div style={{ height: '1px', background: '#ccc', margin: '0 40px' }} />
+                        {/* Línea */}
+                        <div style={{ height: '1px', background: '#e5e7eb', margin: '0 40px' }} />
 
-                        {/* TABLA DE PRODUCTOS */}
-                        <div style={{ padding: '16px 40px 0' }}>
+                        {/* TABLA PRODUCTOS */}
+                        <div style={{ padding: '20px 40px 0' }}>
                           {/* Cabecera */}
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 70px 130px 130px', borderBottom: '2px solid #111', paddingBottom: '8px', marginBottom: '2px' }}>
-                            <span style={{ fontSize: '13px', fontWeight: '700', color: '#111' }}>Descripción</span>
-                            <span style={{ fontSize: '13px', fontWeight: '700', color: '#111', textAlign: 'center' }}>Cant.</span>
-                            <span style={{ fontSize: '13px', fontWeight: '700', color: '#111', textAlign: 'right' }}>Precio</span>
-                            <span style={{ fontSize: '13px', fontWeight: '700', color: '#111', textAlign: 'right' }}>Total</span>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 70px 140px 140px', background: 'linear-gradient(135deg, #0a1628, #1B3A6B)', borderRadius: '8px', padding: '10px 16px', marginBottom: '4px' }}>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px' }}>Descripción</span>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>Cant.</span>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'right' }}>Precio</span>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'right' }}>Total</span>
                           </div>
-                          {/* Filas de productos */}
                           {subtotalItems.map((item, i) => (
-                            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 70px 130px 130px', padding: '12px 0', borderBottom: '1px solid #e8e8e8' }}>
-                              <div>
-                                <p style={{ fontSize: '13px', fontWeight: '700', color: '#111', marginBottom: '1px' }}>{item.nombre}</p>
-                              </div>
-                              <span style={{ fontSize: '13px', color: '#333', textAlign: 'center', paddingTop: '1px' }}>{item.cantidad}</span>
-                              <span style={{ fontSize: '13px', color: '#333', textAlign: 'right', paddingTop: '1px' }}>RD${Number(item.precio).toLocaleString()}.00</span>
-                              <span style={{ fontSize: '13px', fontWeight: '600', color: '#111', textAlign: 'right', paddingTop: '1px' }}>RD${item.subtotal.toLocaleString()}.00</span>
+                            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 70px 140px 140px', padding: '13px 16px', borderBottom: '1px solid #f0f0f0', background: i % 2 === 1 ? '#fafafa' : '#fff' }}>
+                              <p style={{ fontSize: '13px', fontWeight: '600', color: '#111' }}>{item.nombre}</p>
+                              <span style={{ fontSize: '13px', color: '#555', textAlign: 'center' }}>{item.cantidad}</span>
+                              <span style={{ fontSize: '13px', color: '#555', textAlign: 'right' }}>RD${Number(item.precio).toLocaleString()}.00</span>
+                              <span style={{ fontSize: '13px', fontWeight: '700', color: '#111', textAlign: 'right' }}>RD${item.subtotal.toLocaleString()}.00</span>
                             </div>
                           ))}
                         </div>
 
-                        {/* Espacio */}
-                        <div style={{ height: '16px' }} />
+                        <div style={{ height: '20px' }} />
+                        <div style={{ height: '1px', background: '#e5e7eb', margin: '0 40px' }} />
 
-                        {/* Línea divisoria */}
-                        <div style={{ height: '1px', background: '#ccc', margin: '0 40px' }} />
-
-                        {/* TOTALES */}
-                        <div style={{ padding: '14px 40px 20px' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                            <span style={{ fontSize: '13px', color: '#333' }}>Subtotal de artículo(s)</span>
-                            <span style={{ fontSize: '13px', color: '#333' }}>RD${facturaOrder.total.toLocaleString()}.00</span>
+                        {/* TOTALES — dos columnas: subtotales izq | caja total derecha */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '24px', alignItems: 'start', padding: '20px 40px 24px' }}>
+                          {/* Lista subtotales */}
+                          <div style={{ paddingTop: '4px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                              <span style={{ fontSize: '13px', color: '#555' }}>Subtotal de artículo(s)</span>
+                              <span style={{ fontSize: '13px', color: '#555' }}>RD${facturaOrder.total.toLocaleString()}.00</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                              <span style={{ fontSize: '13px', color: '#555' }}>Envíos</span>
+                              <span style={{ fontSize: '13px', color: '#555' }}>RD$0.00</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span style={{ fontSize: '13px', color: '#555' }}>Impuestos</span>
+                              <span style={{ fontSize: '13px', color: '#555' }}>RD$0.00</span>
+                            </div>
+                            {facturaOrder.notas && (
+                              <div style={{ marginTop: '16px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '8px', padding: '10px 14px' }}>
+                                <p style={{ fontSize: '10px', fontWeight: '700', color: '#b45309', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '3px' }}>Observaciones</p>
+                                <p style={{ fontSize: '12px', color: '#92400e' }}>{facturaOrder.notas}</p>
+                              </div>
+                            )}
                           </div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                            <span style={{ fontSize: '13px', color: '#333' }}>Envíos</span>
-                            <span style={{ fontSize: '13px', color: '#333' }}>RD$0.00</span>
-                          </div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                            <span style={{ fontSize: '13px', color: '#333' }}>Impuestos</span>
-                            <span style={{ fontSize: '13px', color: '#333' }}>RD$0.00</span>
-                          </div>
-                          <div style={{ height: '1px', background: '#bbb', marginBottom: '10px' }} />
-                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                            <span style={{ fontSize: '15px', fontWeight: '700', color: '#111' }}>Total del recibo</span>
-                            <span style={{ fontSize: '15px', fontWeight: '700', color: '#111' }}>RD${facturaOrder.total.toLocaleString()}.00</span>
-                          </div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: '12px', color: '#666' }}>Estado de pago</span>
-                            <span style={{ fontSize: '12px', fontWeight: '700',
-                              color: facturaOrder.pagado === 'pagado' ? '#16a34a' : facturaOrder.pagado === 'parcial' ? '#b45309' : '#dc2626'
-                            }}>
-                              {facturaOrder.pagado === 'pagado' ? 'Pagado' : facturaOrder.pagado === 'parcial' ? 'Pago parcial' : 'Pendiente de pago'}
-                            </span>
+                          {/* Caja total */}
+                          <div style={{ background: 'linear-gradient(135deg, #0a1628 0%, #1B3A6B 100%)', borderRadius: '12px', padding: '18px 28px', minWidth: '240px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>Total del recibo</span>
+                              <span style={{ color: '#2EC4B6', fontSize: '22px', fontWeight: '900' }}>RD${facturaOrder.total.toLocaleString()}</span>
+                            </div>
+                            <div style={{ height: '1px', background: 'rgba(255,255,255,0.12)', marginBottom: '10px' }} />
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px' }}>Estado de pago</span>
+                              {facturaOrder.pagado === 'pagado'
+                                ? <span style={{ background: '#dcfce7', color: '#16a34a', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px' }}>✅ PAGADO</span>
+                                : facturaOrder.pagado === 'parcial'
+                                ? <span style={{ background: '#fef9c3', color: '#a16207', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px' }}>⚠️ PARCIAL</span>
+                                : <span style={{ background: '#fee2e2', color: '#dc2626', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px' }}>⏳ PENDIENTE</span>
+                              }
+                            </div>
                           </div>
                         </div>
 
-                        {/* Notas (si las hay) */}
-                        {facturaOrder.notas && (
-                          <div style={{ padding: '0 40px 16px' }}>
-                            <div style={{ height: '1px', background: '#e8e8e8', marginBottom: '12px' }} />
-                            <p style={{ fontSize: '11px', fontWeight: '700', color: '#888', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '3px' }}>Observaciones</p>
-                            <p style={{ fontSize: '13px', color: '#555' }}>{facturaOrder.notas}</p>
-                          </div>
-                        )}
-
-                        {/* PIE */}
-                        <div style={{ borderTop: '1px solid #ddd', padding: '12px 40px', textAlign: 'center', background: '#fafafa' }}>
-                          <p style={{ fontSize: '11px', color: '#999', lineHeight: '1.7' }}>
-                            VitaGloss RD · Distribuidora Amway independiente · WhatsApp: 849-276-3532 · República Dominicana<br />
-                            Productos Amway 100% originales · vitaglossrd.com
-                          </p>
+                        {/* FOOTER — banda teal */}
+                        <div style={{ background: '#2EC4B6', padding: '10px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ color: '#fff', fontSize: '11px', fontWeight: '700', letterSpacing: '1px' }}>VITAGLOSS RD — DISTRIBUIDORA AMWAY</span>
+                          <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: '11px' }}>N.° {numFactura} · {fechaFactura}</span>
                         </div>
                       </div>
                     </motion.div>
