@@ -121,15 +121,19 @@ router.get('/:id', protect, adminOnly, async (req, res) => {
   }
 })
 
-// ── PATCH /api/orders/:id — actualizar estado / notas (admin) ────────────
+// ── PATCH /api/orders/:id — actualizar pedido completo (admin) ────────────
 router.patch('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const { estado, notas, pagado, direccionEntrega } = req.body
+    const { estado, notas, pagado, direccionEntrega, nombre, whatsapp, items, total } = req.body
     const update = {}
-    if (estado !== undefined)           update.estado = estado
-    if (notas  !== undefined)           update.notas  = notas
-    if (pagado !== undefined)           update.pagado = pagado
+    if (estado           !== undefined) update.estado           = estado
+    if (notas            !== undefined) update.notas            = notas
+    if (pagado           !== undefined) update.pagado           = pagado
     if (direccionEntrega !== undefined) update.direccionEntrega = direccionEntrega
+    if (nombre           !== undefined) update.nombre           = nombre
+    if (whatsapp         !== undefined) update.whatsapp         = whatsapp
+    if (items            !== undefined) update.items            = items
+    if (total            !== undefined) update.total            = total
 
     const order = await Order.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true })
     if (!order) return res.status(404).json({ error: 'Pedido no encontrado' })

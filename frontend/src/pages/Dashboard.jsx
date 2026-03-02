@@ -1152,176 +1152,223 @@ export default function Dashboard() {
 
                       {/* ─────────── PANEL EDICIÓN ─────────── */}
                       {facturaEditMode && facturaEditData && (
-                        <div className="bg-white rounded-2xl shadow-2xl p-6 mb-4 border border-amber-200 print:hidden">
-                          <div className="flex items-center justify-between mb-5">
-                            <h3 className="text-lg font-extrabold text-gray-800">✏️ Editar factura {numFactura}</h3>
-                            <button onClick={() => setFacturaEditMode(false)} className="text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-                          </div>
-
-                          {/* Datos del cliente */}
-                          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Datos del cliente</p>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
-                            <div>
-                              <label className="block text-xs font-semibold text-gray-600 mb-1">Nombre</label>
-                              <input
-                                value={facturaEditData.nombre}
-                                onChange={e => setFacturaEditData(d => ({ ...d, nombre: e.target.value }))}
-                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
-                              <input
-                                value={facturaEditData.whatsapp}
-                                onChange={e => setFacturaEditData(d => ({ ...d, whatsapp: e.target.value }))}
-                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                              />
-                            </div>
-                            <div className="sm:col-span-2">
-                              <label className="block text-xs font-semibold text-gray-600 mb-1">Dirección de entrega</label>
-                              <input
-                                value={facturaEditData.direccionEntrega}
-                                onChange={e => setFacturaEditData(d => ({ ...d, direccionEntrega: e.target.value }))}
-                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                              />
-                            </div>
-                          </div>
-
-                          {/* Productos */}
-                          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Productos</p>
-                          <div className="space-y-2 mb-3">
-                            {facturaEditData.items.map((item, idx) => {
-                              const sugerencias = item.nombre.trim().length > 0
-                                ? productos.filter(p => p.nombre.toLowerCase().includes(item.nombre.toLowerCase())).slice(0, 6)
-                                : productos.slice(0, 6)
-                              return (
-                              <div key={idx} className="grid grid-cols-[1fr_60px_90px_32px] gap-2 items-start">
-                                {/* Autocomplete nombre */}
-                                <div className="relative">
-                                  <input
-                                    value={item.nombre}
-                                    onChange={e => {
-                                      setFacturaEditData(d => {
-                                        const items = [...d.items]; items[idx] = { ...items[idx], nombre: e.target.value }; return { ...d, items }
-                                      })
-                                      setFacturaDropdownIdx(idx)
-                                    }}
-                                    onFocus={() => setFacturaDropdownIdx(idx)}
-                                    onBlur={() => setTimeout(() => setFacturaDropdownIdx(null), 150)}
-                                    placeholder="Escribe para buscar producto..."
-                                    className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                                  />
-                                  {facturaDropdownIdx === idx && sugerencias.length > 0 && (
-                                    <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden max-h-56 overflow-y-auto">
-                                      {sugerencias.map(p => (
-                                        <li
-                                          key={p.id}
-                                          onMouseDown={() => {
-                                            setFacturaEditData(d => {
-                                              const items = [...d.items]
-                                              items[idx] = { ...items[idx], nombre: p.nombre, precio: p.precio }
-                                              return { ...d, items }
-                                            })
-                                            setFacturaDropdownIdx(null)
-                                          }}
-                                          className="flex items-center justify-between px-4 py-2.5 hover:bg-amber-50 cursor-pointer border-b border-gray-50 last:border-0"
-                                        >
-                                          <span className="text-sm font-medium text-gray-800 truncate pr-2">{p.nombre}</span>
-                                          <span className="text-xs font-bold text-amber-600 whitespace-nowrap">RD${Number(p.precio).toLocaleString()}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )}
-                                </div>
-                                <input
-                                  type="number" min="1"
-                                  value={item.cantidad}
-                                  onChange={e => setFacturaEditData(d => {
-                                    const items = [...d.items]; items[idx] = { ...items[idx], cantidad: Number(e.target.value) }; return { ...d, items }
-                                  })}
-                                  placeholder="Cant."
-                                  className="border border-gray-200 rounded-xl px-2 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-amber-400"
-                                />
-                                <input
-                                  type="number" min="0"
-                                  value={item.precio}
-                                  onChange={e => setFacturaEditData(d => {
-                                    const items = [...d.items]; items[idx] = { ...items[idx], precio: e.target.value }; return { ...d, items }
-                                  })}
-                                  placeholder="Precio"
-                                  className="border border-gray-200 rounded-xl px-2 py-2 text-sm text-right focus:outline-none focus:ring-2 focus:ring-amber-400"
-                                />
-                                <button
-                                  onClick={() => setFacturaEditData(d => ({ ...d, items: d.items.filter((_, i) => i !== idx) }))}
-                                  className="text-red-400 hover:text-red-600 text-lg font-bold leading-none mt-2"
-                                  title="Eliminar línea"
-                                >×</button>
+                        <div className="bg-white rounded-2xl shadow-2xl mb-4 border-2 border-amber-400 overflow-hidden print:hidden">
+                          {/* Header del panel */}
+                          <div className="bg-amber-500 px-6 py-4 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl">✏️</span>
+                              <div>
+                                <h3 className="text-white font-extrabold text-base leading-tight">Editando {numFactura}</h3>
+                                <p className="text-amber-100 text-xs">Los cambios se guardan en la base de datos al presionar Guardar</p>
                               </div>
-                            )})
-                            }
+                            </div>
+                            <button onClick={() => setFacturaEditMode(false)} className="text-white/80 hover:text-white text-2xl font-bold leading-none">✕</button>
                           </div>
-                          <button
-                            onClick={() => setFacturaEditData(d => ({ ...d, items: [...d.items, { nombre: '', cantidad: 1, precio: '' }] }))}
-                            className="text-xs text-amber-600 hover:text-amber-700 font-bold border border-amber-300 rounded-xl px-3 py-1.5 transition-colors mb-5"
-                          >
-                            + Agregar línea
-                          </button>
 
-                          {/* Estado de pago + notas */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                          <div className="p-6 space-y-6">
+
+                            {/* ── Datos del cliente ── */}
                             <div>
-                              <label className="block text-xs font-semibold text-gray-600 mb-1">Estado de pago</label>
-                              <select
-                                value={facturaEditData.pagado}
-                                onChange={e => setFacturaEditData(d => ({ ...d, pagado: e.target.value }))}
-                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="w-5 h-5 rounded-full bg-[#1B3A6B] text-white text-xs flex items-center justify-center font-bold">1</span>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Datos del cliente</p>
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Nombre completo</label>
+                                  <input
+                                    value={facturaEditData.nombre}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, nombre: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                    placeholder="Nombre del cliente"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
+                                  <input
+                                    value={facturaEditData.whatsapp}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, whatsapp: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                    placeholder="(849) 000-0000"
+                                  />
+                                </div>
+                                <div className="sm:col-span-2">
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Dirección de entrega</label>
+                                  <input
+                                    value={facturaEditData.direccionEntrega}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, direccionEntrega: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                    placeholder="Dirección completa..."
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* ── Productos ── */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="w-5 h-5 rounded-full bg-[#1B3A6B] text-white text-xs flex items-center justify-center font-bold">2</span>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Productos</p>
+                              </div>
+
+                              {/* Cabecera tabla */}
+                              <div className="grid grid-cols-[1fr_64px_96px_32px] gap-2 px-2 mb-1">
+                                <span className="text-xs text-gray-400 font-semibold">Producto</span>
+                                <span className="text-xs text-gray-400 font-semibold text-center">Cant.</span>
+                                <span className="text-xs text-gray-400 font-semibold text-right">Precio</span>
+                                <span />
+                              </div>
+
+                              <div className="space-y-2">
+                                {facturaEditData.items.map((item, idx) => {
+                                  const sugerencias = item.nombre.trim().length > 0
+                                    ? productos.filter(p => p.nombre.toLowerCase().includes(item.nombre.toLowerCase())).slice(0, 7)
+                                    : productos.slice(0, 7)
+                                  return (
+                                    <div key={idx} className="grid grid-cols-[1fr_64px_96px_32px] gap-2 items-start">
+                                      {/* Autocomplete nombre */}
+                                      <div className="relative">
+                                        <input
+                                          value={item.nombre}
+                                          onChange={e => {
+                                            setFacturaEditData(d => {
+                                              const items = [...d.items]; items[idx] = { ...items[idx], nombre: e.target.value }; return { ...d, items }
+                                            })
+                                            setFacturaDropdownIdx(idx)
+                                          }}
+                                          onFocus={() => setFacturaDropdownIdx(idx)}
+                                          onBlur={() => setTimeout(() => setFacturaDropdownIdx(null), 150)}
+                                          placeholder="Buscar producto..."
+                                          className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none transition-colors"
+                                        />
+                                        {facturaDropdownIdx === idx && sugerencias.length > 0 && (
+                                          <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border-2 border-amber-200 rounded-xl shadow-2xl overflow-hidden max-h-60 overflow-y-auto">
+                                            {sugerencias.map(p => (
+                                              <li
+                                                key={p.id}
+                                                onMouseDown={() => {
+                                                  setFacturaEditData(d => {
+                                                    const items = [...d.items]
+                                                    items[idx] = { ...items[idx], nombre: p.nombre, precio: p.precio }
+                                                    return { ...d, items }
+                                                  })
+                                                  setFacturaDropdownIdx(null)
+                                                }}
+                                                className="flex items-center justify-between px-4 py-2.5 hover:bg-amber-50 cursor-pointer border-b border-gray-50 last:border-0 group"
+                                              >
+                                                <span className="text-sm font-medium text-gray-800 truncate pr-2 group-hover:text-amber-700">{p.nombre}</span>
+                                                <span className="text-xs font-bold text-amber-600 whitespace-nowrap bg-amber-50 px-2 py-0.5 rounded-full">RD${Number(p.precio).toLocaleString()}</span>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        )}
+                                      </div>
+                                      <input
+                                        type="number" min="1"
+                                        value={item.cantidad}
+                                        onChange={e => setFacturaEditData(d => {
+                                          const items = [...d.items]; items[idx] = { ...items[idx], cantidad: Number(e.target.value) }; return { ...d, items }
+                                        })}
+                                        className="border-2 border-gray-200 focus:border-amber-400 rounded-xl px-2 py-2 text-sm text-center font-medium focus:outline-none transition-colors"
+                                      />
+                                      <input
+                                        type="number" min="0"
+                                        value={item.precio}
+                                        onChange={e => setFacturaEditData(d => {
+                                          const items = [...d.items]; items[idx] = { ...items[idx], precio: e.target.value }; return { ...d, items }
+                                        })}
+                                        className="border-2 border-gray-200 focus:border-amber-400 rounded-xl px-2 py-2 text-sm text-right font-medium focus:outline-none transition-colors"
+                                      />
+                                      <button
+                                        onClick={() => setFacturaEditData(d => ({ ...d, items: d.items.filter((_, i) => i !== idx) }))}
+                                        className="w-8 h-8 mt-0.5 flex items-center justify-center rounded-lg bg-red-50 hover:bg-red-100 text-red-400 hover:text-red-600 text-lg font-bold transition-colors"
+                                        title="Eliminar línea"
+                                      >×</button>
+                                    </div>
+                                  )
+                                })}
+                              </div>
+
+                              <button
+                                onClick={() => setFacturaEditData(d => ({ ...d, items: [...d.items, { nombre: '', cantidad: 1, precio: '' }] }))}
+                                className="mt-3 flex items-center gap-1.5 text-xs text-amber-600 hover:text-amber-700 font-bold border-2 border-dashed border-amber-300 hover:border-amber-400 rounded-xl px-4 py-2 transition-colors w-full justify-center"
                               >
-                                <option value="pendiente">⏳ Pendiente</option>
-                                <option value="parcial">⚠️ Pago parcial</option>
-                                <option value="pagado">✅ Pagado</option>
-                              </select>
-                            </div>
-                            <div>
-                              <label className="block text-xs font-semibold text-gray-600 mb-1">Observaciones</label>
-                              <input
-                                value={facturaEditData.notas}
-                                onChange={e => setFacturaEditData(d => ({ ...d, notas: e.target.value }))}
-                                placeholder="Notas internas..."
-                                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                              />
-                            </div>
-                          </div>
+                                + Agregar producto
+                              </button>
 
-                          {/* Acciones */}
-                          <div className="flex gap-3">
-                            <button
-                              onClick={async () => {
-                                setSavingFactura(true)
-                                try {
-                                  const newTotal = facturaEditData.items.reduce((s, i) => s + Number(i.precio) * Number(i.cantidad), 0)
-                                  const body = { ...facturaEditData, total: newTotal }
-                                  const res = await api.updateOrder(facturaOrder._id, body)
-                                  const updated = res.order || { ...facturaOrder, ...body }
-                                  setFacturaOrder(updated)
-                                  setOrders(prev => prev.map(o => o._id === updated._id ? updated : o))
-                                  setFacturaEditMode(false)
-                                } catch (err) {
-                                  alert('Error al guardar: ' + (err.message || err))
-                                } finally {
-                                  setSavingFactura(false)
-                                }
-                              }}
-                              disabled={savingFactura}
-                              className="flex-1 bg-[#1B3A6B] hover:bg-[#0a1628] text-white font-bold py-3 rounded-2xl text-sm transition-colors disabled:opacity-60"
-                            >
-                              {savingFactura ? 'Guardando...' : '💾 Guardar cambios'}
-                            </button>
-                            <button
-                              onClick={() => setFacturaEditMode(false)}
-                              className="px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl text-sm transition-colors"
-                            >
-                              Cancelar
-                            </button>
+                              {/* Subtotal en vivo */}
+                              <div className="mt-3 bg-gray-50 rounded-xl px-4 py-3 flex items-center justify-between">
+                                <span className="text-xs text-gray-500 font-semibold">Total calculado</span>
+                                <span className="text-base font-extrabold text-[#1B3A6B]">
+                                  RD${facturaEditData.items.reduce((s, i) => s + Number(i.precio || 0) * Number(i.cantidad || 1), 0).toLocaleString()}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* ── Estado + notas ── */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="w-5 h-5 rounded-full bg-[#1B3A6B] text-white text-xs flex items-center justify-center font-bold">3</span>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Estado y notas</p>
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Estado de pago</label>
+                                  <select
+                                    value={facturaEditData.pagado}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, pagado: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                  >
+                                    <option value="pendiente">⏳ Pendiente</option>
+                                    <option value="parcial">⚠️ Pago parcial</option>
+                                    <option value="pagado">✅ Pagado</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Observaciones</label>
+                                  <input
+                                    value={facturaEditData.notas}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, notas: e.target.value }))}
+                                    placeholder="Notas del pedido..."
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* ── Botones ── */}
+                            <div className="flex gap-3 pt-2">
+                              <button
+                                onClick={async () => {
+                                  setSavingFactura(true)
+                                  try {
+                                    const newTotal = facturaEditData.items.reduce((s, i) => s + Number(i.precio) * Number(i.cantidad), 0)
+                                    const body = { ...facturaEditData, total: newTotal }
+                                    const res = await api.updateOrder(facturaOrder._id, body)
+                                    const updated = res.order || { ...facturaOrder, ...body }
+                                    setFacturaOrder(updated)
+                                    setOrders(prev => prev.map(o => o._id === updated._id ? updated : o))
+                                    setFacturaEditMode(false)
+                                  } catch (err) {
+                                    alert('Error al guardar: ' + (err.message || err))
+                                  } finally {
+                                    setSavingFactura(false)
+                                  }
+                                }}
+                                disabled={savingFactura}
+                                className="flex-1 bg-[#1B3A6B] hover:bg-[#0a1628] text-white font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+                              >
+                                {savingFactura
+                                  ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Guardando...</>
+                                  : '💾 Guardar cambios'}
+                              </button>
+                              <button
+                                onClick={() => setFacturaEditMode(false)}
+                                className="px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl text-sm transition-colors"
+                              >
+                                Cancelar
+                              </button>
+                            </div>
                           </div>
                         </div>
                       )}
