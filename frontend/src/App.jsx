@@ -18,6 +18,7 @@ import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
 import LeadPopup from './components/LeadPopup'
 import CartDrawer from './components/CartDrawer'
+import CookieConsent from './components/CookieConsent'
 import Home from './pages/Home'
 import Catalogo from './pages/Catalogo'
 import ProductoDetalle from './pages/ProductoDetalle'
@@ -26,14 +27,16 @@ import SobreNosotros from './pages/SobreNosotros'
 import Contacto from './pages/Contacto'
 import FAQ from './pages/FAQ'
 import Combos from './pages/Combos'
+import ComboDetalle from './pages/ComboDetalle'
 import Dashboard from './pages/Dashboard'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
 import Privacidad from './pages/Privacidad'
 import Terminos from './pages/Terminos'
+import Unete from './pages/Unete'
 
 // Páginas que NO deben mostrar el Navbar/Footer público
-const DASHBOARD_ROUTES = ['/dashboard']
+const DASHBOARD_ROUTES = ['/dashboard', '/unete']
 
 // Detecta ?ref= en URL y guarda en sessionStorage para atribuir leads
 function RefTracker() {
@@ -67,10 +70,12 @@ function Layout() {
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/combos" element={<Combos />} />
+          <Route path="/combos/:id" element={<ComboDetalle />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/privacidad" element={<Privacidad />} />
           <Route path="/terminos" element={<Terminos />} />
+          <Route path="/unete" element={<Unete />} />
           <Route
             path="/dashboard"
             element={
@@ -85,6 +90,7 @@ function Layout() {
       {!isDashboard && <WhatsAppFloat />}
       {!isDashboard && <LeadPopup />}
       {!isDashboard && <CartDrawer />}
+      <CookieConsent />
     </div>
   )
 }

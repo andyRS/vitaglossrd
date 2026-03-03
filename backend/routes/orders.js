@@ -46,13 +46,15 @@ router.post('/', async (req, res) => {
     const { items, total, nombre, whatsapp, refCode, source } = req.body
     if (!items || !items.length) return res.status(400).json({ error: 'El pedido está vacío' })
 
+    const count = await Order.countDocuments()
     const order = await Order.create({
       items,
       total,
-      nombre:   nombre  || 'Cliente web',
-      whatsapp: whatsapp || '',
-      refCode:  refCode  || '',
-      source:   source   || 'web_cart',
+      nombre:        nombre  || 'Cliente web',
+      whatsapp:      whatsapp || '',
+      refCode:       refCode  || '',
+      source:        source   || 'web_carrito',
+      invoiceNumber: count + 1,
     })
 
     // Disparar n8n en background (no bloquea la respuesta)
@@ -64,7 +66,31 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Error al guardar el pedido' })
   }
 })
+// ── POST /api/orders/admin — crear pedido manual desde el panel (admin) ───────────
+router.post('/admin', protect, adminOnly, async (req, res) => {
+  try {
+    const { items, total, nombre, whatsapp, direccionEntrega, notas, pagado } = req.body
+    if (!items || !items.length) return res.status(400).json({ error: 'El pedido está vacío' })
 
+    const count = await Order.countDocuments()
+    const order = await Order.create({
+      items,
+      total,
+      nombre:           nombre           || 'Cliente manual',
+      whatsapp:         whatsapp         || '',
+      direccionEntrega: direccionEntrega  || '',
+      notas:            notas            || '',
+      pagado:           pagado           || 'pendiente',
+      source:           'manual',
+      estado:           'nuevo',
+      invoiceNumber:    count + 1,
+    })
+    res.status(201).json({ ok: true, order })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Error al guardar el pedido' })
+  }
+})
 // ── GET /api/orders — listar pedidos (admin) ──────────────────────────────
 router.get('/', protect, adminOnly, async (req, res) => {
   try {
@@ -95,13 +121,19 @@ router.get('/:id', protect, adminOnly, async (req, res) => {
   }
 })
 
-// ── PATCH /api/orders/:id — actualizar estado / notas (admin) ────────────
+// ── PATCH /api/orders/:id — actualizar pedido completo (admin) ────────────
 router.patch('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const { estado, notas } = req.body
+    const { estado, notas, pagado, direccionEntrega, nombre, whatsapp, items, total } = req.body
     const update = {}
-    if (estado) update.estado = estado
-    if (notas  !== undefined) update.notas = notas
+    if (estado           !== undefined) update.estado           = estado
+    if (notas            !== undefined) update.notas            = notas
+    if (pagado           !== undefined) update.pagado           = pagado
+    if (direccionEntrega !== undefined) update.direccionEntrega = direccionEntrega
+    if (nombre           !== undefined) update.nombre           = nombre
+    if (whatsapp         !== undefined) update.whatsapp         = whatsapp
+    if (items            !== undefined) update.items            = items
+    if (total            !== undefined) update.total            = total
 
     const order = await Order.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true })
     if (!order) return res.status(404).json({ error: 'Pedido no encontrado' })

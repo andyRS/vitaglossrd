@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import { api } from '../services/api'
 import { useSEO } from '../hooks/useSEO'
 import AcademiaTab from '../components/academia/AcademiaTab'
+import { productos } from '../data/productos'
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 const ESTADO_LEAD = ['nuevo', 'contactado', 'interesado', 'cerrado', 'perdido']
@@ -24,6 +25,36 @@ const BADGE_VENTA = {
   enviado:    'bg-purple-100 text-purple-700',
   entregado:  'bg-green-100 text-green-700',
   cancelado:  'bg-red-100 text-red-700',
+}
+
+// ─── Order states ────────────────────────────────────────────────────────────
+const ORDER_ESTADOS = [
+  { value: 'nuevo',      label: '🆕 Nuevo',      badge: 'bg-sky-100 text-sky-700' },
+  { value: 'confirmado', label: '💬 Confirmado',  badge: 'bg-blue-100 text-blue-700' },
+  { value: 'preparando', label: '📦 Preparando',  badge: 'bg-amber-100 text-amber-700' },
+  { value: 'enviado',    label: '🚚 Enviado',     badge: 'bg-purple-100 text-purple-700' },
+  { value: 'en_camino',  label: '🛣️ En camino',   badge: 'bg-orange-100 text-orange-700' },
+  { value: 'entregado',  label: '✅ Entregado',   badge: 'bg-green-100 text-green-700' },
+  { value: 'cancelado',  label: '❌ Cancelado',   badge: 'bg-red-100 text-red-700' },
+]
+const ORDER_PAGO = [
+  { value: 'pendiente', label: '⏳ Pendiente', badge: 'bg-yellow-100 text-yellow-700' },
+  { value: 'parcial',   label: '〽️ Parcial',   badge: 'bg-orange-100 text-orange-700' },
+  { value: 'pagado',    label: '✅ Pagado',     badge: 'bg-green-100 text-green-700' },
+]
+
+function waMessageForEstado(order) {
+  const n = order.nombre || 'cliente'
+  const t = `RD$${order.total.toLocaleString()}`
+  switch (order.estado) {
+    case 'nuevo':      return `Hola *${n}* 👋 Acabo de recibir tu pedido de ${t}. ¿Lo confirmamos?`
+    case 'confirmado': return `Hola *${n}* ✅ Tu pedido de ${t} está confirmado. Lo estamos preparando ahora mismo 📦`
+    case 'preparando': return `Hola *${n}* 📦 Tu pedido ya está siendo preparado. Te aviso cuando esté listo para envío.`
+    case 'enviado':    return `Hola *${n}* 🚚 Tu pedido de ${t} ha sido enviado. ¡Espéralo pronto!`
+    case 'en_camino':  return `Hola *${n}* 🛣️ Tu pedido está *en camino* y llegará en breve. ¡Prepárate para recibirlo!`
+    case 'entregado':  return `Hola *${n}* ✅ ¡Tu pedido fue entregado! Espero que estés satisfecho/a. ¿Todo bien con el producto?`
+    default:           return `Hola *${n}*, hablamos sobre tu pedido de ${t}`
+  }
 }
 
 const TABS = ['📊 Resumen', '👥 Leads', '💰 Ventas', '💬 Plantillas', '🟢 Equipo VitaGlossRD', '📦 Pedidos Web', '⚙️ Perfil']
@@ -114,6 +145,19 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([])
   const [loadingOrders, setLoadingOrders] = useState(false)
   const [orderEstadoFilter, setOrderEstadoFilter] = useState('')
+  const [orderModal, setOrderModal] = useState(false)
+  const [orderSaving, setOrderSaving] = useState(false)
+  const [orderSearch, setOrderSearch] = useState('')
+  const EMPTY_ORDER = { nombre: '', whatsapp: '', direccionEntrega: '', notas: '', pagado: 'pendiente', items: [{ nombre: '', precio: '', cantidad: 1 }] }
+  const [orderForm, setOrderForm] = useState(EMPTY_ORDER)
+
+  // invoice
+  const [facturaModal, setFacturaModal] = useState(false)
+  const [facturaOrder, setFacturaOrder] = useState(null)
+  const [facturaEditMode, setFacturaEditMode] = useState(false)
+  const [facturaEditData, setFacturaEditData] = useState(null)
+  const [savingFactura, setSavingFactura] = useState(false)
+  const [facturaDropdownIdx, setFacturaDropdownIdx] = useState(null)
 
   // templates copy feedback
   const [copied, setCopied] = useState(null)
@@ -146,6 +190,44 @@ export default function Dashboard() {
     } catch {}
     finally { setLoadingOrders(false) }
   }, [])
+
+  // ── order helpers ──────────────────────────────────────────────────────────
+  const orderTotal = (items) => items.reduce((s, i) => s + (Number(i.precio) || 0) * (Number(i.cantidad) || 1), 0)
+
+  const addOrderItem = () => setOrderForm(f => ({ ...f, items: [...f.items, { nombre: '', precio: '', cantidad: 1 }] }))
+  const removeOrderItem = (idx) => setOrderForm(f => ({ ...f, items: f.items.filter((_, i) => i !== idx) }))
+  const setOrderItem = (idx, field, val) => setOrderForm(f => ({ ...f, items: f.items.map((it, i) => i === idx ? { ...it, [field]: val } : it) }))
+
+  const submitOrderAdmin = async (e) => {
+    e.preventDefault()
+    const items = orderForm.items.filter(i => i.nombre && i.precio)
+    if (!items.length) return
+    setOrderSaving(true)
+    try {
+      const mappedItems = items.map(i => ({ nombre: i.nombre, cantidad: Number(i.cantidad) || 1, precio: Number(i.precio) || 0, articulo: i.articulo || '' }))
+      const total = orderTotal(items)
+      const saved = await api.createOrderAdmin({ ...orderForm, items: mappedItems, total })
+      setOrderModal(false)
+      // open invoice automatically
+      setFacturaOrder({
+        _id: saved?.order?._id || saved?._id || ('MANUAL-' + Date.now()),
+        invoiceNumber: saved?.order?.invoiceNumber || null,
+        nombre: orderForm.nombre,
+        whatsapp: orderForm.whatsapp,
+        direccionEntrega: orderForm.direccionEntrega,
+        notas: orderForm.notas,
+        pagado: orderForm.pagado,
+        items: mappedItems,
+        total,
+        createdAt: new Date().toISOString(),
+        source: 'manual',
+      })
+      setFacturaModal(true)
+      setOrderForm(EMPTY_ORDER)
+      loadOrders(orderEstadoFilter)
+    } catch (err) { alert(err.message) }
+    finally { setOrderSaving(false) }
+  }
 
   useEffect(() => {
     loadStats()
@@ -680,29 +762,50 @@ export default function Dashboard() {
           </Section>
         )}
 
-        {/* ── TAB 5: PEDIDOS WEB ────────────────────────────────────────────────── */}
+        {/* ── TAB 5: PEDIDOS ────────────────────────────────────────────────── */}
         {tab === 5 && (
           <Section>
-            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-              <div>
-                <h2 className="text-2xl font-black text-primary mb-1">Pedidos Web</h2>
-                <p className="text-gray-500 text-sm">Pedidos recibidos desde el carrito en la web.</p>
-              </div>
-              <div className="flex items-center gap-2">
+            {/* Mini stats del día */}
+            {(() => {
+              const hoy = new Date().toDateString()
+              const pedidosHoy = orders.filter(o => new Date(o.createdAt).toDateString() === hoy)
+              const pendientes = orders.filter(o => !['entregado','cancelado'].includes(o.estado))
+              const ingresosHoy = pedidosHoy.reduce((s, o) => s + o.total, 0)
+              return (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                  {[
+                    { label: 'Total pedidos', val: orders.length, color: 'bg-primary/10 text-primary' },
+                    { label: 'Hoy', val: pedidosHoy.length, color: 'bg-blue-50 text-blue-700' },
+                    { label: 'Activos', val: pendientes.length, color: 'bg-amber-50 text-amber-700' },
+                    { label: 'Ingresos hoy', val: `RD$${ingresosHoy.toLocaleString()}`, color: 'bg-green-50 text-green-700' },
+                  ].map(s => (
+                    <div key={s.label} className={`${s.color} rounded-2xl p-4 text-center`}>
+                      <p className="text-2xl font-black">{s.val}</p>
+                      <p className="text-xs font-semibold opacity-70 mt-0.5">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              )
+            })()}
+
+            {/* Header + controles */}
+            <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+              <h2 className="text-2xl font-black text-primary">Pedidos</h2>
+              <div className="flex items-center gap-2 flex-wrap">
                 <select
                   value={orderEstadoFilter}
                   onChange={e => { setOrderEstadoFilter(e.target.value); loadOrders(e.target.value) }}
                   className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary"
                 >
-                  <option value="">Todos</option>
-                  <option value="nuevo">Nuevos</option>
-                  <option value="contactado">Contactados</option>
-                  <option value="confirmado">Confirmados</option>
-                  <option value="entregado">Entregados</option>
-                  <option value="cancelado">Cancelados</option>
+                  <option value="">Todos los estados</option>
+                  {ORDER_ESTADOS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
-                <button onClick={() => loadOrders(orderEstadoFilter)} className="border border-gray-200 rounded-xl px-3 py-2 text-sm hover:bg-gray-50 transition-colors">
-                  🔄
+                <button onClick={() => loadOrders(orderEstadoFilter)} className="border border-gray-200 rounded-xl px-3 py-2 text-sm hover:bg-gray-50 transition-colors">🔄</button>
+                <button
+                  onClick={() => setOrderModal(true)}
+                  className="bg-primary text-white rounded-xl px-4 py-2 text-sm font-bold hover:bg-blue-900 transition-colors flex items-center gap-2"
+                >
+                  ＋ Nuevo pedido
                 </button>
               </div>
             </div>
@@ -713,72 +816,695 @@ export default function Dashboard() {
               <div className="text-center py-20">
                 <p className="text-5xl mb-3">📦</p>
                 <p className="text-gray-400 font-medium">No hay pedidos aún</p>
-                <p className="text-gray-300 text-sm mt-1">Cuando un cliente confirme un pedido desde la web aparecerá aquí</p>
+                <p className="text-gray-300 text-sm mt-1">Crea un pedido manualmente o espera uno del carrito web</p>
+                <button onClick={() => setOrderModal(true)} className="mt-4 bg-primary text-white rounded-xl px-5 py-2.5 text-sm font-bold hover:bg-blue-900 transition-colors">＋ Crear primer pedido</button>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {orders.map(order => (
-                  <div key={order._id} className="bg-white rounded-3xl border border-gray-100 p-5 hover:shadow-md transition-shadow">
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="font-black text-gray-800">{order.nombre}</p>
-                          {order.refCode && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-semibold">ref: {order.refCode}</span>}
+                {orders.map(order => {
+                  const estadoInfo = ORDER_ESTADOS.find(s => s.value === order.estado) || ORDER_ESTADOS[0]
+                  const pagoInfo = ORDER_PAGO.find(p => p.value === (order.pagado || 'pendiente')) || ORDER_PAGO[0]
+                  return (
+                    <div key={order._id} className="bg-white rounded-3xl border border-gray-100 p-5 hover:shadow-md transition-shadow">
+                      {/* Header de la card */}
+                      <div className="flex items-start justify-between gap-3 mb-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <p className="font-black text-gray-800 truncate">{order.nombre}</p>
+                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${order.source === 'manual' ? 'bg-gray-100 text-gray-500' : 'bg-indigo-100 text-indigo-600'}`}>
+                              {order.source === 'manual' ? '✏️ Manual' : '🛒 Web'}
+                            </span>
+                            {order.refCode && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-semibold">ref: {order.refCode}</span>}
+                          </div>
+                          {order.whatsapp && (
+                            <a href={`https://wa.me/${order.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer"
+                              className="text-green-600 text-sm font-semibold hover:underline inline-flex items-center gap-1">
+                              📲 {order.whatsapp}
+                            </a>
+                          )}
+                          {order.direccionEntrega && <p className="text-gray-400 text-xs mt-0.5 truncate">📍 {order.direccionEntrega}</p>}
+                          <p className="text-gray-300 text-xs mt-1">{new Date(order.createdAt).toLocaleString('es-DO', { dateStyle: 'medium', timeStyle: 'short' })}</p>
                         </div>
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-2xl font-black text-primary mb-2">RD${order.total.toLocaleString()}</p>
+                          {/* Estado */}
+                          <select
+                            value={order.estado}
+                            onChange={async e => { await api.updateOrder(order._id, { estado: e.target.value }); loadOrders(orderEstadoFilter) }}
+                            className={`text-xs font-bold px-2 py-1 rounded-full border-0 outline-none cursor-pointer mb-1 block ml-auto ${estadoInfo.badge}`}
+                          >
+                            {ORDER_ESTADOS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                          </select>
+                          {/* Pago */}
+                          <select
+                            value={order.pagado || 'pendiente'}
+                            onChange={async e => { await api.updateOrder(order._id, { pagado: e.target.value }); loadOrders(orderEstadoFilter) }}
+                            className={`text-xs font-bold px-2 py-1 rounded-full border-0 outline-none cursor-pointer block ml-auto ${pagoInfo.badge}`}
+                          >
+                            {ORDER_PAGO.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Productos */}
+                      <div className="bg-gray-50 rounded-2xl p-3 space-y-1 mb-3">
+                        {order.items.map((item, i) => (
+                          <div key={i} className="flex justify-between text-sm">
+                            <span className="text-gray-600 truncate pr-2">{item.nombre} <span className="text-gray-400">×{item.cantidad}</span></span>
+                            <span className="font-semibold text-gray-700 flex-shrink-0">RD${(item.precio * item.cantidad).toLocaleString()}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Notas */}
+                      {order.notas && <p className="text-gray-400 text-xs italic mb-3 px-1">💬 {order.notas}</p>}
+
+                      {/* Acciones */}
+                      <div className="flex gap-2">
                         {order.whatsapp && (
-                          <a href={`https://wa.me/${order.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer"
-                            className="text-green-600 text-sm font-semibold hover:underline flex items-center gap-1">
-                            📲 {order.whatsapp}
+                          <a
+                            href={`https://wa.me/${order.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(waMessageForEstado(order))}`}
+                            target="_blank" rel="noopener noreferrer"
+                            className="flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-bold py-2.5 rounded-2xl flex items-center justify-center gap-2 transition-colors"
+                          >
+                            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Mensaje WA
                           </a>
                         )}
-                        <p className="text-gray-400 text-xs mt-1">{new Date(order.createdAt).toLocaleString('es-DO', { dateStyle: 'medium', timeStyle: 'short' })}</p>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <p className="text-xl font-black text-primary">RD${order.total.toLocaleString()}</p>
-                        <select
-                          value={order.estado}
-                          onChange={async e => {
-                            await api.updateOrder(order._id, { estado: e.target.value })
-                            loadOrders(orderEstadoFilter)
-                          }}
-                          className={`mt-1 text-xs font-bold px-2 py-1 rounded-full border-0 outline-none cursor-pointer ${
-                            order.estado === 'nuevo'      ? 'bg-sky-100 text-sky-700' :
-                            order.estado === 'contactado' ? 'bg-yellow-100 text-yellow-700' :
-                            order.estado === 'confirmado' ? 'bg-blue-100 text-blue-700' :
-                            order.estado === 'entregado'  ? 'bg-green-100 text-green-700' :
-                                                            'bg-red-100 text-red-700'
-                          }`}
-                        >
-                          <option value="nuevo">Nuevo</option>
-                          <option value="contactado">Contactado</option>
-                          <option value="confirmado">Confirmado</option>
-                          <option value="entregado">Entregado</option>
-                          <option value="cancelado">Cancelado</option>
-                        </select>
+                        <button
+                          onClick={async () => { if (confirm('¿Eliminar este pedido?')) { await api.deleteOrder(order._id); loadOrders(orderEstadoFilter) } }}
+                          className="bg-red-50 hover:bg-red-100 text-red-500 text-sm font-bold px-4 rounded-2xl transition-colors"
+                        >🗑</button>
+                        <button
+                          onClick={() => { setFacturaOrder(order); setFacturaModal(true) }}
+                          className="bg-amber-50 hover:bg-amber-100 text-amber-600 text-sm font-bold px-4 rounded-2xl transition-colors"
+                          title="Ver / imprimir factura"
+                        >🧾</button>
                       </div>
                     </div>
-                    <div className="bg-gray-50 rounded-2xl p-3 space-y-1">
-                      {order.items.map((item, i) => (
-                        <div key={i} className="flex justify-between text-sm">
-                          <span className="text-gray-600">{item.nombre} <span className="text-gray-400">x{item.cantidad}</span></span>
-                          <span className="font-semibold text-gray-700">RD${(item.precio * item.cantidad).toLocaleString()}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {order.whatsapp && (
-                      <a
-                        href={`https://wa.me/${order.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(`Hola *${order.nombre}* 👋 Tu pedido de RD$${order.total.toLocaleString()} está confirmado ✅ ¿Cuándo podemos coordinarlo?`)}`}
-                        target="_blank" rel="noopener noreferrer"
-                        className="mt-3 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-bold py-2.5 rounded-2xl flex items-center justify-center gap-2 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Confirmar por WhatsApp
-                      </a>
-                    )}
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             )}
+
+            {/* ── MODAL NUEVO PEDIDO ─────────────────────────────────────────── */}
+            <AnimatePresence>
+              {orderModal && (
+                <motion.div
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto"
+                  onClick={e => e.target === e.currentTarget && setOrderModal(false)}
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
+                    className="bg-white rounded-3xl w-full max-w-lg my-8 overflow-hidden shadow-2xl"
+                  >
+                    <div className="bg-gradient-to-r from-primary to-blue-700 p-6 text-white flex items-center justify-between">
+                      <div>
+                        <h3 className="text-xl font-black">Nuevo Pedido</h3>
+                        <p className="text-white/60 text-sm">Crea un pedido manualmente desde WhatsApp</p>
+                      </div>
+                      <button onClick={() => setOrderModal(false)} className="text-white/60 hover:text-white text-2xl leading-none">×</button>
+                    </div>
+
+                    <form onSubmit={submitOrderAdmin} className="p-6 space-y-5">
+                      {/* Cliente */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Nombre cliente *</label>
+                          <input
+                            required
+                            value={orderForm.nombre}
+                            onChange={e => setOrderForm(f => ({ ...f, nombre: e.target.value }))}
+                            placeholder="Ej: María Rodríguez"
+                            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">WhatsApp</label>
+                          <input
+                            value={orderForm.whatsapp}
+                            onChange={e => setOrderForm(f => ({ ...f, whatsapp: e.target.value }))}
+                            placeholder="18091234567"
+                            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Dirección de entrega</label>
+                        <input
+                          value={orderForm.direccionEntrega}
+                          onChange={e => setOrderForm(f => ({ ...f, direccionEntrega: e.target.value }))}
+                          placeholder="Sector, calle, número, ciudad"
+                          className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary"
+                        />
+                      </div>
+
+                      {/* Productos */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Productos *</label>
+                          <button type="button" onClick={addOrderItem} className="text-primary text-xs font-bold hover:underline">＋ Agregar</button>
+                        </div>
+                        {/* Buscador rápido */}
+                        <div className="relative mb-2">
+                          <input
+                            value={orderSearch}
+                            onChange={e => setOrderSearch(e.target.value)}
+                            placeholder="🔍 Buscar producto del catálogo..."
+                            className="w-full border border-dashed border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary"
+                          />
+                          {orderSearch.length > 1 && (
+                            <div className="absolute z-10 top-full left-0 right-0 bg-white border border-gray-100 rounded-xl shadow-lg mt-1 max-h-40 overflow-y-auto">
+                              {productos.filter(p => p.nombre.toLowerCase().includes(orderSearch.toLowerCase())).slice(0, 6).map(p => (
+                                <button type="button" key={p.id}
+                                  onClick={() => {
+                                    const emptyIdx = orderForm.items.findIndex(i => !i.nombre)
+                                    if (emptyIdx >= 0) {
+                                      setOrderItem(emptyIdx, 'nombre', p.nombre)
+                                      setOrderItem(emptyIdx, 'precio', p.precio)
+                                      setOrderItem(emptyIdx, 'articulo', p.articulo)
+                                    } else {
+                                      setOrderForm(f => ({ ...f, items: [...f.items, { nombre: p.nombre, precio: p.precio, cantidad: 1, articulo: p.articulo }] }))
+                                    }
+                                    setOrderSearch('')
+                                  }}
+                                  className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center justify-between border-b border-gray-50 last:border-0"
+                                >
+                                  <span className="truncate pr-2">{p.nombre}</span>
+                                  <span className="text-primary font-bold flex-shrink-0">RD${p.precio.toLocaleString()}</span>
+                                </button>
+                              ))}
+                              {productos.filter(p => p.nombre.toLowerCase().includes(orderSearch.toLowerCase())).length === 0 && (
+                                <p className="text-center text-gray-400 text-xs py-3">Sin resultados</p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <div className="space-y-2">
+                          {orderForm.items.map((item, idx) => (
+                            <div key={idx} className="grid grid-cols-12 gap-2 items-center">
+                              <input
+                                value={item.nombre}
+                                onChange={e => setOrderItem(idx, 'nombre', e.target.value)}
+                                placeholder="Producto"
+                                className="col-span-5 border border-gray-200 rounded-xl px-2.5 py-2 text-sm focus:outline-none focus:border-primary"
+                              />
+                              <input
+                                type="number" min="0"
+                                value={item.precio}
+                                onChange={e => setOrderItem(idx, 'precio', e.target.value)}
+                                placeholder="Precio"
+                                className="col-span-3 border border-gray-200 rounded-xl px-2.5 py-2 text-sm focus:outline-none focus:border-primary"
+                              />
+                              <input
+                                type="number" min="1"
+                                value={item.cantidad}
+                                onChange={e => setOrderItem(idx, 'cantidad', e.target.value)}
+                                className="col-span-2 border border-gray-200 rounded-xl px-2.5 py-2 text-sm focus:outline-none focus:border-primary"
+                              />
+                              <button type="button" onClick={() => removeOrderItem(idx)} className="col-span-2 text-red-400 hover:text-red-600 text-lg font-bold text-center">×</button>
+                            </div>
+                          ))}
+                        </div>
+                        {/* Total calculado */}
+                        <div className="mt-3 bg-primary/5 rounded-xl px-4 py-2.5 flex justify-between items-center">
+                          <span className="text-sm font-bold text-gray-500">Total</span>
+                          <span className="text-lg font-black text-primary">RD${orderTotal(orderForm.items).toLocaleString()}</span>
+                        </div>
+                      </div>
+
+                      {/* Pago + notas */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Estado del pago</label>
+                          <select
+                            value={orderForm.pagado}
+                            onChange={e => setOrderForm(f => ({ ...f, pagado: e.target.value }))}
+                            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary"
+                          >
+                            {ORDER_PAGO.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Notas internas</label>
+                          <input
+                            value={orderForm.notas}
+                            onChange={e => setOrderForm(f => ({ ...f, notas: e.target.value }))}
+                            placeholder="Ej: cliente regular"
+                            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3 pt-2">
+                        <button type="button" onClick={() => setOrderModal(false)} className="flex-1 border border-gray-200 rounded-2xl py-3 text-sm font-bold hover:bg-gray-50 transition-colors">Cancelar</button>
+                        <button type="submit" disabled={orderSaving} className="flex-1 bg-primary text-white rounded-2xl py-3 text-sm font-bold hover:bg-blue-900 transition-colors disabled:opacity-60">
+                          {orderSaving ? 'Guardando...' : '✓ Crear pedido'}
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ── MODAL FACTURA ─────────────────────────────────────────────── */}
+            <AnimatePresence>
+              {facturaModal && facturaOrder && (() => {
+                const numFactura = facturaOrder.invoiceNumber
+                  ? `VG-${String(facturaOrder.invoiceNumber).padStart(4, '0')}`
+                  : String(facturaOrder._id).slice(-6).toUpperCase()
+                const fechaFactura = new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { year: 'numeric', month: 'long', day: '2-digit' })
+                const subtotalItems = facturaOrder.items.map(i => ({ ...i, subtotal: Number(i.precio) * Number(i.cantidad) }))
+                return (
+                  <motion.div
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto"
+                    onClick={e => e.target === e.currentTarget && setFacturaModal(false)}
+                  >
+                    <motion.div
+                      initial={{ scale: 0.96, y: 24 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.96, y: 24 }}
+                      className="w-full max-w-4xl my-8"
+                    >
+                      {/* ─ Barra de acciones (no se imprime) ─ */}
+                      <div className="flex gap-2 mb-3 print:hidden">
+                        <button
+                          onClick={() => window.print()}
+                          className="flex-1 bg-[#1B3A6B] hover:bg-[#0a1628] text-white font-bold py-3 rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 shadow-lg"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.75 19.5m10.36-5.671a42.41 42.41 0 00-10.56 0m10.56 0L17.25 19.5M9 10.5h.01M15 10.5h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                          🖨️ Imprimir / Guardar PDF
+                        </button>
+                        <button
+                          onClick={() => {
+                            setFacturaEditData({
+                              nombre: facturaOrder.nombre || '',
+                              whatsapp: facturaOrder.whatsapp || '',
+                              direccionEntrega: facturaOrder.direccionEntrega || '',
+                              items: facturaOrder.items.map(i => ({ nombre: i.nombre, cantidad: i.cantidad, precio: i.precio })),
+                              pagado: facturaOrder.pagado || 'pendiente',
+                              notas: facturaOrder.notas || '',
+                            })
+                            setFacturaEditMode(true)
+                          }}
+                          className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 shadow-lg"
+                        >
+                          ✏️ Editar factura
+                        </button>
+                        <button
+                          onClick={() => {
+                            const lineas = subtotalItems.map(i => `  • ${i.nombre}  ×${i.cantidad}  →  RD$${i.subtotal.toLocaleString()}`)
+                            const txt = [
+                              `╔══════════════════════════════╗`,
+                              `║   🧾  RECIBO DE COMPRA       ║`,
+                              `║      VitaGloss RD            ║`,
+                              `╚══════════════════════════════╝`,
+                              ``,
+                              `N.° ${numFactura}   📅 ${fechaFactura}`,
+                              ``,
+                              `👤 *Cliente:* ${facturaOrder.nombre}`,
+                              facturaOrder.whatsapp ? `📲 ${facturaOrder.whatsapp}` : '',
+                              facturaOrder.direccionEntrega ? `📍 ${facturaOrder.direccionEntrega}` : '',
+                              ``,
+                              `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+                              `🛒 *Productos:*`,
+                              ...lineas,
+                              `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+                              `💰 *TOTAL: RD$${facturaOrder.total.toLocaleString()}*`,
+                              facturaOrder.pagado === 'pagado' ? `✅ Pagado` : facturaOrder.pagado === 'parcial' ? `⚠️ Pago parcial` : `⏳ Pendiente de pago`,
+                              facturaOrder.notas ? `\n📝 ${facturaOrder.notas}` : '',
+                              ``,
+                              `¡Gracias por tu compra! 🌿`,
+                              `Productos Amway 100% originales`,
+                              `WhatsApp: 849-276-3532`,
+                            ].filter(l => l !== undefined && l !== null).join('\n')
+                            navigator.clipboard?.writeText(txt)
+                            alert('✅ Recibo copiado. Pégalo en WhatsApp.')
+                          }}
+                          className="flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold py-3 rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 shadow-lg"
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zm-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                          Enviar por WA
+                        </button>
+                        <button onClick={() => setFacturaModal(false)} className="bg-white/90 hover:bg-white text-gray-600 font-bold px-5 rounded-2xl text-lg transition-colors shadow-lg">✕</button>
+                      </div>
+
+                      {/* ─────────── PANEL EDICIÓN ─────────── */}
+                      {facturaEditMode && facturaEditData && (
+                        <div className="bg-white rounded-2xl shadow-2xl mb-4 border-2 border-amber-400 overflow-hidden print:hidden">
+                          {/* Header del panel */}
+                          <div className="bg-amber-500 px-6 py-4 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl">✏️</span>
+                              <div>
+                                <h3 className="text-white font-extrabold text-base leading-tight">Editando {numFactura}</h3>
+                                <p className="text-amber-100 text-xs">Los cambios se guardan en la base de datos al presionar Guardar</p>
+                              </div>
+                            </div>
+                            <button onClick={() => setFacturaEditMode(false)} className="text-white/80 hover:text-white text-2xl font-bold leading-none">✕</button>
+                          </div>
+
+                          <div className="p-6 space-y-6">
+
+                            {/* ── Datos del cliente ── */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="w-5 h-5 rounded-full bg-[#1B3A6B] text-white text-xs flex items-center justify-center font-bold">1</span>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Datos del cliente</p>
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Nombre completo</label>
+                                  <input
+                                    value={facturaEditData.nombre}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, nombre: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                    placeholder="Nombre del cliente"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
+                                  <input
+                                    value={facturaEditData.whatsapp}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, whatsapp: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                    placeholder="(849) 000-0000"
+                                  />
+                                </div>
+                                <div className="sm:col-span-2">
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Dirección de entrega</label>
+                                  <input
+                                    value={facturaEditData.direccionEntrega}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, direccionEntrega: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                    placeholder="Dirección completa..."
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* ── Productos ── */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="w-5 h-5 rounded-full bg-[#1B3A6B] text-white text-xs flex items-center justify-center font-bold">2</span>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Productos</p>
+                              </div>
+
+                              {/* Cabecera tabla */}
+                              <div className="grid grid-cols-[1fr_64px_96px_32px] gap-2 px-2 mb-1">
+                                <span className="text-xs text-gray-400 font-semibold">Producto</span>
+                                <span className="text-xs text-gray-400 font-semibold text-center">Cant.</span>
+                                <span className="text-xs text-gray-400 font-semibold text-right">Precio</span>
+                                <span />
+                              </div>
+
+                              <div className="space-y-2">
+                                {facturaEditData.items.map((item, idx) => {
+                                  const sugerencias = item.nombre.trim().length > 0
+                                    ? productos.filter(p => p.nombre.toLowerCase().includes(item.nombre.toLowerCase())).slice(0, 7)
+                                    : productos.slice(0, 7)
+                                  return (
+                                    <div key={idx} className="grid grid-cols-[1fr_64px_96px_32px] gap-2 items-start">
+                                      {/* Autocomplete nombre */}
+                                      <div className="relative">
+                                        <input
+                                          value={item.nombre}
+                                          onChange={e => {
+                                            setFacturaEditData(d => {
+                                              const items = [...d.items]; items[idx] = { ...items[idx], nombre: e.target.value }; return { ...d, items }
+                                            })
+                                            setFacturaDropdownIdx(idx)
+                                          }}
+                                          onFocus={() => setFacturaDropdownIdx(idx)}
+                                          onBlur={() => setTimeout(() => setFacturaDropdownIdx(null), 150)}
+                                          placeholder="Buscar producto..."
+                                          className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none transition-colors"
+                                        />
+                                        {facturaDropdownIdx === idx && sugerencias.length > 0 && (
+                                          <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border-2 border-amber-200 rounded-xl shadow-2xl overflow-hidden max-h-60 overflow-y-auto">
+                                            {sugerencias.map(p => (
+                                              <li
+                                                key={p.id}
+                                                onMouseDown={() => {
+                                                  setFacturaEditData(d => {
+                                                    const items = [...d.items]
+                                                    items[idx] = { ...items[idx], nombre: p.nombre, precio: p.precio }
+                                                    return { ...d, items }
+                                                  })
+                                                  setFacturaDropdownIdx(null)
+                                                }}
+                                                className="flex items-center justify-between px-4 py-2.5 hover:bg-amber-50 cursor-pointer border-b border-gray-50 last:border-0 group"
+                                              >
+                                                <span className="text-sm font-medium text-gray-800 truncate pr-2 group-hover:text-amber-700">{p.nombre}</span>
+                                                <span className="text-xs font-bold text-amber-600 whitespace-nowrap bg-amber-50 px-2 py-0.5 rounded-full">RD${Number(p.precio).toLocaleString()}</span>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        )}
+                                      </div>
+                                      <input
+                                        type="number" min="1"
+                                        value={item.cantidad}
+                                        onChange={e => setFacturaEditData(d => {
+                                          const items = [...d.items]; items[idx] = { ...items[idx], cantidad: Number(e.target.value) }; return { ...d, items }
+                                        })}
+                                        className="border-2 border-gray-200 focus:border-amber-400 rounded-xl px-2 py-2 text-sm text-center font-medium focus:outline-none transition-colors"
+                                      />
+                                      <input
+                                        type="number" min="0"
+                                        value={item.precio}
+                                        onChange={e => setFacturaEditData(d => {
+                                          const items = [...d.items]; items[idx] = { ...items[idx], precio: e.target.value }; return { ...d, items }
+                                        })}
+                                        className="border-2 border-gray-200 focus:border-amber-400 rounded-xl px-2 py-2 text-sm text-right font-medium focus:outline-none transition-colors"
+                                      />
+                                      <button
+                                        onClick={() => setFacturaEditData(d => ({ ...d, items: d.items.filter((_, i) => i !== idx) }))}
+                                        className="w-8 h-8 mt-0.5 flex items-center justify-center rounded-lg bg-red-50 hover:bg-red-100 text-red-400 hover:text-red-600 text-lg font-bold transition-colors"
+                                        title="Eliminar línea"
+                                      >×</button>
+                                    </div>
+                                  )
+                                })}
+                              </div>
+
+                              <button
+                                onClick={() => setFacturaEditData(d => ({ ...d, items: [...d.items, { nombre: '', cantidad: 1, precio: '' }] }))}
+                                className="mt-3 flex items-center gap-1.5 text-xs text-amber-600 hover:text-amber-700 font-bold border-2 border-dashed border-amber-300 hover:border-amber-400 rounded-xl px-4 py-2 transition-colors w-full justify-center"
+                              >
+                                + Agregar producto
+                              </button>
+
+                              {/* Subtotal en vivo */}
+                              <div className="mt-3 bg-gray-50 rounded-xl px-4 py-3 flex items-center justify-between">
+                                <span className="text-xs text-gray-500 font-semibold">Total calculado</span>
+                                <span className="text-base font-extrabold text-[#1B3A6B]">
+                                  RD${facturaEditData.items.reduce((s, i) => s + Number(i.precio || 0) * Number(i.cantidad || 1), 0).toLocaleString()}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* ── Estado + notas ── */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="w-5 h-5 rounded-full bg-[#1B3A6B] text-white text-xs flex items-center justify-center font-bold">3</span>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Estado y notas</p>
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Estado de pago</label>
+                                  <select
+                                    value={facturaEditData.pagado}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, pagado: e.target.value }))}
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                  >
+                                    <option value="pendiente">⏳ Pendiente</option>
+                                    <option value="parcial">⚠️ Pago parcial</option>
+                                    <option value="pagado">✅ Pagado</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-semibold text-gray-600 mb-1">Observaciones</label>
+                                  <input
+                                    value={facturaEditData.notas}
+                                    onChange={e => setFacturaEditData(d => ({ ...d, notas: e.target.value }))}
+                                    placeholder="Notas del pedido..."
+                                    className="w-full border-2 border-gray-200 focus:border-amber-400 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* ── Botones ── */}
+                            <div className="flex gap-3 pt-2">
+                              <button
+                                onClick={async () => {
+                                  setSavingFactura(true)
+                                  try {
+                                    const newTotal = facturaEditData.items.reduce((s, i) => s + Number(i.precio) * Number(i.cantidad), 0)
+                                    const body = { ...facturaEditData, total: newTotal }
+                                    const res = await api.updateOrder(facturaOrder._id, body)
+                                    const updated = res.order || { ...facturaOrder, ...body }
+                                    setFacturaOrder(updated)
+                                    setOrders(prev => prev.map(o => o._id === updated._id ? updated : o))
+                                    setFacturaEditMode(false)
+                                  } catch (err) {
+                                    alert('Error al guardar: ' + (err.message || err))
+                                  } finally {
+                                    setSavingFactura(false)
+                                  }
+                                }}
+                                disabled={savingFactura}
+                                className="flex-1 bg-[#1B3A6B] hover:bg-[#0a1628] text-white font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+                              >
+                                {savingFactura
+                                  ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Guardando...</>
+                                  : '💾 Guardar cambios'}
+                              </button>
+                              <button
+                                onClick={() => setFacturaEditMode(false)}
+                                className="px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl text-sm transition-colors"
+                              >
+                                Cancelar
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ─────────── DOCUMENTO DE FACTURA ─────────── */}
+                      <div id="factura-print" className="bg-white shadow-2xl overflow-hidden" style={{ borderRadius: '12px', fontFamily: "'Helvetica Neue', Arial, sans-serif" }}>
+
+                        {/* HEADER bicolor: panel blanco logo | panel oscuro número + "Páginas del recibo" */}
+                        <div style={{ display: 'flex', alignItems: 'stretch', minHeight: '80px' }}>
+                          {/* Logo */}
+                          <div style={{ background: '#ffffff', padding: '18px 32px', display: 'flex', alignItems: 'center', borderRight: '1px solid #e5e7eb', flexShrink: 0 }}>
+                            <img src="/logo_final.png" alt="VitaGloss RD" style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
+                          </div>
+                          {/* Datos recibo */}
+                          <div style={{ flex: 1, background: 'linear-gradient(135deg, #0a1628 0%, #1B3A6B 100%)', padding: '18px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div>
+                              <p style={{ color: '#2EC4B6', fontSize: '10px', fontWeight: '700', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '3px' }}>Recibo de Compra</p>
+                              <p style={{ color: '#ffffff', fontSize: '26px', fontWeight: '900', letterSpacing: '-0.5px', lineHeight: 1 }}>{numFactura}</p>
+                            </div>
+                            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '12px', textAlign: 'right' }}>Páginas del recibo&nbsp;<strong style={{ color: 'rgba(255,255,255,0.85)' }}>1/1</strong></p>
+                          </div>
+                        </div>
+
+                        {/* Banda teal */}
+                        <div style={{ height: '4px', background: 'linear-gradient(90deg, #2EC4B6, #1B3A6B)' }} />
+
+                        {/* DOS COLUMNAS: Cliente | Información del vendedor */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '24px 40px 20px' }}>
+                          <div>
+                            <p style={{ fontWeight: '700', fontSize: '13px', color: '#1B3A6B', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '11px' }}>Cliente</p>
+                            <p style={{ fontSize: '14px', fontWeight: '700', color: '#111', marginBottom: '3px' }}>{facturaOrder.nombre}</p>
+                            {facturaOrder.whatsapp && (
+                              <p style={{ fontSize: '13px', color: '#444', marginBottom: '2px' }}>
+                                {facturaOrder.whatsapp.replace(/^(\d{3})(\d{3})(\d{4})$/, '($1) $2-$3')}
+                              </p>
+                            )}
+                            {facturaOrder.direccionEntrega && (
+                              <p style={{ fontSize: '13px', color: '#666', marginBottom: '2px' }}>{facturaOrder.direccionEntrega}</p>
+                            )}
+                            <p style={{ fontSize: '13px', color: '#444', marginTop: '6px' }}>
+                              Período de bonificación:&nbsp;
+                              {new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { month: 'long', year: 'numeric' })}
+                            </p>
+                          </div>
+                          <div>
+                            <p style={{ fontWeight: '700', fontSize: '11px', color: '#1B3A6B', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Información del vendedor</p>
+                            <p style={{ fontSize: '14px', fontWeight: '700', color: '#111', marginBottom: '3px' }}>{user?.nombre || 'VitaGloss RD'}</p>
+                            <p style={{ fontSize: '13px', color: '#444', marginBottom: '2px' }}>(849) 276-3532</p>
+                            <p style={{ fontSize: '13px', color: '#444', marginBottom: '8px' }}>vitaglossrd@hotmail.com</p>
+                            <p style={{ fontSize: '13px', color: '#444', marginBottom: '2px' }}>
+                              Fecha de la venta:&nbsp;
+                              {new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                            </p>
+                            <p style={{ fontSize: '13px', color: '#444' }}>Número del recibo:&nbsp;<strong style={{ color: '#111' }}>{numFactura}</strong></p>
+                          </div>
+                        </div>
+
+                        {/* Línea */}
+                        <div style={{ height: '1px', background: '#e5e7eb', margin: '0 40px' }} />
+
+                        {/* TABLA PRODUCTOS */}
+                        <div style={{ padding: '20px 40px 0' }}>
+                          {/* Cabecera */}
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 70px 140px 140px', background: 'linear-gradient(135deg, #0a1628, #1B3A6B)', borderRadius: '8px', padding: '10px 16px', marginBottom: '4px' }}>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px' }}>Descripción</span>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>Cant.</span>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'right' }}>Precio</span>
+                            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'right' }}>Total</span>
+                          </div>
+                          {subtotalItems.map((item, i) => (
+                            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 70px 140px 140px', padding: '13px 16px', borderBottom: '1px solid #f0f0f0', background: i % 2 === 1 ? '#fafafa' : '#fff' }}>
+                              <p style={{ fontSize: '13px', fontWeight: '600', color: '#111' }}>{item.nombre}</p>
+                              <span style={{ fontSize: '13px', color: '#555', textAlign: 'center' }}>{item.cantidad}</span>
+                              <span style={{ fontSize: '13px', color: '#555', textAlign: 'right' }}>RD${Number(item.precio).toLocaleString()}.00</span>
+                              <span style={{ fontSize: '13px', fontWeight: '700', color: '#111', textAlign: 'right' }}>RD${item.subtotal.toLocaleString()}.00</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div style={{ height: '20px' }} />
+                        <div style={{ height: '1px', background: '#e5e7eb', margin: '0 40px' }} />
+
+                        {/* TOTALES — dos columnas: subtotales izq | caja total derecha */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '24px', alignItems: 'start', padding: '20px 40px 24px' }}>
+                          {/* Lista subtotales */}
+                          <div style={{ paddingTop: '4px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                              <span style={{ fontSize: '13px', color: '#555' }}>Subtotal de artículo(s)</span>
+                              <span style={{ fontSize: '13px', color: '#555' }}>RD${facturaOrder.total.toLocaleString()}.00</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                              <span style={{ fontSize: '13px', color: '#555' }}>Envíos</span>
+                              <span style={{ fontSize: '13px', color: '#555' }}>RD$0.00</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span style={{ fontSize: '13px', color: '#555' }}>Impuestos</span>
+                              <span style={{ fontSize: '13px', color: '#555' }}>RD$0.00</span>
+                            </div>
+                            {facturaOrder.notas && (
+                              <div style={{ marginTop: '16px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '8px', padding: '10px 14px' }}>
+                                <p style={{ fontSize: '10px', fontWeight: '700', color: '#b45309', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '3px' }}>Observaciones</p>
+                                <p style={{ fontSize: '12px', color: '#92400e' }}>{facturaOrder.notas}</p>
+                              </div>
+                            )}
+                          </div>
+                          {/* Caja total */}
+                          <div style={{ background: 'linear-gradient(135deg, #0a1628 0%, #1B3A6B 100%)', borderRadius: '12px', padding: '18px 28px', minWidth: '240px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>Total del recibo</span>
+                              <span style={{ color: '#2EC4B6', fontSize: '22px', fontWeight: '900' }}>RD${facturaOrder.total.toLocaleString()}</span>
+                            </div>
+                            <div style={{ height: '1px', background: 'rgba(255,255,255,0.12)', marginBottom: '10px' }} />
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px' }}>Estado de pago</span>
+                              {facturaOrder.pagado === 'pagado'
+                                ? <span style={{ background: '#dcfce7', color: '#16a34a', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px' }}>✅ PAGADO</span>
+                                : facturaOrder.pagado === 'parcial'
+                                ? <span style={{ background: '#fef9c3', color: '#a16207', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px' }}>⚠️ PARCIAL</span>
+                                : <span style={{ background: '#fee2e2', color: '#dc2626', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px' }}>⏳ PENDIENTE</span>
+                              }
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* FOOTER — banda teal */}
+                        <div style={{ background: '#2EC4B6', padding: '10px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ color: '#fff', fontSize: '11px', fontWeight: '700', letterSpacing: '1px' }}>VITAGLOSS RD — DISTRIBUIDORA AMWAY</span>
+                          <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: '11px' }}>N.° {numFactura} · {fechaFactura}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )
+              })()}
+            </AnimatePresence>
+
           </Section>
         )}
 

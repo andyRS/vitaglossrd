@@ -60,6 +60,7 @@ export const api = {
 
   // Orders (público para crear, protegido para listar)
   createOrder: (body) => request('POST', '/orders', body),
+  createOrderAdmin: (body) => request('POST', '/orders/admin', body, true),
   getOrders: (params = '') => request('GET', `/orders${params}`, null, true),
   updateOrder: (id, body) => request('PATCH', `/orders/${id}`, body, true),
   deleteOrder: (id) => request('DELETE', `/orders/${id}`, null, true),

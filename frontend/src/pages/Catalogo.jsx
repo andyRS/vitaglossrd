@@ -24,10 +24,18 @@ export default function Catalogo() {
     description: 'Explora los productos Amway originales en VitaGloss RD: Pasta Dental Glister™, Vitamina C Nutrilite™, Spray y Enjuague Bucal. Envío a todo RD.',
   })
   const [categoriaActiva, setCategoriaActiva] = useState('Todos')
+  const [busqueda, setBusqueda] = useState('')
 
-  const productosFiltrados = categoriaActiva === 'Todos'
-    ? productos
-    : productos.filter(p => p.categoria === categoriaActiva)
+  const productosFiltrados = productos.filter(p => {
+    const coincideCategoria = categoriaActiva === 'Todos' || p.categoria === categoriaActiva
+    const q = busqueda.toLowerCase().trim()
+    const coincideBusqueda = !q ||
+      p.nombre.toLowerCase().includes(q) ||
+      p.nombreCorto.toLowerCase().includes(q) ||
+      p.descripcion.toLowerCase().includes(q) ||
+      (p.articulo && p.articulo.toLowerCase().includes(q))
+    return coincideCategoria && coincideBusqueda
+  })
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -68,24 +76,50 @@ export default function Catalogo() {
 
       {/* Filtros sticky */}
       <div className="sticky top-16 sm:top-[72px] z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex gap-3 overflow-x-auto">
-          {categorias.map((cat) => (
-            <button
-              key={cat.label}
-              onClick={() => setCategoriaActiva(cat.label)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
-                categoriaActiva === cat.label
-                  ? 'bg-primary text-white shadow-md shadow-primary/20 scale-105'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              <span>{cat.icono}</span>
-              <span>{cat.label}</span>
-              <span className={`text-xs px-1.5 py-0.5 rounded-md font-bold ${categoriaActiva === cat.label ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-500'}`}>
-                {cat.label === 'Todos' ? productos.length : productos.filter(p => p.categoria === cat.label).length}
-              </span>
-            </button>
-          ))}
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3">
+          {/* Buscador */}
+          <div className="relative flex-1 max-w-xs">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Buscar producto..."
+              value={busqueda}
+              onChange={e => setBusqueda(e.target.value)}
+              className="w-full pl-9 pr-9 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm font-medium text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+            />
+            {busqueda && (
+              <button
+                onClick={() => setBusqueda('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+          {/* Filtros por categoría */}
+          <div className="flex gap-3 overflow-x-auto flex-1" style={{ scrollbarWidth: 'none' }}>
+            {categorias.map((cat) => (
+              <button
+                key={cat.label}
+                onClick={() => setCategoriaActiva(cat.label)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
+                  categoriaActiva === cat.label
+                    ? 'bg-primary text-white shadow-md shadow-primary/20 scale-105'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <span>{cat.icono}</span>
+                <span>{cat.label}</span>
+                <span className={`text-xs px-1.5 py-0.5 rounded-md font-bold ${categoriaActiva === cat.label ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                  {cat.label === 'Todos' ? productos.length : productos.filter(p => p.categoria === cat.label).length}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -117,7 +151,12 @@ export default function Catalogo() {
         {productosFiltrados.length === 0 && (
           <div className="text-center py-24 text-gray-400">
             <span className="text-6xl block mb-4">🔍</span>
-            <p className="text-xl font-semibold">No hay productos en esta categoría aún.</p>
+            <p className="text-xl font-semibold">
+              {busqueda ? `No encontramos “${busqueda}” en el catálogo.` : 'No hay productos en esta categoría aún.'}
+            </p>
+            {busqueda && (
+              <button onClick={() => setBusqueda('')} className="mt-4 text-primary underline text-sm">Limpiar búsqueda</button>
+            )}
           </div>
         )}
       </div>

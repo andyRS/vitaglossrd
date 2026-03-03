@@ -91,3 +91,21 @@ html {
   font-style: italic;
   margin: 1.5rem 0;
 }
+
+/* ── Estilos de impresión de facturas ── */
+@media print {
+  /* Ocultar todo excepto el documento de factura */
+  body * { visibility: hidden; }
+  #factura-print, #factura-print * { visibility: visible; }
+  #factura-print {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+  /* Asegurar que los colores de fondo se impriman */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}

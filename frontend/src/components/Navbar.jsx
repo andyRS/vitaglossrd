@@ -28,8 +28,8 @@ export default function Navbar() {
     { to: '/blog', label: 'Blog', primary: true },
     { to: '/faq', label: 'Preguntas', primary: true },
     { to: '/equipo', label: 'Únete al equipo', emoji: '✨', primary: true },
-    { to: '/sobre-nosotros', label: 'Nosotros', primary: false },
-    { to: '/contacto', label: 'Contacto', primary: false },
+    { to: '/sobre-nosotros', label: 'Nosotros', primary: true },
+    { to: '/contacto', label: 'Contacto', primary: true },
   ]
 
   const isActive = (path) => location.pathname === path

@@ -36,6 +36,7 @@ export default function Blog() {
     description: 'Artículos sobre salud bucal, nutrición, vitaminas y bienestar para República Dominicana. Consejos basados en ciencia de los especialistas de VitaGloss RD.',
     canonical:   'https://vitaglossrd.com/blog',
     ogImage:     'https://vitaglossrd.com/logoVitaglossRd.png',
+    ogImageAlt:  'Blog de salud y nutrición — VitaGloss RD',
     jsonLdList: [
       {
         '@context': 'https://schema.org',
@@ -83,6 +84,20 @@ export default function Blog() {
           { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://vitaglossrd.com' },
           { '@type': 'ListItem', position: 2, name: 'Blog',   item: 'https://vitaglossrd.com/blog' },
         ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Artículos de salud y bienestar — VitaGloss RD',
+        description: 'Lista completa de artículos sobre nutrición, salud bucal y bienestar en República Dominicana.',
+        url: 'https://vitaglossrd.com/blog',
+        numberOfItems: posts.length,
+        itemListElement: posts.slice(0, 20).map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `https://vitaglossrd.com/blog/${p.slug}`,
+          name: p.titulo,
+        })),
       },
     ],
   })

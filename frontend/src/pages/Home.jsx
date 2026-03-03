@@ -65,8 +65,101 @@ const fadeUp = {
 
 export default function Home() {
   useSEO({
-    title: 'Inicio',
-    description: 'VitaGloss RD — Distribuidor oficial Amway en República Dominicana. Pasta Dental Glister™, Vitamina C Nutrilite™. Envío gratis desde RD$2,500.',
+    title: 'Distribuidor Amway en República Dominicana — Pasta Dental Glister™ y Vitaminas Nutrilite™',
+    description: 'VitaGloss RD: distribuidor certificado Amway en República Dominicana. Pasta Dental Glister™, Vitamina C Nutrilite™, suplementos y cuidado bucal. Envío gratis desde RD$2,500.',
+    canonical: 'https://vitaglossrd.com',
+    ogImage: 'https://vitaglossrd.com/salud-bucal.jpg',
+    ogImageAlt: 'Productos Amway originales en República Dominicana — VitaGloss RD',
+    jsonLdList: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        '@id': 'https://vitaglossrd.com/#local',
+        name: 'VitaGloss RD',
+        description: 'Distribuidor independiente certificado Amway en República Dominicana. Productos originales Glister™ y Nutrilite™ con envío a todo el país.',
+        url: 'https://vitaglossrd.com',
+        telephone: '+18492763532',
+        priceRange: 'RD$600 – RD$8,000',
+        image: 'https://vitaglossrd.com/salud-bucal.jpg',
+        logo: 'https://vitaglossrd.com/logoVitaglossRd.png',
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'DO',
+          addressRegion: 'Distrito Nacional',
+          addressLocality: 'Santo Domingo',
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: 18.486058,
+          longitude: -69.931212,
+        },
+        areaServed: {
+          '@type': 'Country',
+          name: 'República Dominicana',
+        },
+        openingHoursSpecification: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+          opens: '08:00',
+          closes: '20:00',
+        },
+        sameAs: [
+          'https://www.instagram.com/vitaglossrd',
+          'https://www.facebook.com/vitaglossrd',
+        ],
+        makesOffer: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Pasta Dental Glister™ Multi-Action' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Vitamina C Nutrilite™' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Double X Nutrilite™' } },
+        ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: '¿Qué es VitaGloss RD?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'VitaGloss RD es un distribuidor independiente certificado de productos Amway en República Dominicana. Ofrecemos suplementos Nutrilite™, productos de cuidado bucal Glister™ y más, con entrega a todo el país.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Los productos Amway de VitaGloss RD son originales?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Sí. Todos los productos son 100% originales, adquiridos directamente a través de los canales oficiales de Amway. VitaGloss RD es un distribuidor registrado y certificado.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Hacen envíos a todo el país?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Sí, realizamos envíos a toda República Dominicana. Los pedidos superiores a RD$2,500 tienen envío gratuito. Los pedidos se procesan el mismo día.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Cómo hago un pedido en VitaGloss RD?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Puedes hacer tu pedido directamente por WhatsApp al +1 (849) 276-3532. También puedes explorar el catálogo en línea, agregar productos al carrito y contactarnos para procesar el pago.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Qué productos vende VitaGloss RD?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'VitaGloss RD ofrece: Pasta Dental Glister™, Enjuague Bucal Glister™, Vitamina C Nutrilite™, Double X Nutrilite™, Omega-3, Calcio con Magnesio y Vitamina D, suplementos de proteína, antioxidantes y más de 20 productos Amway originales.',
+            },
+          },
+        ],
+      },
+    ],
   })
   const [slideActivo, setSlideActivo] = useState(0)
   const [autoplay, setAutoplay] = useState(true)

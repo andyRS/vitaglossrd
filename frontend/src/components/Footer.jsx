@@ -12,7 +12,7 @@ export default function Footer() {
               { icono: '✅', titulo: 'Productos Originales', desc: 'Certificados Amway' },
               { icono: '🚚', titulo: 'Envío a Todo RD', desc: 'Gratis desde RD$2,500' },
               { icono: '🔄', titulo: 'Garantía', desc: 'Satisfacción garantizada' },
-              { icono: '📲', titulo: 'Soporte 24h', desc: 'WhatsApp disponible' },
+              { icono: '📲', titulo: 'Soporte WhatsApp', desc: 'Lun–Sáb 8am–8pm' },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center gap-1.5">
                 <span className="text-2xl">{item.icono}</span>
@@ -126,7 +126,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-blue-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-3">
-          <p>© 2025 VitaGloss RD. Todos los derechos reservados.</p>
+          <p>© 2026 VitaGloss RD. Todos los derechos reservados.</p>
           <div className="flex items-center gap-4 flex-wrap justify-center">
             <Link to="/privacidad" className="hover:text-secondary transition-colors">Política de Privacidad</Link>
             <span className="opacity-30">·</span>

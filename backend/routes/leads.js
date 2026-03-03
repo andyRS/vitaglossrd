@@ -2,6 +2,49 @@ const router = require('express').Router()
 const Lead = require('../models/Lead')
 const protect = require('../middleware/auth')
 
+// ── Helper: enviar mensaje WA via whatsapp-service ────────────────────────
+async function sendWA(numero, texto) {
+  const WA_URL    = process.env.WA_SERVICE_URL  || 'http://localhost:3002'
+  const WA_SECRET = process.env.WA_SECRET       || 'vitagloss_wa_2026'
+  try {
+    const res = await fetch(`${WA_URL}/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': WA_SECRET },
+      body: JSON.stringify({ number: numero, text: texto }),
+    })
+    const data = await res.json()
+    return data.ok
+  } catch {
+    return false  // No bloquear el flujo si WA falla
+  }
+}
+
+// Mensaje de confirmación para webinar
+function msgWebinar(nombre) {
+  const WEBINAR_LINK = process.env.WEBINAR_LINK || 'https://meet.google.com/vitaglossrd'
+  return [
+    `🎙️ *¡Hola ${nombre}! Tu registro está confirmado* ✅`,
+    ``,
+    `Gracias por inscribirte al webinar de *VitaGloss RD × Amway*.`,
+    ``,
+    `📅 *Fecha:* Sábado 15 de marzo, 2026`,
+    `🕖 *Hora:* 7:00 pm (hora RD)`,
+    `🔗 *Link para entrar:*`,
+    `${WEBINAR_LINK}`,
+    ``,
+    `📌 *¿Qué vas a aprender?*`,
+    `• Cómo generar ingresos extra desde casa`,
+    `• Cómo conseguir tus primeros clientes`,
+    `• Los productos Amway que más se venden`,
+    `• Cómo te capacito y apoyo personalmente`,
+    ``,
+    `Si tienes preguntas antes del webinar, escríbeme aquí mismo 👇`,
+    `¡Nos vemos el sábado! 🚀`,
+    ``,
+    `_— Andy Rosado, VitaGloss RD_`,
+  ].join('\n')
+}
+
 // ── POST /api/leads/public — Captura pública (LeadPopup, JoinCTA, etc.) ──────
 // No requiere autenticación. vendedor queda null (lead sin asignar).
 router.post('/public', async (req, res) => {
@@ -16,6 +59,13 @@ router.post('/public', async (req, res) => {
       origen:          origen || 'web',
       refCode:         refCode || '',
     })
+
+    // Enviar mensaje de confirmación si es registro de webinar y tiene teléfono
+    if (origen === 'webinar' && telefono) {
+      const msg = msgWebinar(nombre.trim())
+      sendWA(telefono.trim(), msg) // fire-and-forget (no await)
+    }
+
     res.status(201).json({ ok: true, leadId: lead._id })
   } catch (err) {
     res.status(500).json({ error: 'Error al guardar lead' })
