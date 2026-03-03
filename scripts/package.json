@@ -1,0 +1,12 @@
+{
+  "name": "vitaglossrd-scripts",
+  "version": "1.0.0",
+  "description": "Scripts de automatización para VitaGloss RD",
+  "private": true,
+  "scripts": {
+    "generate-post": "node generate-post.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0"
+  }
+}

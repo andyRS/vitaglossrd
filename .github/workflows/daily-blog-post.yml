@@ -1,0 +1,92 @@
+name: 📝 Generar Post Diario con IA
+
+on:
+  # ─── Disparador automático: todos los días a las 8:00 AM (hora Santo Domingo = UTC-4) ───
+  # Las 12:00 UTC = 8:00 AM Santo Domingo
+  schedule:
+    - cron: '0 12 * * *'
+
+  # ─── Disparador manual desde GitHub UI (para probar o generar cuando quieras) ───
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Solo mostrar el post generado, sin commit (true/false)'
+        required: false
+        default: 'false'
+
+jobs:
+  generate-post:
+    name: Generar y publicar nuevo artículo
+    runs-on: ubuntu-latest
+
+    # Permisos para que el workflow pueda hacer commit al repo
+    permissions:
+      contents: write
+
+    steps:
+      # 1 ── Checkout del repositorio ────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # necesario para git push
+
+      # 2 ── Configurar Node.js ──────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: scripts/package.json
+
+      # 3 ── Instalar dependencias del script ───────────────────────────────
+      - name: Instalar dependencias
+        run: |
+          cd scripts
+          npm install
+
+      # 4 ── Generar el nuevo artículo con Claude ────────────────────────────
+      - name: Generar artículo con IA
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          node scripts/generate-post.js
+
+      # 5 ── Verificar que el archivo cambió (si no hubo cambio, saltamos) ──
+      - name: Verificar cambios
+        id: check_changes
+        run: |
+          if git diff --quiet frontend/src/data/posts.js; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "⚠️  No se detectaron cambios en posts.js"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ posts.js fue modificado"
+          fi
+
+      # 6 ── Commit y push (solo si no es dry_run y hubo cambios) ──────────
+      - name: Commit nuevo post
+        if: steps.check_changes.outputs.changed == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name  "VitaGloss Bot"
+          git config user.email "bot@vitaglossrd.com"
+          
+          # Obtener el título del nuevo post para el mensaje de commit
+          TITULO=$(node -e "
+            const fs = require('fs');
+            const content = fs.readFileSync('frontend/src/data/posts.js', 'utf-8');
+            const matches = [...content.matchAll(/titulo:\s*'([^']+)'/g)];
+            console.log(matches[matches.length - 1][1]);
+          ")
+          
+          git add frontend/src/data/posts.js
+          git commit -m "feat(blog): nuevo artículo IA — ${TITULO}"
+          git push origin main
+
+      # 7 ── Mostrar resumen en el log ───────────────────────────────────────
+      - name: Resumen
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          echo "### ✅ Nuevo artículo publicado" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "El artículo fue generado e insertado en \`posts.js\`." >> $GITHUB_STEP_SUMMARY
+          echo "Vercel desplegará automáticamente en ~2 minutos." >> $GITHUB_STEP_SUMMARY
