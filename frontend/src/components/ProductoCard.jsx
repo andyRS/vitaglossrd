@@ -39,6 +39,10 @@ export default function ProductoCard({ producto }) {
         <img
           src={producto.imagen}
           alt={producto.nombre}
+          loading="lazy"
+          decoding="async"
+          width="308"
+          height="176"
           className="h-44 w-full object-contain group-hover:scale-105 transition-transform duration-300"
         />
       </div>

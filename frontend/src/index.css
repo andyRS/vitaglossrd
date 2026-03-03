@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Google Fonts se carga desde index.html con preconnect para no bloquear el render */
 
 @tailwind base;
 @tailwind components;
