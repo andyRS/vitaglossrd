@@ -20,6 +20,8 @@ const PORT = process.env.PORT || 4000
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'https://vitaglossrd.com',
+  'https://www.vitaglossrd.com',
   // Producción: soporta múltiples URLs separadas por coma en FRONTEND_URL
   ...(process.env.FRONTEND_URL
     ? process.env.FRONTEND_URL.split(',').map(u => u.trim())
