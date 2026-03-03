@@ -48,6 +48,7 @@ jobs:
       - name: Generar artículo con IA
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           node scripts/generate-post.js
 
@@ -79,6 +80,7 @@ jobs:
           ")
           
           git add frontend/src/data/posts.js
+          git add frontend/public/blog/ 2>/dev/null || true
           git commit -m "feat(blog): nuevo artículo IA — ${TITULO}"
           git push origin main
 

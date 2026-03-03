@@ -2,36 +2,145 @@
  * VitaGloss RD — Generador automático de artículos con IA (Anthropic Claude)
  *
  * Uso:
- *   ANTHROPIC_API_KEY=sk-... node scripts/generate-post.js
+ *   ANTHROPIC_API_KEY=sk-... PEXELS_API_KEY=... node scripts/generate-post.js
  *
  * Lo que hace:
  *   1. Lee los posts existentes en frontend/src/data/posts.js
  *   2. Llama a Claude para generar un post NUEVO y ÚNICO
- *   3. Inserta el nuevo post en posts.js
- *   4. Listo — el commit/push lo hace GitHub Actions (o tú manualmente)
+ *   3. Busca y descarga una foto relevante desde Pexels
+ *   4. Inserta el nuevo post en posts.js con la imagen descargada
+ *   5. Listo — el commit/push lo hace GitHub Actions (o tú manualmente)
  */
 
 const Anthropic = require('@anthropic-ai/sdk')
 const fs = require('fs')
 const path = require('path')
+const https = require('https')
+const http = require('http')
 
-// ─── Mapa de imagen por productoRelacionadoId ────────────────────────────────
-// Cada producto tiene su imagen en /public. Se usa como imagen del post.
-const IMAGEN_POR_PRODUCTO = {
-  1:  '/109741CO-690px-01.png',   // Glister pasta
-  2:  '/109742CO-690px-01.png',   // Glister spray
-  3:  '/109743CO-690px-01.png',   // Glister enjuague
-  4:  '/116571CO-690px-01.png',   // Vitamina C Nutrilite
-  6:  '/116545CO-690px-01.png',   // Double X Nutrilite
-  9:  '/116560CO-690px-01.png',   // Ácido Fólico
-  10: '/116570CO-690px-01.png',   // Cal Mag D
-  11: '/116558CO-690px-01.png',   // Zinc
-  17: '/116567CO-690px-01.png',   // Vitamina D
-  18: '/116562CO-690px-01.png',   // Omega-3
-  20: '/116580CO-690px-01.png',   // Proteína vegetal
-  21: '/116585CO-690px-01.png',   // Kit envejecimiento
+// ─── Imagen fallback si Pexels falla ────────────────────────────────────────
+const IMAGEN_FALLBACK_POR_PRODUCTO = {
+  1:  '/109741CO-690px-01.png',
+  2:  '/109742CO-690px-01.png',
+  3:  '/109743CO-690px-01.png',
+  4:  '/116571CO-690px-01.png',
+  6:  '/116545CO-690px-01.png',
+  9:  '/116560CO-690px-01.png',
+  10: '/116570CO-690px-01.png',
+  11: '/116558CO-690px-01.png',
+  17: '/116567CO-690px-01.png',
+  18: '/116562CO-690px-01.png',
+  20: '/116580CO-690px-01.png',
+  21: '/116585CO-690px-01.png',
 }
-const IMAGEN_DEFAULT = '/109741CO-690px-01.png'
+
+// ─── Traducción de tags frecuentes al inglés (mejora resultados en Pexels) ───
+const TRADUCCION_TAGS = {
+  'salud bucal': 'dental health',
+  'pasta dental': 'toothpaste dental care',
+  'vitaminas': 'vitamins supplements',
+  'suplementos': 'health supplements',
+  'caries': 'tooth decay dental',
+  'encías': 'gum health',
+  'blanqueamiento dental': 'teeth whitening',
+  'mal aliento': 'fresh breath dental',
+  'omega 3': 'omega 3 fish oil',
+  'vitamina c': 'vitamin c citrus health',
+  'vitamina d': 'vitamin d sunshine',
+  'zinc': 'zinc immune health',
+  'calcio': 'calcium bones health',
+  'proteína vegetal': 'plant protein healthy food',
+  'colágeno': 'collagen skin health',
+  'sistema inmune': 'immune system health',
+  'probióticos': 'gut health probiotics',
+  'magnesio': 'magnesium supplements',
+  'antioxidantes': 'antioxidants healthy food',
+  'envejecimiento': 'healthy aging wellness',
+  'nutrición': 'healthy nutrition food',
+  'higiene dental': 'dental hygiene routine',
+  'flúor': 'fluoride dental health',
+}
+
+/**
+ * Descarga un archivo desde una URL a una ruta local.
+ */
+function descargarArchivo(url, destino) {
+  return new Promise((resolve, reject) => {
+    const modulo = url.startsWith('https') ? https : http
+    const archivo = fs.createWriteStream(destino)
+    modulo.get(url, (res) => {
+      // Seguir redirecciones
+      if (res.statusCode === 301 || res.statusCode === 302) {
+        archivo.close()
+        fs.unlinkSync(destino)
+        return descargarArchivo(res.headers.location, destino).then(resolve).catch(reject)
+      }
+      if (res.statusCode !== 200) {
+        archivo.close()
+        fs.unlinkSync(destino)
+        return reject(new Error(`HTTP ${res.statusCode} descargando imagen`))
+      }
+      res.pipe(archivo)
+      archivo.on('finish', () => { archivo.close(); resolve() })
+    }).on('error', (err) => {
+      fs.unlinkSync(destino)
+      reject(err)
+    })
+  })
+}
+
+/**
+ * Busca una foto en Pexels y la descarga.
+ * Devuelve la ruta pública (/blog/[slug].jpg) o null si falla.
+ */
+async function buscarYDescargarImagen(tags, titulo, slug, pexelsKey) {
+  if (!pexelsKey) {
+    console.warn('⚠️  PEXELS_API_KEY no definida — se usará imagen de producto')
+    return null
+  }
+
+  // Construir query en inglés con los primeros 2 tags
+  const queryRaw = tags.slice(0, 2).join(' ')
+  const queryEn = TRADUCCION_TAGS[queryRaw.toLowerCase()] ||
+    tags.slice(0, 2).map(t => TRADUCCION_TAGS[t.toLowerCase()] || t).join(' ')
+
+  const query = encodeURIComponent(queryEn + ' health')
+  const pexelsUrl = `https://api.pexels.com/v1/search?query=${query}&per_page=5&orientation=landscape&size=medium`
+
+  console.log(`🖼️  Buscando imagen en Pexels: "${queryEn} health"`)
+
+  try {
+    const res = await fetch(pexelsUrl, {
+      headers: { Authorization: pexelsKey },
+    })
+
+    if (!res.ok) throw new Error(`Pexels API: ${res.status}`)
+
+    const data = await res.json()
+    if (!data.photos || data.photos.length === 0) {
+      console.warn('⚠️  Pexels no devolvió fotos para esa búsqueda')
+      return null
+    }
+
+    // Elegir la foto con mejor resolución (preferimos la 2da para variedad)
+    const foto = data.photos[1] || data.photos[0]
+    const imageUrl = foto.src.large2x || foto.src.large || foto.src.medium
+
+    // Crear carpeta /public/blog/ si no existe
+    const blogDir = path.join(__dirname, '../frontend/public/blog')
+    if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true })
+
+    const destino = path.join(blogDir, `${slug}.jpg`)
+    await descargarArchivo(imageUrl, destino)
+
+    console.log(`✅ Imagen descargada: /blog/${slug}.jpg (foto por ${foto.photographer})`)
+    return `/blog/${slug}.jpg`
+
+  } catch (err) {
+    console.warn(`⚠️  Error descargando imagen de Pexels: ${err.message} — se usará imagen de producto`)
+    return null
+  }
+}
 
 // ─── Lista de temas banneados — para evitar duplicados exactos ───────────────
 const TEMAS_SUGERIDOS = [
@@ -181,9 +290,19 @@ REGLAS PARA EL CONTENIDO HTML:
     console.warn(`⚠️  Slug duplicado — se usó: ${postData.slug}`)
   }
 
-  const imagen = IMAGEN_POR_PRODUCTO[postData.productoRelacionadoId] || IMAGEN_DEFAULT
+  // 4 ── Buscar y descargar imagen desde Pexels ─────────────────────────────
+  const pexelsKey = process.env.PEXELS_API_KEY
+  const imagenDescargada = await buscarYDescargarImagen(
+    postData.tags,
+    postData.titulo,
+    postData.slug,
+    pexelsKey
+  )
+  const imagen = imagenDescargada ||
+    IMAGEN_FALLBACK_POR_PRODUCTO[postData.productoRelacionadoId] ||
+    '/109741CO-690px-01.png'
 
-  // 4 ── Construir el bloque del nuevo post ──────────────────────────────────
+  // 5 ── Construir el bloque del nuevo post ──────────────────────────────────
   const tagsStr = JSON.stringify(postData.tags)
   const contenidoHtml = escaparParaJs(postData.contenido)
 
@@ -205,7 +324,7 @@ REGLAS PARA EL CONTENIDO HTML:
     contenido: \`${contenidoHtml}\`,
   },`
 
-  // 5 ── Insertar antes del cierre del array ─────────────────────────────────
+  // 6 ── Insertar antes del cierre del array ─────────────────────────────────
   // El array cierra con la línea que tiene solo "]"
   const updated = postsContent.replace(
     /^(\])\s*\n(\/\/ Categor)/m,
