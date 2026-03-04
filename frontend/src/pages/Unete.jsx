@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { api } from '../services/api'
 import { useSEO } from '../hooks/useSEO'
 
@@ -124,7 +124,7 @@ export default function Unete() {
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-5xl mx-auto px-6 py-20 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="inline-block bg-[#2EC4B6]/20 border border-[#2EC4B6]/40 text-[#2EC4B6] text-xs font-bold px-4 py-1.5 rounded-full mb-6 uppercase tracking-widest">
               🎙️ Webinar gratuito · Cupos limitados
             </span>
@@ -143,11 +143,11 @@ export default function Unete() {
               Quiero registrarme gratis →
             </button>
             <p className="text-white/40 text-sm mt-4">Sin costo · Sin compromiso · 100% online</p>
-          </motion.div>
+          </m.div>
 
           {/* Cuenta regresiva */}
           {!ended && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="mt-14 inline-flex flex-wrap justify-center gap-4"
             >
@@ -160,7 +160,7 @@ export default function Unete() {
                   <p className="text-xs text-white/50 font-semibold uppercase tracking-wider mt-1">{l}</p>
                 </div>
               ))}
-            </motion.div>
+            </m.div>
           )}
         </div>
       </section>
@@ -279,7 +279,7 @@ export default function Unete() {
 
           <AnimatePresence>
             {done ? (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                 className="text-center bg-green-50 border border-green-200 rounded-3xl p-10"
               >
@@ -293,9 +293,9 @@ export default function Unete() {
                 >
                   💬 Escríbeme por WhatsApp
                 </a>
-              </motion.div>
+              </m.div>
             ) : (
-              <motion.form
+              <m.form
                 onSubmit={handleSubmit}
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 className="bg-white border-2 border-gray-100 rounded-3xl p-8 shadow-xl space-y-5"
@@ -360,7 +360,7 @@ export default function Unete() {
                 <p className="text-center text-gray-400 text-xs">
                   Al registrarte aceptas que te contactemos por WhatsApp con el link del evento.
                 </p>
-              </motion.form>
+              </m.form>
             )}
           </AnimatePresence>
 
@@ -395,12 +395,12 @@ export default function Unete() {
                 </button>
                 <AnimatePresence>
                   {openFaq === i && (
-                    <motion.div
+                    <m.div
                       initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }}
                       className="overflow-hidden"
                     >
                       <p className="px-6 pb-5 text-gray-500 text-sm leading-relaxed">{a}</p>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </div>

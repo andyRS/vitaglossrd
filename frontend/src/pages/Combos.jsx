@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { combos } from '../data/combos'
@@ -26,31 +26,31 @@ export default function Combos() {
           <div className="absolute bottom-10 right-10 w-56 h-56 bg-secondary rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-3xl mx-auto px-4">
-          <motion.span
+          <m.span
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="inline-block bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4 tracking-wider uppercase"
           >
             Ofertas exclusivas
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-4"
           >
             Kits & Combos Inteligentes
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="text-white/80 text-lg max-w-xl mx-auto"
           >
             Productos seleccionados por objetivo de salud. Ahorra más comprando el kit completo.
-          </motion.p>
+          </m.p>
           {/* Stats */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -70,7 +70,7 @@ export default function Combos() {
               <p className="text-2xl font-black">100%</p>
               <p className="text-white/70 text-xs uppercase tracking-wide">Productos Amway</p>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export default function Combos() {
       <div className="max-w-7xl mx-auto px-4 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {combosFiltrados.map((combo, i) => (
-            <motion.div
+            <m.div
               key={combo.id}
               custom={i}
               variants={fadeUp}
@@ -192,12 +192,12 @@ export default function Combos() {
                   </Link>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
         {/* Nota informativa */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -216,7 +216,7 @@ export default function Combos() {
             </svg>
             Kit personalizado
           </a>
-        </motion.div>
+        </m.div>
 
         {/* Link de regreso */}
         <div className="text-center mt-8">

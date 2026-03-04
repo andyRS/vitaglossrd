@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 
 const faqs = [
@@ -135,7 +135,7 @@ function FaqItem({ pregunta, respuesta }) {
         <span className={`font-semibold text-base transition-colors duration-200 ${open ? 'text-primary' : 'text-gray-800 group-hover:text-primary'}`}>
           {pregunta}
         </span>
-        <motion.span
+        <m.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.25 }}
           className={`flex-shrink-0 mt-0.5 ${open ? 'text-primary' : 'text-gray-300 group-hover:text-primary'}`}
@@ -143,11 +143,11 @@ function FaqItem({ pregunta, respuesta }) {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
-        </motion.span>
+        </m.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -155,7 +155,7 @@ function FaqItem({ pregunta, respuesta }) {
             className="overflow-hidden"
           >
             <p className="text-gray-500 text-sm leading-relaxed pb-6">{respuesta}</p>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
@@ -192,29 +192,29 @@ export default function FAQ() {
           style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="absolute -top-20 -right-20 w-72 h-72 bg-secondary/20 rounded-full blur-3xl" />
         <div className="relative max-w-3xl mx-auto text-center">
-          <motion.span
+          <m.span
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="inline-block bg-secondary/20 text-secondary border border-secondary/30 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4"
           >
             Centro de Ayuda
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl font-black mb-4"
           >
             Preguntas Frecuentes
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="text-white/60 text-lg max-w-xl mx-auto"
           >
             Todo lo que necesitas saber antes de hacer tu pedido.
-          </motion.p>
+          </m.p>
         </div>
       </div>
 
@@ -222,7 +222,7 @@ export default function FAQ() {
       <div className="max-w-3xl mx-auto px-4 py-16">
         <div className="space-y-10">
           {faqs.map((bloque, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -238,12 +238,12 @@ export default function FAQ() {
                   <FaqItem key={j} pregunta={item.p} respuesta={item.r} />
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
         {/* CTA Listo para comprar */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -274,10 +274,10 @@ export default function FAQ() {
               Ver catálogo →
             </Link>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* CTA WhatsApp */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -296,7 +296,7 @@ export default function FAQ() {
           >
             Abrir WhatsApp →
           </a>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   )

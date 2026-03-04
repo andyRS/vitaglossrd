@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
 import ProductoCard from '../components/ProductoCard'
 import CountdownTimer from '../components/CountdownTimer'
@@ -198,7 +198,7 @@ export default function Home() {
 
             {/* Texto */}
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={slide.id + '-text'}
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -206,7 +206,7 @@ export default function Home() {
                 transition={{ duration: 0.5 }}
                 className="text-white z-10"
               >
-                <motion.span
+                <m.span
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
@@ -214,7 +214,7 @@ export default function Home() {
                   style={{ borderColor: slide.acento + '50', background: slide.acento + '20', color: slide.acento }}
                 >
                   {slide.tag}
-                </motion.span>
+                </m.span>
 
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-4 sm:mb-5">
                   {slide.titulo}{' '}
@@ -267,12 +267,12 @@ export default function Home() {
                     {slideActivo + 1} / {slides.length}
                   </span>
                 </div>
-              </motion.div>
+              </m.div>
             </AnimatePresence>
 
             {/* Imagen */}
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={slide.id + '-img'}
                 initial={{ opacity: 0, scale: 0.85, x: 40 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -310,31 +310,31 @@ export default function Home() {
                 </div>
 
                 {/* Badge precio */}
-                <motion.div
+                <m.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
                   className="absolute top-2 sm:top-4 right-0 sm:right-2 bg-white rounded-2xl px-3 sm:px-4 py-2 sm:py-3 shadow-2xl"
                 >
                   <p className="text-xs text-gray-600 font-medium">Precio especial</p>
                   <p className="text-primary font-black text-base sm:text-lg">RD${slidePrecio}</p>
-                </motion.div>
+                </m.div>
 
                 {/* Badge stock */}
-                <motion.div
+                <m.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut', delay: 0.5 }}
                   className="absolute bottom-2 sm:bottom-6 left-0 sm:left-2 bg-green-700 text-white rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 shadow-xl flex items-center gap-2"
                 >
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   <span className="text-xs sm:text-sm font-bold">En Stock</span>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             </AnimatePresence>
           </div>
         </div>
 
         {/* Flecha scroll */}
-        <motion.div
+        <m.div
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 1.5 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/40"
@@ -342,7 +342,7 @@ export default function Home() {
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
-        </motion.div>
+        </m.div>
       </section>
 
       {/* ====== STATS BAR ====== */}
@@ -350,7 +350,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white">
             {stats.map((s, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -362,7 +362,7 @@ export default function Home() {
                 <span className="text-2xl">{s.icono}</span>
                 <span className="text-3xl font-black text-secondary">{s.numero}</span>
                 <span className="text-white/70 text-sm font-medium">{s.label}</span>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -390,7 +390,7 @@ export default function Home() {
 
       {/* ====== SOCIAL PROOF TICKER ====== */}
       <div className="bg-teal-700 overflow-hidden py-3">
-        <motion.div
+        <m.div
           animate={{ x: ['0%', '-50%'] }}
           transition={{ repeat: Infinity, duration: 20, ease: 'linear' }}
           className="flex gap-10 whitespace-nowrap"
@@ -409,7 +409,7 @@ export default function Home() {
               <span className="opacity-40">•</span>
             </span>
           ))}
-        </motion.div>
+        </m.div>
       </div>
 
       {/* ====== PROBLEMA → SOLUCIÓN ====== */}
@@ -417,7 +417,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
 
           {/* Header */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -434,13 +434,13 @@ export default function Home() {
               </span>
             </h2>
             <p className="text-white/40 mt-3 text-base">Hay una diferencia entre lo que compras hoy y lo que realmente funciona.</p>
-          </motion.div>
+          </m.div>
 
           {/* Cards */}
           <div className="relative grid grid-cols-1 md:grid-cols-2 gap-5">
 
             {/* Problema */}
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -470,7 +470,7 @@ export default function Home() {
                   'Marcas que prometen mucho y entregan poco',
                   'Compras sin saber qué lleva adentro',
                 ].map((p, i) => (
-                  <motion.li
+                  <m.li
                     key={i}
                     initial={{ opacity: 0, x: -12 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -484,10 +484,10 @@ export default function Home() {
                       </svg>
                     </span>
                     <span className="text-white/50 text-sm leading-relaxed line-through decoration-red-500/40">{p}</span>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
-            </motion.div>
+            </m.div>
 
             {/* Badge VS — solo desktop */}
             <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
@@ -497,7 +497,7 @@ export default function Home() {
             </div>
 
             {/* Solución */}
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -528,7 +528,7 @@ export default function Home() {
                   '90+ años de investigación científica comprobada',
                   'Distribuidor certificado — producto 100% original',
                 ].map((s, i) => (
-                  <motion.li
+                  <m.li
                     key={i}
                     initial={{ opacity: 0, x: 12 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -542,14 +542,14 @@ export default function Home() {
                       </svg>
                     </span>
                     <span className="text-white/80 text-sm leading-relaxed font-medium">{s}</span>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* CTA puente */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -559,7 +559,7 @@ export default function Home() {
             <p className="text-white/30 text-sm">
               Mira los productos que ya están cambiando la rutina de cientos de dominicanos 👇
             </p>
-          </motion.div>
+          </m.div>
 
         </div>
       </section>
@@ -567,7 +567,7 @@ export default function Home() {
       {/* ====== PRODUCTOS ====== */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -581,11 +581,11 @@ export default function Home() {
             <p className="text-gray-500 text-lg max-w-xl mx-auto">
               Selección premium Amway para tu salud bucal y bienestar. Todos originales, con envío a toda República Dominicana.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {productos.map((p, i) => (
-              <motion.div
+              <m.div
                 key={p.id}
                 variants={fadeUp}
                 initial="hidden"
@@ -594,11 +594,11 @@ export default function Home() {
                 custom={i}
               >
                 <ProductoCard producto={p} />
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -611,14 +611,14 @@ export default function Home() {
             >
               Ver catálogo completo →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ====== TESTIMONIOS ====== */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -630,7 +630,7 @@ export default function Home() {
             </span>
             <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Lo que dicen nuestros clientes</h2>
             <p className="text-gray-500 text-lg max-w-xl mx-auto">Resultados reales de personas reales en República Dominicana.</p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -683,7 +683,7 @@ export default function Home() {
                 texto: 'Llevo dos meses tomándola. Noto que me recupero mejor después de entrenar. El envío tardó un día más de lo esperado, pero el producto en sí es muy bueno. Lo sigo comprando.',
               },
             ].map((t, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -713,7 +713,7 @@ export default function Home() {
                     <p className="text-gray-400 text-xs">{t.ciudad} · {t.producto}</p>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -722,7 +722,7 @@ export default function Home() {
       {/* ====== COMBOS / KITS ====== */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -736,10 +736,10 @@ export default function Home() {
             <p className="text-gray-500 text-lg max-w-xl mx-auto">
               Ahorra más llevando todo en un solo pedido. Combos pensados para tu rutina completa.
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Tarjeta combo */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -787,7 +787,7 @@ export default function Home() {
                     { nombre: 'Spray Bucal Glister™', imagen: '/124111-690px-01.webp', precio: 820, id: 2 },
                     { nombre: 'Enjuague Bucal Glister™', imagen: '/124108-690px-01.webp', precio: 1169, id: 3 },
                   ].map((item, i) => (
-                    <motion.div
+                    <m.div
                       key={i}
                       whileHover={{ y: -4 }}
                       className="bg-white/10 border border-white/15 rounded-2xl p-2 sm:p-4 flex flex-col items-center gap-2 sm:gap-3 backdrop-blur-sm"
@@ -797,7 +797,7 @@ export default function Home() {
                       </div>
                       <p className="text-white text-xs font-semibold text-center leading-snug">{item.nombre}</p>
                       <span className="text-[#2EC4B6] font-bold text-sm">RD${item.precio}</span>
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
 
@@ -816,14 +816,14 @@ export default function Home() {
 
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ====== POR QUÉ ELEGIRNOS ====== */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -832,7 +832,7 @@ export default function Home() {
           >
             <h2 className="text-4xl font-black text-primary mb-3">¿Por qué elegirnos?</h2>
             <p className="text-gray-500 max-w-md mx-auto">Tu satisfacción es nuestra prioridad. Así garantizamos la mejor experiencia.</p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
@@ -840,7 +840,7 @@ export default function Home() {
               { icono: '⚡', titulo: 'Pedidos Rápidos', desc: 'Escríbenos por WhatsApp y gestionamos tu pedido el mismo día. Rápido y sin complicaciones.' },
               { icono: '🚚', titulo: 'Envío a Todo RD', desc: 'Llevamos tus productos a la puerta de tu casa en toda República Dominicana.' },
             ].map((item, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -855,7 +855,7 @@ export default function Home() {
                 </div>
                 <h3 className="font-bold text-primary text-xl mb-3">{item.titulo}</h3>
                 <p className="text-gray-500 leading-relaxed">{item.desc}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -864,7 +864,7 @@ export default function Home() {
       {/* ====== POR QUÉ NUTRILITE ====== */}
       <section className="py-20 px-4 bg-gradient-to-br from-green-900 via-[#1a3d10] to-green-950">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -878,7 +878,7 @@ export default function Home() {
             <p className="text-white/60 text-lg max-w-2xl mx-auto">
               No son productos de supermercado. Son el resultado de más de 90 años de investigación científica.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-14">
             {[
@@ -907,7 +907,7 @@ export default function Home() {
                 acento: 'border-teal-400/30 bg-teal-400/5',
               },
             ].map((item, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -920,12 +920,12 @@ export default function Home() {
                 <div className="text-4xl mb-4">{item.icono}</div>
                 <h3 className="text-white font-bold text-lg mb-2">{item.titulo}</h3>
                 <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
           {/* Comparativa */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -964,14 +964,14 @@ export default function Home() {
               </div>
             ))}
             </div>{/* end overflow-x-auto */}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ====== CÓMO FUNCIONA ====== */}
       <section className="py-20 px-4 bg-gradient-to-br from-primary to-blue-900">
         <div className="max-w-5xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -980,7 +980,7 @@ export default function Home() {
           >
             <h2 className="text-4xl font-black text-white mb-3">¿Cómo funciona?</h2>
             <p className="text-white/60 max-w-md mx-auto">Proceso simple, rápido y seguro. En 3 pasos tienes tu pedido.</p>
-          </motion.div>
+          </m.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
@@ -988,7 +988,7 @@ export default function Home() {
               { paso: '02', icono: '📲', titulo: 'Escríbenos', desc: 'Contáctanos por WhatsApp con tu pedido. Te respondemos al instante.' },
               { paso: '03', icono: '🚚', titulo: 'Recíbelo en casa', desc: 'Coordinamos el pago y enviamos tu pedido directo a tu puerta.' },
             ].map((item, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -1003,7 +1003,7 @@ export default function Home() {
                 <span className="text-secondary font-black text-sm tracking-widest">{item.paso}</span>
                 <h3 className="font-bold text-xl mt-1 mb-2">{item.titulo}</h3>
                 <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -1012,7 +1012,7 @@ export default function Home() {
       {/* ====== RESULTADOS REALES / WHATSAPP SOCIAL PROOF ====== */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -1026,7 +1026,7 @@ export default function Home() {
             <p className="text-gray-500 text-lg max-w-xl mx-auto">
               Mensajes reales de nuestros clientes. Sin filtros, sin edición.
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Grid de chats WhatsApp */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -1071,7 +1071,7 @@ export default function Home() {
                 ],
               },
             ].map((chat, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 variants={fadeUp}
                 initial="hidden"
@@ -1132,7 +1132,7 @@ export default function Home() {
                   </span>
                   <span className="text-xs text-secondary font-semibold">{chat.producto}</span>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
@@ -1153,7 +1153,7 @@ export default function Home() {
       {/* ====== REFERIDOS ====== */}
       <section className="py-16 px-4 bg-gradient-to-br from-[#0a1628] to-[#1B3A6B]">
         <div className="max-w-4xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -1190,14 +1190,14 @@ export default function Home() {
             >
               Conocer el programa de referidos →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ====== CTA FINAL ====== */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -1221,7 +1221,7 @@ export default function Home() {
                 Abrir WhatsApp ahora →
               </a>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
     </div>

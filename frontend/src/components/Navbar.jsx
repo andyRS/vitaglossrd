@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 
 export default function Navbar() {
@@ -38,7 +38,7 @@ export default function Navbar() {
   const isTransparent = isHome && !scrolled
 
   return (
-    <motion.nav
+    <m.nav
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -83,7 +83,7 @@ export default function Navbar() {
                 {link.emoji && <span aria-hidden="true" className="mr-1">{link.emoji}</span>}
                 {link.label}
                 {isActive(link.to) && (
-                  <motion.div
+                  <m.div
                     layoutId="navbar-indicator"
                     className="absolute bottom-0 left-2 right-2 h-0.5 bg-secondary rounded-full"
                   />
@@ -148,15 +148,15 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             className={`flex flex-col justify-center gap-1.5 p-2 rounded-lg transition-colors ${isTransparent ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
             >
-            <motion.span
+            <m.span
               animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 8 : 0 }}
               className={`block w-6 h-0.5 rounded-full origin-center ${isTransparent ? 'bg-white' : 'bg-gray-700'}`}
             />
-            <motion.span
+            <m.span
               animate={{ opacity: menuOpen ? 0 : 1, scaleX: menuOpen ? 0 : 1 }}
               className={`block w-6 h-0.5 rounded-full ${isTransparent ? 'bg-white' : 'bg-gray-700'}`}
             />
-            <motion.span
+            <m.span
               animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -8 : 0 }}
               className={`block w-6 h-0.5 rounded-full origin-center ${isTransparent ? 'bg-white' : 'bg-gray-700'}`}
             />
@@ -168,7 +168,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -177,7 +177,7 @@ export default function Navbar() {
           >
             <div className="px-4 py-5 flex flex-col gap-1">
               {links.map((link, i) => (
-                <motion.div
+                <m.div
                   key={link.to}
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -196,9 +196,9 @@ export default function Navbar() {
                     </span>
                     {isActive(link.to) && <span className="w-2 h-2 bg-secondary rounded-full" aria-hidden="true" />}
                   </Link>
-                </motion.div>
+                </m.div>
               ))}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -212,11 +212,11 @@ export default function Navbar() {
                 >
                   📲 Pedir por WhatsApp
                 </a>
-              </motion.div>
+              </m.div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </m.nav>
   )
 }

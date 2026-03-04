@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { api } from '../services/api'
 import { useSEO } from '../hooks/useSEO'
@@ -102,9 +102,9 @@ function StatCard({ titulo, valor, sub, icono, color = 'primary' }) {
 // ─── section wrapper ─────────────────────────────────────────────────────────
 function Section({ children }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <m.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       {children}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -515,7 +515,7 @@ export default function Dashboard() {
             {/* Form modal */}
             <AnimatePresence>
               {leadFormOpen && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                <m.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="bg-white rounded-3xl p-6 border border-secondary/30 mb-6 shadow-lg">
                   <h3 className="font-black text-primary mb-4">Nuevo lead</h3>
                   <form onSubmit={submitLead} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -542,7 +542,7 @@ export default function Dashboard() {
                       </button>
                     </div>
                   </form>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -642,7 +642,7 @@ export default function Dashboard() {
             {/* Sale form */}
             <AnimatePresence>
               {saleFormOpen && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                <m.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="bg-white rounded-3xl p-6 border border-secondary/30 mb-6 shadow-lg">
                   <h3 className="font-black text-primary mb-4">Registrar venta</h3>
                   <form onSubmit={submitSale}>
@@ -694,7 +694,7 @@ export default function Dashboard() {
                         className="bg-gray-100 text-gray-600 font-semibold px-6 py-3 rounded-2xl text-sm hover:bg-gray-200">Cancelar</button>
                     </div>
                   </form>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -914,12 +914,12 @@ export default function Dashboard() {
             {/* ── MODAL NUEVO PEDIDO ─────────────────────────────────────────── */}
             <AnimatePresence>
               {orderModal && (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                   className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto"
                   onClick={e => e.target === e.currentTarget && setOrderModal(false)}
                 >
-                  <motion.div
+                  <m.div
                     initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
                     className="bg-white rounded-3xl w-full max-w-lg my-8 overflow-hidden shadow-2xl"
                   >
@@ -1068,8 +1068,8 @@ export default function Dashboard() {
                         </button>
                       </div>
                     </form>
-                  </motion.div>
-                </motion.div>
+                  </m.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -1082,12 +1082,12 @@ export default function Dashboard() {
                 const fechaFactura = new Date(facturaOrder.createdAt).toLocaleDateString('es-DO', { year: 'numeric', month: 'long', day: '2-digit' })
                 const subtotalItems = facturaOrder.items.map(i => ({ ...i, subtotal: Number(i.precio) * Number(i.cantidad) }))
                 return (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto"
                     onClick={e => e.target === e.currentTarget && setFacturaModal(false)}
                   >
-                    <motion.div
+                    <m.div
                       initial={{ scale: 0.96, y: 24 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.96, y: 24 }}
                       className="w-full max-w-4xl my-8"
                     >
@@ -1503,8 +1503,8 @@ export default function Dashboard() {
                           <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: '11px' }}>N.° {numFactura} · {fechaFactura}</span>
                         </div>
                       </div>
-                    </motion.div>
-                  </motion.div>
+                    </m.div>
+                  </m.div>
                 )
               })()}
             </AnimatePresence>
@@ -1552,10 +1552,10 @@ export default function Dashboard() {
 
                     <AnimatePresence>
                       {profileMsg && (
-                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                           className={`text-sm font-semibold rounded-2xl px-4 py-3 ${profileMsg.includes('Error') ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-700'}`}>
                           {profileMsg}
-                        </motion.p>
+                        </m.p>
                       )}
                     </AnimatePresence>
 

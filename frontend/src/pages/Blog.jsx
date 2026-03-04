@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 import { posts, categorias } from '../data/posts'
 
@@ -126,7 +126,7 @@ export default function Blog() {
       {/* ── HERO ── */}
       <section className="bg-gradient-to-br from-[#0a1628] via-[#1B3A6B] to-[#0f2a54] pt-20 sm:pt-28 pb-12 sm:pb-16 px-4">
         <div className="max-w-5xl mx-auto text-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible">
+          <m.div variants={fadeUp} initial="hidden" animate="visible">
             <span className="inline-block bg-secondary/20 text-secondary text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-5 border border-secondary/30">
               📚 Blog VitaGloss RD
             </span>
@@ -150,7 +150,7 @@ export default function Blog() {
                 className="w-full bg-white/10 border border-white/20 focus:border-secondary/60 text-white placeholder-white/30 rounded-2xl pl-10 pr-4 py-3 text-sm outline-none transition-colors"
               />
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -190,7 +190,7 @@ export default function Blog() {
           <>
             {/* ── POST DESTACADO ── */}
             {postDestacado && (
-              <motion.div
+              <m.div
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
@@ -259,7 +259,7 @@ export default function Blog() {
                     </span>
                   </div>
                 </Link>
-              </motion.div>
+              </m.div>
             )}
 
             {/* ── GRID DE POSTS ── */}
@@ -268,7 +268,7 @@ export default function Blog() {
                 {postsGrid.map((post, i) => {
                   const cs = catStyle(post.categoria)
                   return (
-                    <motion.div
+                    <m.div
                       key={post.id}
                       variants={fadeUp}
                       initial={i < 3 ? 'visible' : 'hidden'}
@@ -328,7 +328,7 @@ export default function Blog() {
                           </span>
                         </div>
                       </Link>
-                    </motion.div>
+                    </m.div>
                   )
                 })}
               </div>

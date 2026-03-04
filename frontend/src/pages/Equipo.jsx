@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 import { useAuth } from '../context/AuthContext'
 import { api } from '../services/api'
@@ -103,10 +103,10 @@ function Calculadora() {
       </div>
       <div className="bg-white/10 border border-white/20 rounded-2xl p-5 text-center">
         <p className="text-white/60 text-sm mb-1">Tu ganancia estimada al mes</p>
-        <motion.p key={ganancia} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+        <m.p key={ganancia} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           className="text-4xl font-black text-secondary">
           RD$ {ganancia.toLocaleString()}
-        </motion.p>
+        </m.p>
         <p className="text-white/40 text-xs mt-2">Basado en ~30% de margen de ganancia</p>
       </div>
       <p className="text-white/30 text-xs mt-4 text-center">* Estimado referencial. Los resultados reales varían.</p>
@@ -118,7 +118,7 @@ function Calculadora() {
 function FAQItem({ q, a, index }) {
   const [open, setOpen] = useState(false)
   return (
-    <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index}
+    <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index}
       className="border border-gray-100 rounded-2xl overflow-hidden bg-white">
       <button onClick={() => setOpen(o => !o)}
         className="w-full text-left px-6 py-5 flex justify-between items-center hover:bg-gray-50 transition-colors"
@@ -128,12 +128,12 @@ function FAQItem({ q, a, index }) {
       </button>
       <AnimatePresence>
         {open && (
-          <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
+          <m.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
             <p className="px-6 pb-5 text-gray-500 text-sm leading-relaxed">{a}</p>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -141,7 +141,7 @@ function FAQItem({ q, a, index }) {
 function MiembroCard({ nombre, rol, descripcion, whatsapp, foto, index }) {
   const initials = nombre.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
   return (
-    <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index}
+    <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index}
       className="bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
       <div className="h-2 bg-gradient-to-r from-primary to-secondary" />
       <div className="p-7 flex flex-col items-center text-center">
@@ -163,7 +163,7 @@ function MiembroCard({ nombre, rol, descripcion, whatsapp, foto, index }) {
           </a>
         )}
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -200,24 +200,24 @@ export default function Equipo() {
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="relative max-w-4xl mx-auto text-center">
-          <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+          <m.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
             className="inline-block bg-secondary/20 text-secondary border border-secondary/30 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-6">
             Oportunidad de negocio en RD
-          </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          </m.span>
+          <m.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl md:text-6xl font-black mb-5 leading-tight">
             Gana dinero extra<br /><span className="text-secondary">desde tu celular</span>
-          </motion.h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+          </m.h1>
+          <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
             className="text-white/60 text-lg max-w-2xl mx-auto mb-4">
             Vende productos Amway de altísima demanda. Sin inversión grande, sin horario fijo, sin jefes.
             Únete al equipo VitaGloss RD y construye tu negocio propio.
-          </motion.p>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}
+          </m.p>
+          <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}
             className="text-secondary font-black text-2xl md:text-3xl mb-10">
             Desde RD$ 3,000 hasta RD$ 100,000+ al mes
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+          </m.p>
+          <m.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
             className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="https://wa.me/18492763532?text=Hola!%20Vi%20la%20p%C3%A1gina%20de%20VitaGloss%20RD%20y%20me%20interesa%20unirme%20al%20equipo.%20%C2%BFPuedes%20contarme%20m%C3%A1s%3F"
               target="_blank" rel="noopener noreferrer"
@@ -228,10 +228,10 @@ export default function Equipo() {
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl transition-all">
               <span aria-hidden="true">👇</span> Ver cómo funciona
             </a>
-          </motion.div>
+          </m.div>
 
           {/* ── ACCESO RÁPIDO EQUIPO ──────────────────────────────────── */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
             className="mt-8 inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-6 py-3">
             <span className="text-white/50 text-sm">¿Ya eres parte del equipo?</span>
             <button onClick={handleDashboardClick}
@@ -239,22 +239,22 @@ export default function Equipo() {
               <span aria-hidden="true">🔐</span>
               {user ? 'Ir al Dashboard' : 'Iniciar sesión'}
             </button>
-          </motion.div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+          </m.div>
+          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
             className="flex flex-wrap justify-center gap-6 mt-12">
             {[['🌍', 'Amway en 100+ países'], ['✅', 'Sin cuotas obligatorias'], ['📱', 'Vende desde WhatsApp'], ['⏱️', 'Tu propio horario']].map(([e, t]) => (
               <div key={t} className="flex items-center gap-2 text-white/60 text-sm">
                 <span aria-hidden="true">{e}</span>{t}
               </div>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ── CALCULADORA ───────────────────────────────────────────────────── */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             <span className="inline-block bg-secondary/10 text-secondary text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4">
               Calcula tus ganancias
             </span>
@@ -274,30 +274,30 @@ export default function Equipo() {
                 </div>
               ))}
             </div>
-          </motion.div>
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}>
+          </m.div>
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1}>
             <Calculadora />
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ── CÓMO FUNCIONA ─────────────────────────────────────────────────── */}
       <section id="como-funciona" className="py-20 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-16">
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-16">
             <span className="inline-block bg-primary/5 text-primary text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4">Proceso simple</span>
             <h2 className="text-4xl font-black text-primary mb-3">Tu primera venta en 7 días</h2>
             <p className="text-gray-500 max-w-lg mx-auto">Cuatro pasos para comenzar a generar ingresos. Sin complicaciones.</p>
-          </motion.div>
+          </m.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {PASOS.map((p, i) => (
-              <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}
+              <m.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}
                 className="relative bg-gray-50 rounded-3xl p-7 border border-gray-100 hover:border-secondary/30 hover:shadow-lg transition-all duration-300">
                 <span className="absolute top-5 right-5 text-gray-200 font-black text-3xl">{p.num}</span>
                 <div className="text-4xl mb-5"><span aria-hidden="true">{p.emoji}</span></div>
                 <h3 className="font-black text-primary text-lg mb-2">{p.titulo}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{p.desc}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -306,14 +306,14 @@ export default function Equipo() {
       {/* ── PLAN DE INGRESOS ──────────────────────────────────────────────── */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-5xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-16">
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-16">
             <span className="inline-block bg-secondary/10 text-secondary text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4">Plan de ingresos</span>
             <h2 className="text-4xl font-black text-primary mb-3">Tres niveles, tú decides hasta dónde llegar</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">No importa si buscas un ingreso extra pequeño o quieres hacerlo tu negocio principal — hay un nivel para ti.</p>
-          </motion.div>
+          </m.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {NIVELES.map((n, i) => (
-              <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}
+              <m.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}
                 className={`rounded-3xl overflow-hidden border-2 transition-all duration-300 ${n.destacado ? `${n.colorBorder} shadow-2xl scale-[1.03]` : 'border-gray-100 hover:shadow-lg'}`}>
                 {n.destacado && (
                   <div className={`bg-gradient-to-r ${n.color} text-white text-xs font-black text-center py-2 tracking-widest uppercase`}>
@@ -337,7 +337,7 @@ export default function Equipo() {
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -352,13 +352,13 @@ export default function Equipo() {
       {/* ── TESTIMONIOS ───────────────────────────────────────────────────── */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
             <span className="inline-block bg-primary/5 text-primary text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4">Historias reales</span>
             <h2 className="text-4xl font-black text-primary mb-3">Personas como tú ya están ganando</h2>
-          </motion.div>
+          </m.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {TESTIMONIOS.map((t, i) => (
-              <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}
+              <m.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}
                 className="bg-gray-50 rounded-3xl p-7 border border-gray-100 hover:border-secondary/30 hover:shadow-lg transition-all duration-300">
                 <div className="text-4xl mb-4"><span aria-hidden="true">{t.emoji}</span></div>
                 <p className="text-gray-600 text-sm leading-relaxed mb-5 italic">"{t.texto}"</p>
@@ -367,7 +367,7 @@ export default function Equipo() {
                   <p className="text-gray-400 text-xs mb-2">{t.ciudad}</p>
                   <span className="inline-block bg-secondary/10 text-secondary text-xs font-black px-3 py-1 rounded-full">{t.ingreso}</span>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -379,11 +379,11 @@ export default function Equipo() {
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-2xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
             <span className="inline-block bg-secondary/10 text-secondary text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4">Tus dudas, respondidas</span>
             <h2 className="text-4xl font-black text-primary mb-3">Preguntas frecuentes</h2>
             <p className="text-gray-500">Todo lo que necesitas saber antes de dar el primer paso.</p>
-          </motion.div>
+          </m.div>
           <div className="space-y-3">
             {OBJECIONES.map((o, i) => <FAQItem key={i} q={o.q} a={o.a} index={i} />)}
           </div>
@@ -393,10 +393,10 @@ export default function Equipo() {
       {/* ── EQUIPO ACTUAL ─────────────────────────────────────────────────── */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-14">
             <h2 className="text-4xl font-black text-primary mb-3">Conoce al equipo</h2>
             <p className="text-gray-500">Las personas que te van a acompañar en este camino.</p>
-          </motion.div>
+          </m.div>
           {loadingMembers ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1,2,3].map(i => <div key={i} className="bg-gray-50 rounded-3xl h-56 animate-pulse" />)}
@@ -418,7 +418,7 @@ export default function Equipo() {
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="relative max-w-2xl mx-auto text-center text-white">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <m.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             <span className="text-6xl block mb-6" aria-hidden="true">🚀</span>
             <h2 className="text-4xl md:text-5xl font-black mb-5 leading-tight">
               ¿Listo para empezar<br />tu negocio hoy?
@@ -432,7 +432,7 @@ export default function Equipo() {
               <span aria-hidden="true">💬</span> Hablar por WhatsApp ahora
             </a>
             <p className="text-white/30 text-sm">Respuesta en menos de 1 hora · Orientación 100% gratuita</p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 

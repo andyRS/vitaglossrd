@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { api } from '../services/api'
 
 function Stars({ rating, size = 'md', interactive = false, onSelect }) {
@@ -97,7 +97,7 @@ export default function ReviewsSection({ productoId }) {
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
                 <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
-                  <motion.div
+                  <m.div
                     initial={{ width: 0 }}
                     animate={{ width: `${d.pct}%` }}
                     transition={{ duration: 0.6, delay: 0.1 }}
@@ -123,19 +123,19 @@ export default function ReviewsSection({ productoId }) {
 
       {/* Confirmación enviado */}
       {sent && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-green-50 border border-green-200 text-green-700 rounded-2xl px-5 py-4 mb-8 font-semibold text-sm"
         >
           ✅ ¡Gracias por tu opinión! Ya se publicó tu reseña.
-        </motion.div>
+        </m.div>
       )}
 
       {/* Form */}
       <AnimatePresence>
         {showForm && (
-          <motion.form
+          <m.form
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
@@ -207,7 +207,7 @@ export default function ReviewsSection({ productoId }) {
                 Cancelar
               </button>
             </div>
-          </motion.form>
+          </m.form>
         )}
       </AnimatePresence>
 
@@ -224,7 +224,7 @@ export default function ReviewsSection({ productoId }) {
       ) : (
         <div className="space-y-4">
           {data.reviews.map(rev => (
-            <motion.div
+            <m.div
               key={rev._id}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -242,7 +242,7 @@ export default function ReviewsSection({ productoId }) {
                 </time>
               </div>
               <p className="text-gray-600 text-sm leading-relaxed">{rev.comentario}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       )}

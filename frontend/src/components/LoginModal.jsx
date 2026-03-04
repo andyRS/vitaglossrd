@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 
 export default function LoginModal({ open, onClose }) {
@@ -40,7 +40,7 @@ export default function LoginModal({ open, onClose }) {
       {open && (
         <>
           {/* Backdrop */}
-          <motion.div
+          <m.div
             key="backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -52,7 +52,7 @@ export default function LoginModal({ open, onClose }) {
 
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <motion.div
+            <m.div
               key="modal"
               initial={{ opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -85,7 +85,7 @@ export default function LoginModal({ open, onClose }) {
                   {/* Error */}
                   <AnimatePresence>
                     {error && (
-                      <motion.div
+                      <m.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -94,7 +94,7 @@ export default function LoginModal({ open, onClose }) {
                       >
                         <span aria-hidden="true">⚠️</span>
                         {error}
-                      </motion.div>
+                      </m.div>
                     )}
                   </AnimatePresence>
 
@@ -175,7 +175,7 @@ export default function LoginModal({ open, onClose }) {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </>
       )}

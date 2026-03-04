@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 import { getPostBySlug, getPostsRelacionados } from '../data/posts'
 import { buildTOC } from '../utils/toc'
@@ -188,7 +188,7 @@ export default function BlogPost() {
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 items-end">
-            <motion.div variants={fadeUp} initial="hidden" animate="visible">
+            <m.div variants={fadeUp} initial="hidden" animate="visible">
               <div className="flex items-center gap-3 mb-5 flex-wrap">
                 <span className={`text-xs font-bold px-3 py-1 rounded-full ${cs.bg} ${cs.text}`}>
                   {post.categoria}
@@ -215,11 +215,11 @@ export default function BlogPost() {
                   <p className="text-white/40 text-xs mt-0.5">Distribuidor Independiente Certificado Amway · VitaGloss RD</p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Imagen del producto en el hero — solo si no es cover */}
             {!post.imagenCover && (
-              <motion.div
+              <m.div
                 variants={fadeUp}
                 initial="hidden"
                 animate="visible"
@@ -235,7 +235,7 @@ export default function BlogPost() {
                   decoding="async"
                   className="w-64 h-64 object-contain drop-shadow-2xl"
                 />
-              </motion.div>
+              </m.div>
             )}
           </div>
         </div>
@@ -245,7 +245,7 @@ export default function BlogPost() {
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_200px] gap-10 items-start">
           {/* Artículo */}
-          <motion.article
+          <m.article
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -282,7 +282,7 @@ export default function BlogPost() {
               className="prose-custom"
               dangerouslySetInnerHTML={{ __html: htmlWithIds }}
             />
-          </motion.article>
+          </m.article>
 
           {/* Sidebar sticky */}
           <aside className="hidden lg:block">
@@ -392,7 +392,7 @@ export default function BlogPost() {
         <section className="py-10 px-4 bg-gradient-to-br from-[#f0fdf9] to-[#e8f8f5] border-t border-teal-100">
           <div className="max-w-3xl mx-auto">
             <p className="text-xs font-bold tracking-widest text-teal-600 uppercase mb-4">Producto mencionado en este artículo</p>
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -442,7 +442,7 @@ export default function BlogPost() {
                   </Link>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
       )}
@@ -474,7 +474,7 @@ export default function BlogPost() {
               {relacionados.map((rel, i) => {
                 const rcs = catStyle(rel.categoria)
                 return (
-                  <motion.div
+                  <m.div
                     key={rel.id}
                     variants={fadeUp}
                     initial="hidden"
@@ -524,7 +524,7 @@ export default function BlogPost() {
                         </span>
                       </div>
                     </Link>
-                  </motion.div>
+                  </m.div>
                 )
               })}
             </div>

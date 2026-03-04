@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
 import ProductoCard from '../components/ProductoCard'
 import { useSEO } from '../hooks/useSEO'
@@ -48,29 +48,29 @@ export default function Catalogo() {
         <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto text-center">
-          <motion.span
+          <m.span
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="inline-block bg-secondary/20 text-secondary border border-secondary/30 text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest mb-4"
           >
             Distribuidor Amway RD
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-5xl md:text-6xl font-black mb-4"
           >
             Nuestro Catálogo
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="text-white/60 text-lg max-w-xl mx-auto"
           >
             Productos Amway originales para tu salud bucal y bienestar. Con envío a domicilio en toda República Dominicana.
-          </motion.p>
+          </m.p>
         </div>
       </div>
 
@@ -126,7 +126,7 @@ export default function Catalogo() {
       {/* Grid de productos */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <AnimatePresence mode="wait">
-          <motion.div
+          <m.div
             key={categoriaActiva}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -135,7 +135,7 @@ export default function Catalogo() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             {productosFiltrados.map((p, i) => (
-              <motion.div
+              <m.div
                 key={p.id}
                 variants={fadeUp}
                 initial="hidden"
@@ -143,9 +143,9 @@ export default function Catalogo() {
                 custom={i}
               >
                 <ProductoCard producto={p} />
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
 
         {productosFiltrados.length === 0 && (
@@ -163,7 +163,7 @@ export default function Catalogo() {
 
       {/* Banner WhatsApp */}
       <div className="max-w-7xl mx-auto px-4 pb-16">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -181,7 +181,7 @@ export default function Catalogo() {
           >
             📲 Consultar ahora
           </a>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   )

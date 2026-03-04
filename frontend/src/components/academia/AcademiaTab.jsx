@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { MODULOS, RECURSOS } from '../../data/academia'
 
 const STORAGE_KEY = 'vg_academia_progreso'
@@ -37,7 +37,7 @@ function VideoModal({ leccion, modulo, completadas, onToggleComplete, onClose })
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
       onClick={onClose}
     >
-      <motion.div
+      <m.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
@@ -91,7 +91,7 @@ function VideoModal({ leccion, modulo, completadas, onToggleComplete, onClose })
             </button>
           </div>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   )
 }
@@ -112,7 +112,7 @@ function RecursoModal({ item, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
       onClick={onClose}
     >
-      <motion.div
+      <m.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
@@ -147,7 +147,7 @@ function RecursoModal({ item, onClose }) {
             {copiado ? '✓ ¡Copiado al portapapeles!' : '📋 Copiar todo el texto'}
           </button>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   )
 }
@@ -202,7 +202,7 @@ export default function AcademiaTab({ onChangeTab }) {
             {porcentaje === 100 && <span className="text-yellow-400 font-bold">🏆 ¡Curso terminado!</span>}
           </div>
           <div className="w-full bg-white/10 rounded-full h-2.5 overflow-hidden">
-            <motion.div
+            <m.div
               initial={{ width: 0 }}
               animate={{ width: `${porcentaje}%` }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -303,7 +303,7 @@ export default function AcademiaTab({ onChangeTab }) {
                 {/* Lecciones */}
                 <AnimatePresence>
                   {estaAbierto && (
-                    <motion.div
+                    <m.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -360,7 +360,7 @@ export default function AcademiaTab({ onChangeTab }) {
                           )
                         })}
                       </div>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </div>

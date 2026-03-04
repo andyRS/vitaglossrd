@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
 import ProductoCard from '../components/ProductoCard'
 import { useSEO } from '../hooks/useSEO'
@@ -25,7 +25,7 @@ function Accordion({ titulo, icono, children, defaultOpen = false }) {
             {titulo}
           </span>
         </span>
-        <motion.span
+        <m.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.25 }}
           className={`flex-shrink-0 ml-4 transition-colors ${open ? 'text-primary' : 'text-gray-300 group-hover:text-primary'}`}
@@ -33,11 +33,11 @@ function Accordion({ titulo, icono, children, defaultOpen = false }) {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
-        </motion.span>
+        </m.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -47,7 +47,7 @@ function Accordion({ titulo, icono, children, defaultOpen = false }) {
             <div className="pb-6 text-gray-600 text-sm leading-relaxed">
               {children}
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
@@ -134,7 +134,7 @@ function TabsInfoSection({ producto }) {
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.div
+        <m.div
           key={tab}
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -237,7 +237,7 @@ function TabsInfoSection({ producto }) {
               ))}
             </div>
           )}
-        </motion.div>
+        </m.div>
       </AnimatePresence>
     </div>
   )
@@ -437,7 +437,7 @@ export default function ProductoDetalle() {
               onTouchEnd={handleTouchEnd}
             >
               <AnimatePresence mode="wait">
-                <motion.img
+                <m.img
                   key={imgActiva}
                   src={imagenes[imgActiva]}
                   alt={producto.nombre}
@@ -959,7 +959,7 @@ export default function ProductoDetalle() {
           <p className="text-gray-400 text-sm mb-8">Los clientes que compraron este producto también llevan:</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {relacionados.map((p, i) => (
-              <motion.div
+              <m.div
                 key={p.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -967,13 +967,13 @@ export default function ProductoDetalle() {
                 transition={{ delay: i * 0.1 }}
               >
                 <ProductoCard producto={p} />
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
           {/* CTA combo */}
           {producto.categoria === 'Salud Bucal' && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -998,7 +998,7 @@ export default function ProductoDetalle() {
                   Pedir kit →
                 </a>
               </div>
-            </motion.div>
+            </m.div>
           )}
         </div>
       </div>
@@ -1011,7 +1011,7 @@ export default function ProductoDetalle() {
       {/* ===== BARRA FLOTANTE MÓVIL ===== */}
       <AnimatePresence>
         {showStickyBar && (
-          <motion.div
+          <m.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
@@ -1037,7 +1037,7 @@ export default function ProductoDetalle() {
                 Pedir ahora
               </a>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

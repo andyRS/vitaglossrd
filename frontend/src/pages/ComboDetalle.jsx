@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { combos } from '../data/combos'
 import { useSEO } from '../hooks/useSEO'
 
@@ -79,7 +79,7 @@ export default function ComboDetalle() {
         <div className="relative max-w-6xl mx-auto px-6">
           <div className="flex gap-3 overflow-x-auto pb-0" style={{ scrollbarWidth: 'none' }}>
             {combo.productos.map((p, i) => (
-              <motion.div
+              <m.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ export default function ComboDetalle() {
                     onError={() => setImgErrors(prev => ({ ...prev, [i]: true }))}
                   />
                 )}
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -252,7 +252,7 @@ export default function ComboDetalle() {
             <h2 className="text-xl font-bold text-gray-900 mb-6">Otros kits que te pueden interesar</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               {otros.map((c, i) => (
-                <motion.div
+                <m.div
                   key={c.id}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -278,7 +278,7 @@ export default function ComboDetalle() {
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>

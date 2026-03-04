@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { api } from '../services/api'
 
 export default function LeadPopup() {
@@ -83,7 +83,7 @@ export default function LeadPopup() {
       {visible && (
         <>
           {/* Overlay */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -92,7 +92,7 @@ export default function LeadPopup() {
           />
 
           {/* Modal — contenedor que centra con flexbox */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -171,7 +171,7 @@ export default function LeadPopup() {
                     </form>
                   </>
                 ) : (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-6"
@@ -179,12 +179,12 @@ export default function LeadPopup() {
                     <div className="text-5xl mb-3">🎉</div>
                     <h3 className="font-black text-white text-lg mb-1">¡Bienvenido/a {nombre}!</h3>
                     <p className="text-white/50 text-sm">Te redirigimos a WhatsApp para completar tu registro VIP.</p>
-                  </motion.div>
+                  </m.div>
                 )}
               </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>

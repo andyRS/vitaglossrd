@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import { api } from '../services/api'
@@ -57,7 +57,7 @@ export default function CartDrawer() {
       {open && (
         <>
           {/* Overlay */}
-          <motion.div
+          <m.div
             key="overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -67,7 +67,7 @@ export default function CartDrawer() {
           />
 
           {/* Drawer */}
-          <motion.div
+          <m.div
             key="drawer"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
@@ -99,7 +99,7 @@ export default function CartDrawer() {
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3">
               <AnimatePresence>
                 {items.length === 0 ? (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="flex flex-col items-center justify-center h-48 text-center"
@@ -107,10 +107,10 @@ export default function CartDrawer() {
                     <span className="text-5xl mb-3">🛍️</span>
                     <p className="text-gray-400 font-medium">Tu pedido está vacío</p>
                     <p className="text-gray-300 text-sm mt-1">Agrega productos desde el catálogo</p>
-                  </motion.div>
+                  </m.div>
                 ) : (
                   items.map(item => (
-                    <motion.div
+                    <m.div
                       key={item.id}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -149,7 +149,7 @@ export default function CartDrawer() {
                       >
                         🗑
                       </button>
-                    </motion.div>
+                    </m.div>
                   ))
                 )}
               </AnimatePresence>
@@ -203,7 +203,7 @@ export default function CartDrawer() {
                 {/* Step: checkout — captura datos cliente */}
                 {step === 'checkout' && (
                   <AnimatePresence mode="wait">
-                    <motion.form
+                    <m.form
                       key="checkout"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -239,12 +239,12 @@ export default function CartDrawer() {
                       <button type="button" onClick={handleSaltar} className="w-full text-gray-400 hover:text-gray-600 text-xs py-1 transition-colors">
                         Saltar — pedir sin registrarme
                       </button>
-                    </motion.form>
+                    </m.form>
                   </AnimatePresence>
                 )}
               </div>
             )}
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>
