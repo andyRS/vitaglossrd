@@ -77,12 +77,12 @@ export const productos = [
       { label: "Artículo", valor: "124106SP" }
     ],
     imagenes: [
-      "/124106SP-690px-01.jpg",
-      "/124106SP-690px-02.jpg",
-      "/124106SP-690px-03.jpg",
-      "/124106SP-690px-04.jpg"
+      "/124106SP-690px-01.webp",
+      "/124106SP-690px-02.webp",
+      "/124106SP-690px-03.webp",
+      "/124106SP-690px-04.webp"
     ],
-    imagen: "/124106SP-690px-01.jpg",
+    imagen: "/124106SP-690px-01.webp",
     rating: 4.8,
     reviewCount: 47,
     usosPorEnvase: 198,
@@ -150,12 +150,12 @@ export const productos = [
       { label: "Origen", valor: "Sin ingredientes animales" }
     ],
     imagenes: [
-      "/124111-690px-01.jpg",
-      "/124111-690px-02.jpg",
+      "/124111-690px-01.webp",
+      "/124111-690px-02.webp",
       "/124111-690px-03.jpg",
       "/124111-690px-04.jpg"
     ],
-    imagen: "/124111-690px-01.jpg",
+    imagen: "/124111-690px-01.webp",
     rating: 4.7,
     reviewCount: 23,
     usosPorEnvase: 223,
@@ -224,11 +224,11 @@ export const productos = [
       { label: "Certificación", valor: "Kosher" }
     ],
     imagenes: [
-      "/124108-690px-01.jpg",
-      "/124108-690px-02.jpg",
-      "/124108-690px-03.jpg"
+      "/124108-690px-01.webp",
+      "/124108-690px-02.webp",
+      "/124108-690px-03.webp"
     ],
-    imagen: "/124108-690px-01.jpg",
+    imagen: "/124108-690px-01.webp",
     rating: 4.9,
     reviewCount: 38,
     usosPorEnvase: 100,
@@ -301,9 +301,9 @@ export const productos = [
       { label: "Apto para", valor: "Vegetarianos" }
     ],
     imagenes: [
-      "/109741CO-690px-01.png"
+      "/109741CO-690px-01.webp"
     ],
-    imagen: "/109741CO-690px-01.png",
+    imagen: "/109741CO-690px-01.webp",
     rating: 4.9,
     reviewCount: 62,
     usosPorEnvase: 60,
@@ -383,9 +383,9 @@ export const productos = [
       { nombre: "NSF", descripcion: "Certificación de contenido NSF" }
     ],
     imagenes: [
-      "/102992MX-690px-01.jpg"
+      "/102992MX-690px-01.webp"
     ],
-    imagen: "/102992MX-690px-01.jpg",
+    imagen: "/102992MX-690px-01.webp",
     rating: 4.9,
     reviewCount: 41,
     usosPorEnvase: 31,
@@ -430,8 +430,8 @@ export const productos = [
       { label: "Certificaciones", valor: "NSF · Kosher · Halal" },
       { label: "Artículo", valor: "A4300DR" }
     ],
-    imagenes: ["/Multivitamina Double X de Nutrilite – Reemplazo para 31 días.jpg"],
-    imagen: "/Multivitamina Double X de Nutrilite – Reemplazo para 31 días.jpg",
+    imagenes: ["/Multivitamina Double X de Nutrilite – Reemplazo para 31 días.webp"],
+    imagen: "/Multivitamina Double X de Nutrilite – Reemplazo para 31 días.webp",
     rating: 4.9,
     reviewCount: 35,
     usosPorEnvase: 31,
@@ -474,8 +474,8 @@ export const productos = [
       { label: "Certificaciones", valor: "NSF · Kosher · Halal" },
       { label: "Artículo", valor: "123364DR" }
     ],
-    imagenes: ["/Multivitamina Double X de Nutrilite – Suministro para 10 días.jpg"],
-    imagen: "/Multivitamina Double X de Nutrilite – Suministro para 10 días.jpg",
+    imagenes: ["/Multivitamina Double X de Nutrilite – Suministro para 10 días.webp"],
+    imagen: "/Multivitamina Double X de Nutrilite – Suministro para 10 días.webp",
     rating: 4.8,
     reviewCount: 28,
     usosPorEnvase: 10,
@@ -563,8 +563,8 @@ export const productos = [
       { label: "Recomendado para", valor: "Mujeres en etapa reproductiva" },
       { label: "Artículo", valor: "102046" }
     ],
-    imagenes: ["/Nutrilite Ácido fólico.jpg"],
-    imagen: "/Nutrilite Ácido fólico.jpg",
+    imagenes: ["/Nutrilite-Ácido-fólico.webp"],
+    imagen: "/Nutrilite-Ácido-fólico.webp",
     rating: 4.7,
     reviewCount: 29,
     usosPorEnvase: 90,
@@ -740,8 +740,8 @@ export const productos = [
       { label: "Recomendado para", valor: "Adultos mayores de 18 años" },
       { label: "Artículo", valor: "117085" }
     ],
-    imagenes: ["/Nutrilite Suplemento nutricional Slimmetry Ideal para bajar de peso.jpg"],
-    imagen: "/Nutrilite Suplemento nutricional Slimmetry Ideal para bajar de peso.jpg",
+    imagenes: ["/Nutrilite Suplemento nutricional Slimmetry Ideal para bajar de peso.webp"],
+    imagen: "/Nutrilite Suplemento nutricional Slimmetry Ideal para bajar de peso.webp",
     rating: 4.5,
     reviewCount: 33,
     usosPorEnvase: 60,
@@ -876,8 +876,8 @@ export const productos = [
       { label: "Beneficio principal", valor: "Energía y sistema nervioso" },
       { label: "Artículo", valor: "NUTRI-VITB" }
     ],
-    imagenes: ["/Nutrilite™ Vitamina B de acción doble.jpg"],
-    imagen: "/Nutrilite™ Vitamina B de acción doble.jpg",
+    imagenes: ["/Nutrilite™-Vitamina-B-de-acción-doble.webp"],
+    imagen: "/Nutrilite™-Vitamina-B-de-acción-doble.webp",
     rating: 4.7,
     reviewCount: 20,
     usosPorEnvase: 90,
@@ -1010,8 +1010,8 @@ export const productos = [
       { label: "Beneficio principal", valor: "Belleza desde adentro" },
       { label: "Artículo", valor: "A7553" }
     ],
-    imagenes: ["/Pelo, Piel y Uñas Nutrilite.jpg"],
-    imagen: "/Pelo, Piel y Uñas Nutrilite.jpg",
+    imagenes: ["/Pelo_-Piel-y-Uñas-Nutrilite.webp"],
+    imagen: "/Pelo_-Piel-y-Uñas-Nutrilite.webp",
     rating: 5.0,
     reviewCount: 86,
     usosPorEnvase: 60,
@@ -1299,8 +1299,8 @@ export const productos = [
       { label: "Certificaciones", valor: "Halal · NSF" },
       { label: "Artículo", valor: "124708" }
     ],
-    imagenes: ["/espectro-multicaroteno.jpg"],
-    imagen: "/espectro-multicaroteno.jpg",
+    imagenes: ["/espectro-multicaroteno.webp"],
+    imagen: "/espectro-multicaroteno.webp",
     rating: 4.7,
     reviewCount: 9,
     usosPorEnvase: 60,
@@ -1359,8 +1359,8 @@ export const productos = [
       { label: "Certificaciones", valor: "Kosher · Halal · NSF" },
       { label: "Artículo", valor: "120011DR" }
     ],
-    imagenes: ["/diario-nutrilite.png"],
-    imagen: "/diario-nutrilite.png",
+    imagenes: ["/diario-nutrilite.webp"],
+    imagen: "/diario-nutrilite.webp",
     rating: 4.8,
     reviewCount: 28,
     usosPorEnvase: 30,
@@ -1506,8 +1506,8 @@ export const productos = [
       { label: "Certificaciones", valor: "Halal" },
       { label: "Artículo", valor: "NUTRI-CEROCARB" }
     ],
-    imagenes: ["/Nutrilite™ Cerocarb.png"],
-    imagen: "/Nutrilite™ Cerocarb.png",
+    imagenes: ["/Nutrilite™-Cerocarb.webp"],
+    imagen: "/Nutrilite™-Cerocarb.webp",
     rating: 4.6,
     reviewCount: 15,
     usosPorEnvase: 60,
