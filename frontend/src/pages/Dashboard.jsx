@@ -1402,7 +1402,7 @@ export default function Dashboard() {
                         {/* DOS COLUMNAS: Cliente | Información del vendedor */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '24px 40px 20px' }}>
                           <div>
-                            <p style={{ fontWeight: '700', fontSize: '13px', color: '#1B3A6B', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '11px' }}>Cliente</p>
+                            <p style={{ fontWeight: '700', color: '#1B3A6B', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '11px' }}>Cliente</p>
                             <p style={{ fontSize: '14px', fontWeight: '700', color: '#111', marginBottom: '3px' }}>{facturaOrder.nombre}</p>
                             {facturaOrder.whatsapp && (
                               <p style={{ fontSize: '13px', color: '#444', marginBottom: '2px' }}>

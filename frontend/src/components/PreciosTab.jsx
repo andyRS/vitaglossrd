@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { productos } from '../../data/productos'
+import { productos } from '../data/productos'
 import { COMBO_PRECIOS } from '../../data/precios.js'
 import { usePrecios } from '../../context/PreciosContext'
 import { api } from '../../services/api'
