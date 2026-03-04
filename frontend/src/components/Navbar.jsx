@@ -53,15 +53,18 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center group -my-3 sm:-my-6">
-            <img
-              src="/logo_final.png"
-              alt="VitaGloss RD"
-              width="168"
-              height="96"
-              fetchPriority="high"
-              decoding="sync"
-              className="h-16 sm:h-24 w-auto object-contain drop-shadow-md brightness-105 contrast-105 group-hover:scale-105 group-hover:drop-shadow-xl group-hover:brightness-110 transition-all duration-300"
-            />
+            <picture>
+              <source srcSet="/logo_final.webp" type="image/webp" />
+              <img
+                src="/logo_final.png"
+                alt="VitaGloss RD"
+                width="168"
+                height="96"
+                fetchPriority="high"
+                decoding="sync"
+                className="h-16 sm:h-24 w-auto object-contain drop-shadow-md brightness-105 contrast-105 group-hover:scale-105 group-hover:drop-shadow-xl group-hover:brightness-110 transition-all duration-300"
+              />
+            </picture>
           </Link>
 
           {/* Desktop links — solo primarios */}

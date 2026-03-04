@@ -244,18 +244,24 @@ export default function Home() {
                 </div>
 
                 {/* Indicadores */}
-                <div className="flex items-center gap-3 mt-10">
+                <div className="flex items-center gap-1 mt-10">
                   {slides.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => { setSlideActivo(i); setAutoplay(false) }}
-                      className="rounded-full transition-all duration-300"
-                      style={{
-                        width: slideActivo === i ? '32px' : '8px',
-                        height: '8px',
-                        background: slideActivo === i ? slide.acento : 'rgba(255,255,255,0.3)'
-                      }}
-                    />
+                      aria-label={`Ir al slide ${i + 1}`}
+                      className="flex items-center justify-center transition-all duration-300"
+                      style={{ minWidth: '28px', minHeight: '28px', padding: '10px 4px', background: 'transparent', border: 'none' }}
+                    >
+                      <span
+                        className="rounded-full block transition-all duration-300"
+                        style={{
+                          width: slideActivo === i ? '32px' : '8px',
+                          height: '8px',
+                          background: slideActivo === i ? slide.acento : 'rgba(255,255,255,0.3)'
+                        }}
+                      />
+                    </button>
                   ))}
                   <span className="ml-2 text-white/30 text-xs">
                     {slideActivo + 1} / {slides.length}
@@ -288,17 +294,23 @@ export default function Home() {
                     background: `radial-gradient(circle at 40% 30%, ${slide.acento}18 0%, transparent 70%)`,
                     boxShadow: `0 0 0 2px ${slide.acento}90, 0 0 25px ${slide.acento}50, 0 0 60px ${slide.acento}20`,
                   }}>
-                  <img
-                    src={slide.imagen}
-                    alt="Producto"
-                    className="w-44 sm:w-60 md:w-72 lg:w-80 h-44 sm:h-60 md:h-72 lg:h-80 object-contain"
-                    style={{
-                      filter: `drop-shadow(0 20px 30px ${slide.acento}70)`,
-                      mixBlendMode: 'screen',
-                    }}
-                    fetchPriority={slideActivo === 0 ? 'high' : 'low'}
-                    loading={slideActivo === 0 ? 'eager' : 'lazy'}
-                  />
+                  <picture>
+                    <source
+                      srcSet={slide.imagen.replace(/\.(jpg|png)$/i, '.webp')}
+                      type="image/webp"
+                    />
+                    <img
+                      src={slide.imagen}
+                      alt="Producto"
+                      className="w-44 sm:w-60 md:w-72 lg:w-80 h-44 sm:h-60 md:h-72 lg:h-80 object-contain"
+                      style={{
+                        filter: `drop-shadow(0 20px 30px ${slide.acento}70)`,
+                        mixBlendMode: 'screen',
+                      }}
+                      fetchPriority={slideActivo === 0 ? 'high' : 'low'}
+                      loading={slideActivo === 0 ? 'eager' : 'lazy'}
+                    />
+                  </picture>
                 </div>
 
                 {/* Badge precio */}
