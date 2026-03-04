@@ -229,7 +229,7 @@ export default function Home() {
                   <Link
                     to={slide.ctaLink}
                     className="px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-sm sm:text-base font-bold transition-all duration-200 hover:scale-105 shadow-lg"
-                    style={{ background: slide.acento, color: '#fff', boxShadow: `0 8px 30px ${slide.acento}40` }}
+                    style={{ background: slide.acento, color: '#0f172a', boxShadow: `0 8px 30px ${slide.acento}40` }}
                   >
                     {slide.cta} →
                   </Link>
@@ -313,7 +313,7 @@ export default function Home() {
                   transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
                   className="absolute top-2 sm:top-4 right-0 sm:right-2 bg-white rounded-2xl px-3 sm:px-4 py-2 sm:py-3 shadow-2xl"
                 >
-                  <p className="text-xs text-gray-400 font-medium">Precio especial</p>
+                  <p className="text-xs text-gray-600 font-medium">Precio especial</p>
                   <p className="text-primary font-black text-base sm:text-lg">RD${slidePrecio}</p>
                 </motion.div>
 
@@ -321,7 +321,7 @@ export default function Home() {
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut', delay: 0.5 }}
-                  className="absolute bottom-2 sm:bottom-6 left-0 sm:left-2 bg-green-500 text-white rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 shadow-xl flex items-center gap-2"
+                  className="absolute bottom-2 sm:bottom-6 left-0 sm:left-2 bg-green-700 text-white rounded-2xl px-3 sm:px-4 py-2 sm:py-2.5 shadow-xl flex items-center gap-2"
                 >
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   <span className="text-xs sm:text-sm font-bold">En Stock</span>
@@ -387,7 +387,7 @@ export default function Home() {
       </section>
 
       {/* ====== SOCIAL PROOF TICKER ====== */}
-      <div className="bg-secondary overflow-hidden py-3">
+      <div className="bg-teal-700 overflow-hidden py-3">
         <motion.div
           animate={{ x: ['0%', '-50%'] }}
           transition={{ repeat: Infinity, duration: 20, ease: 'linear' }}
@@ -1140,7 +1140,7 @@ export default function Home() {
               href="https://wa.me/18492763532?text=Hola!%20Vi%20los%20resultados%20y%20quiero%20probar%20los%20productos%20VitaGloss%20RD"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-green-500 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition-all hover:scale-105 shadow-lg shadow-green-200"
+              className="inline-flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition-all hover:scale-105 shadow-lg shadow-green-200"
             >
               💬 Quiero resultados como estos
             </a>
@@ -1176,8 +1176,8 @@ export default function Home() {
               ].map((item, i) => (
                 <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
                   <div className="text-3xl mb-3">{item.icono}</div>
-                  <h4 className="text-white font-bold text-sm mb-1">{item.titulo}</h4>
-                  <p className="text-white/40 text-xs">{item.desc}</p>
+                  <h3 className="text-white font-bold text-sm mb-1">{item.titulo}</h3>
+                  <p className="text-white/70 text-xs">{item.desc}</p>
                 </div>
               ))}
             </div>

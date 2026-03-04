@@ -17,7 +17,7 @@ export default function Footer() {
               <div key={i} className="flex flex-col items-center gap-1.5">
                 <span className="text-2xl">{item.icono}</span>
                 <p className="text-white font-bold text-sm">{item.titulo}</p>
-                <p className="text-white/50 text-xs">{item.desc}</p>
+                <p className="text-white/80 text-xs">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -37,33 +37,33 @@ export default function Footer() {
               />
             </div>
             <p className="font-bold text-xl text-white leading-tight">VitaGloss RD</p>
-            <p className="text-secondary text-sm mb-4">Tu salud, tu sonrisa</p>
+            <p className="text-teal-300 text-sm mb-4">Tu salud, tu sonrisa</p>
             <p className="text-gray-300 text-sm leading-relaxed">
               Distribuidores independientes Amway en República Dominicana. Productos originales para tu bienestar.
             </p>
             <div className="flex items-center gap-2 mt-4">
-              <span className="bg-white/10 border border-white/20 text-white/60 text-xs px-3 py-1 rounded-full">Dist. Amway Oficial</span>
-              <span className="bg-white/10 border border-white/20 text-white/60 text-xs px-3 py-1 rounded-full">NSF • Kosher</span>
+              <span className="bg-white/10 border border-white/20 text-white/90 text-xs px-3 py-1 rounded-full">Dist. Amway Oficial</span>
+              <span className="bg-white/10 border border-white/20 text-white/90 text-xs px-3 py-1 rounded-full">NSF • Kosher</span>
             </div>
           </div>
 
           {/* Navegación */}
           <div>
-            <h3 className="font-semibold text-secondary mb-4">Navegación</h3>
+            <h3 className="font-semibold text-teal-300 mb-4">Navegación</h3>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><Link to="/" className="hover:text-secondary transition-colors">Inicio</Link></li>
-              <li><Link to="/catalogo" className="hover:text-secondary transition-colors">Catálogo</Link></li>
-              <li><Link to="/combos" className="hover:text-secondary transition-colors">Combos</Link></li>
-              <li><Link to="/blog" className="hover:text-secondary transition-colors">Blog</Link></li>
-              <li><Link to="/faq" className="hover:text-secondary transition-colors">Preguntas Frecuentes</Link></li>
-              <li><Link to="/sobre-nosotros" className="hover:text-secondary transition-colors">Sobre Nosotros</Link></li>
-              <li><Link to="/contacto" className="hover:text-secondary transition-colors">Contacto</Link></li>
+              <li><Link to="/" className="hover:text-white transition-colors">Inicio</Link></li>
+              <li><Link to="/catalogo" className="hover:text-white transition-colors">Catálogo</Link></li>
+              <li><Link to="/combos" className="hover:text-white transition-colors">Combos</Link></li>
+              <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+              <li><Link to="/faq" className="hover:text-white transition-colors">Preguntas Frecuentes</Link></li>
+              <li><Link to="/sobre-nosotros" className="hover:text-white transition-colors">Sobre Nosotros</Link></li>
+              <li><Link to="/contacto" className="hover:text-white transition-colors">Contacto</Link></li>
             </ul>
           </div>
 
           {/* Políticas */}
           <div>
-            <h3 className="font-semibold text-secondary mb-4">Políticas</h3>
+            <h3 className="font-semibold text-teal-300 mb-4">Políticas</h3>
             <ul className="space-y-2 text-sm text-gray-300">
               <li className="flex items-start gap-2">
                 <span className="text-secondary mt-0.5">&#10003;</span>
@@ -90,7 +90,7 @@ export default function Footer() {
 
           {/* Contacto */}
           <div>
-            <h3 className="font-semibold text-secondary mb-4">Contáctanos</h3>
+            <h3 className="font-semibold text-teal-300 mb-4">Contáctanos</h3>
             <ul className="space-y-3 text-sm text-gray-300">
               <li className="flex items-center space-x-2">
                 <span>📲</span>
@@ -98,7 +98,7 @@ export default function Footer() {
                   href="https://wa.me/18492763532"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-secondary transition-colors"
+                  className="hover:text-white transition-colors"
                 >
                   WhatsApp: (849) 276-3532
                 </a>
@@ -116,7 +116,7 @@ export default function Footer() {
                   href="https://wa.me/18492763532?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20VitaGloss%20RD"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors"
+                  className="inline-flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors"
                 >
                   📲 Escribir ahora
                 </a>
@@ -125,12 +125,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-blue-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-3">
+        <div className="border-t border-blue-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300 gap-3">
           <p>© 2026 VitaGloss RD. Todos los derechos reservados.</p>
           <div className="flex items-center gap-4 flex-wrap justify-center">
-            <Link to="/privacidad" className="hover:text-secondary transition-colors">Política de Privacidad</Link>
+            <Link to="/privacidad" className="hover:text-white transition-colors">Política de Privacidad</Link>
             <span className="opacity-30">·</span>
-            <Link to="/terminos" className="hover:text-secondary transition-colors">Términos de Uso</Link>
+            <Link to="/terminos" className="hover:text-white transition-colors">Términos de Uso</Link>
             <span className="opacity-30">·</span>
             <p>Distribuidor independiente Amway — No somos Amway Corp.</p>
           </div>
