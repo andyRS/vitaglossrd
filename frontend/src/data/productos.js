@@ -383,9 +383,9 @@ export const productos = [
       { nombre: "NSF", descripcion: "Certificación de contenido NSF" }
     ],
     imagenes: [
-      "/102992MX-690px-01.webp"
+      "/128032-690px-01.webp"
     ],
-    imagen: "/102992MX-690px-01.webp",
+    imagen: "/128032-690px-01.webp",
     rating: 4.9,
     reviewCount: 41,
     usosPorEnvase: 31,
@@ -1442,8 +1442,8 @@ export const productos = [
       { label: "Certificaciones", valor: "Halal · Kosher · NSF" },
       { label: "Artículo", valor: "NUTRI-MAG" }
     ],
-    imagenes: ["/Magnesio Nutrilite.webp"],
-    imagen: "/Magnesio Nutrilite.webp",
+    imagenes: ["/106542MX-690px-01.webp"],
+    imagen: "/106542MX-690px-01.webp",
     rating: 4.8,
     reviewCount: 12,
     usosPorEnvase: 30,
