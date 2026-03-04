@@ -4,6 +4,25 @@ import { api } from '../services/api'
 
 const PreciosCtx = createContext(null)
 
+// ── LocalStorage cache ────────────────────────────────────────────────────────
+const CACHE_KEY = 'vg_precios_v1'
+const CACHE_TTL = 30 * 60 * 1000 // 30 minutos
+
+function readCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const { data, ts } = JSON.parse(raw)
+    if (Date.now() - ts > CACHE_TTL) { localStorage.removeItem(CACHE_KEY); return null }
+    return data
+  } catch { return null }
+}
+
+function writeCache(data) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() })) } catch {}
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Convierte array [{id,precio,precioOriginal}] a objeto {1: {...}, 2: {...}}
 function arrayToMap(arr) {
   return arr.reduce((m, item) => { m[item.id] = item; return m }, {})
@@ -16,6 +35,18 @@ export function PreciosProvider({ children }) {
   const [loading, setLoading]           = useState(true)
 
   useEffect(() => {
+    // Serve from cache first — skips the 1.5 s API call on repeat visits
+    const cached = readCache()
+    if (cached) {
+      if (cached.productos) setPreciosMap(arrayToMap(cached.productos))
+      if (cached.combos) {
+        const comboMap = cached.combos.reduce((m, c) => { m[c.id] = { precioCombo: c.precioCombo }; return m }, {})
+        setComboPreciosMap(comboMap)
+      }
+      setLoading(false)
+      return
+    }
+
     api.getPrecios()
       .then(({ productos, combos }) => {
         if (productos && productos.length > 0) {
@@ -25,6 +56,7 @@ export function PreciosProvider({ children }) {
           const comboMap = combos.reduce((m, c) => { m[c.id] = { precioCombo: c.precioCombo }; return m }, {})
           setComboPreciosMap(comboMap)
         }
+        writeCache({ productos, combos })
       })
       .catch(() => {/* silently fallback to static */})
       .finally(() => setLoading(false))

@@ -4,11 +4,15 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logoVitaglossRd.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Preconnect Google Fonts — evita bloqueo de render de 750ms -->
+    <!-- Preconnect orígenes críticos -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://randomuser.me" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
+    <link rel="preconnect" href="https://vitaglossrd-production.up.railway.app" crossorigin />
+    <!-- Google Fonts no bloqueante — mueve fuera de la ruta crítica de render -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" /></noscript>
+    <!-- Preload imagen LCP (producto héroe en el carousel) -->
+    <link rel="preload" as="image" href="/124106SP-690px-01.webp" fetchpriority="high" />
     <meta name="description" content="VitaGloss RD — Distribuidor oficial Amway en República Dominicana. Pasta dental Glister™, Vitamina C Nutrilite™ y más. Envío a todo RD. Productos 100% originales." />
     <meta name="keywords" content="Amway República Dominicana, Glister pasta dental, Vitamina C Nutrilite, distribuidor Amway RD, productos salud bucal RD" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
