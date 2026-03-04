@@ -327,7 +327,7 @@ REGLAS PARA EL CONTENIDO HTML:
   // 6 ── Insertar antes del cierre del array ─────────────────────────────────
   // El array cierra con la línea que tiene solo "]"
   const updated = postsContent.replace(
-    /^(\])\s*\n(\/\/ Categor)/m,
+    /^(\])\s*\n+(\s*\/\/ Categor)/m,
     `${nuevoPost}\n]\n\n// Categor`
   )
 
