@@ -11,7 +11,7 @@
          en las peticiones fetch() CORS al API de Railway -->
     <link rel="preconnect" href="https://vitaglossrd-production.up.railway.app" crossorigin />
     <!-- Google Fonts no bloqueante — mueve fuera de la ruta crítica de render -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" /></noscript>
     <!-- Preload imagen LCP — versión 400w para pantallas móviles/tablet -->
     <link rel="preload" as="image" href="/124106SP-400w.webp"
@@ -24,20 +24,7 @@
     <!-- Google AdSense — diferido tras requestIdleCallback para no bloquear
          el hilo principal durante la carga inicial (LCP / TBT) -->
     <meta name="google-adsense-account" content="ca-pub-9316456690005068" />
-    <script>
-      (function() {
-        var delay = ('requestIdleCallback' in window) ? requestIdleCallback : function(fn){ setTimeout(fn, 3000); };
-        window.addEventListener('load', function() {
-          delay(function() {
-            var s = document.createElement('script');
-            s.async = true;
-            s.crossOrigin = 'anonymous';
-            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9316456690005068';
-            document.head.appendChild(s);
-          });
-        });
-      })();
-    </script>
+    <script src="/init-adsense.js" defer></script>
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="VitaGloss RD" />
@@ -55,44 +42,11 @@
     <title>VitaGloss RD — Tu salud, tu sonrisa | Distribuidor Amway RD</title>
     <!-- Google tag (gtag.js) — diferido tras load + requestIdleCallback
          para no bloquear el hilo principal. Reemplaza G-XXXXXXXXXX con tu ID real de GA4. -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
-      window.addEventListener('load', function() {
-        var delay = ('requestIdleCallback' in window) ? requestIdleCallback : function(fn){ setTimeout(fn, 3000); };
-        delay(function() {
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
-          document.head.appendChild(s);
-        });
-      });
-    </script>
+    <script src="/init-ga.js" defer></script>
     <!-- Meta Pixel — script diferido, no bloquea render.
          fbq() funciona de inmediato gracias a la cola interna; fbevents.js
          se descarga solo después de que el navegador queda inactivo (≥3 s). -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];}(window,document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'TU_PIXEL_ID');
-      fbq('track', 'PageView');
-      // Carga diferida: descarga fbevents.js solo después del evento load + 3 s
-      window.addEventListener('load', function() {
-        var delay = ('requestIdleCallback' in window) ? requestIdleCallback : function(fn){ setTimeout(fn, 3000); };
-        delay(function() {
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://connect.facebook.net/en_US/fbevents.js';
-          document.head.appendChild(s);
-        });
-      });
-    </script>
+    <script src="/init-fb.js" defer></script>
 
     <!-- hreflang: contenido en español dominicano -->
     <link rel="alternate" hreflang="es" href="https://vitaglossrd.com" />
