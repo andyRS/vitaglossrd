@@ -1384,7 +1384,7 @@ export default function Dashboard() {
                         <div style={{ display: 'flex', alignItems: 'stretch', minHeight: '80px' }}>
                           {/* Logo */}
                           <div style={{ background: '#ffffff', padding: '18px 32px', display: 'flex', alignItems: 'center', borderRight: '1px solid #e5e7eb', flexShrink: 0 }}>
-                            <img src="/logo_final.png" alt="VitaGloss RD" style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
+                            <img src="/logo_final.webp" alt="VitaGloss RD" style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
                           </div>
                           {/* Datos recibo */}
                           <div style={{ flex: 1, background: 'linear-gradient(135deg, #0a1628 0%, #1B3A6B 100%)', padding: '18px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

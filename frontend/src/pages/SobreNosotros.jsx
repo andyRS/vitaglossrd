@@ -155,7 +155,7 @@ export default function SobreNosotros() {
 
             <div className="space-y-4">
               <div className="bg-gradient-to-br from-primary to-blue-700 rounded-2xl p-8 text-white text-center">
-                <img src="/logo_final.png" alt="VitaGloss RD logo" className="h-20 mx-auto mb-4 object-contain" />
+                <img src="/logo_final.webp" alt="VitaGloss RD logo" className="h-20 mx-auto mb-4 object-contain" />
                 <p className="text-blue-100 italic text-lg font-medium">"Tu salud, tu sonrisa"</p>
                 <p className="text-blue-200 text-sm mt-2">Distribuidores independientes Amway · República Dominicana</p>
               </div>

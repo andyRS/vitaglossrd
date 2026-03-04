@@ -106,7 +106,7 @@ export default function Unete() {
 
       {/* ── BARRA SUPERIOR ───────────────────────────────────────────────── */}
       <div className="bg-[#0a1628] py-3 px-6 flex items-center justify-between">
-        <img src="/logo_final.png" alt="VitaGloss RD" className="h-8 w-auto" />
+        <img src="/logo_final.webp" alt="VitaGloss RD" className="h-8 w-auto" />
         <span className="text-xs text-white/60 hidden sm:block">vitaglossrd.com · Distribuidora Amway independiente</span>
         <a
           href="https://wa.me/18492763532?text=Hola, vi el webinar y quiero más información"

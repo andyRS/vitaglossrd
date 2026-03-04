@@ -46,8 +46,8 @@ export const combos = [
     badgeColor: 'bg-emerald-600',
     productos: [
       { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.webp', precio: PRECIOS[4].precio },
-      { nombre: 'Vitamina D Nutrilite™', cantidad: '180 comprimidos', img: '/nutrilite-vitamina-d.jpg', precio: PRECIOS[17].precio },
-      { nombre: 'Defensa Zinc Nutrilite™', cantidad: '60 pastillas', img: '/nutrilite-zinc-defensa-inmunologica.jpg', precio: PRECIOS[11].precio },
+      { nombre: 'Vitamina D Nutrilite™', cantidad: '180 comprimidos', img: '/Vitamina-D-transparente.webp', precio: PRECIOS[17].precio },
+      { nombre: 'Defensa Zinc Nutrilite™', cantidad: '60 pastillas', img: '/nutrilite-zinc-defensa-inmunologica.webp', precio: PRECIOS[11].precio },
     ],
     precioNormal: PRECIOS[4].precio + PRECIOS[17].precio + PRECIOS[11].precio,
     precioCombo: COMBO_PRECIOS['kit-inmunidad-total'].precioCombo,
@@ -72,9 +72,9 @@ export const combos = [
     badge: '⚡ Más Energía',
     badgeColor: 'bg-yellow-500',
     productos: [
-      { nombre: 'Double X Nutrilite™ 10 días', cantidad: '60 comprimidos', img: '/double-x-suministro-10-dias.jpg', precio: PRECIOS[7].precio },
+      { nombre: 'Double X Nutrilite™ 10 días', cantidad: '60 comprimidos', img: '/double-x-suministro-10-dias.webp', precio: PRECIOS[7].precio },
       { nombre: 'Vitamina B Doble Acción', cantidad: '60 comprimidos', img: '/nutrilite-vitamina-b.jpg', precio: PRECIOS[16].precio },
-      { nombre: 'Omega Nutrilite™', cantidad: '30 cápsulas', img: '/omega-nutrilite.jpg', precio: PRECIOS[18].precio },
+      { nombre: 'Omega Nutrilite™', cantidad: '30 cápsulas', img: '/omega-nutrilite.webp', precio: PRECIOS[18].precio },
     ],
     precioNormal: PRECIOS[7].precio + PRECIOS[16].precio + PRECIOS[18].precio,
     precioCombo: COMBO_PRECIOS['kit-energia-vitalidad'].precioCombo,
@@ -155,7 +155,7 @@ export const combos = [
     productos: [
       { nombre: 'Cal Mag D Nutrilite™', cantidad: '90 comprimidos', img: '/nutrilite-cal-mag-d.jpg', precio: PRECIOS[10].precio },
       { nombre: 'Glucosamina Nutrilite™', cantidad: '30 días', img: '/nutrilite-glucosamina.jpg', precio: PRECIOS[15].precio },
-      { nombre: 'Vitamina D Nutrilite™', cantidad: '90 comprimidos', img: '/nutrilite-vitamina-d.jpg', precio: PRECIOS[17].precio },
+      { nombre: 'Vitamina D Nutrilite™', cantidad: '90 comprimidos', img: '/Vitamina-D-transparente.webp', precio: PRECIOS[17].precio },
     ],
     precioNormal: PRECIOS[10].precio + PRECIOS[15].precio + PRECIOS[17].precio,
     precioCombo: COMBO_PRECIOS['kit-huesos-articulaciones'].precioCombo,

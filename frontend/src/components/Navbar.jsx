@@ -54,7 +54,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center group -my-3 sm:-my-6">
             <img
-              src="/logo_final.png"
+              src="/logo_final.webp"
               alt="VitaGloss RD"
               width="168"
               height="96"
