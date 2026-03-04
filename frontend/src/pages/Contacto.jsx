@@ -155,7 +155,7 @@ export default function Contacto() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold transition-colors duration-200 flex items-center justify-center gap-2 text-base"
+                className="w-full bg-green-700 hover:bg-green-800 text-white py-3 rounded-xl font-bold transition-colors duration-200 flex items-center justify-center gap-2 text-base"
               >
                 📲 Enviar por WhatsApp
               </button>
@@ -230,7 +230,7 @@ export default function Contacto() {
                 href="https://wa.me/18492763532?text=Hola!%20Quiero%20saber%20m%C3%A1s%20sobre%20los%20productos%20de%20VitaGloss%20RD"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl text-sm font-bold transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl text-sm font-bold transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 📲 Abrir WhatsApp ahora
               </a>

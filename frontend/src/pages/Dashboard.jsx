@@ -746,7 +746,7 @@ export default function Dashboard() {
                     onClick={() => handleCopy(t.msg, i)}
                     className={`w-full py-2.5 rounded-2xl text-sm font-bold transition-all ${
                       copied === i
-                        ? 'bg-green-500 text-white'
+                        ? 'bg-green-700 text-white'
                         : 'bg-primary/5 hover:bg-primary text-primary hover:text-white'
                     }`}
                     aria-label={`Copiar plantilla: ${t.producto}`}

@@ -273,7 +273,7 @@ export default function SobreNosotros() {
               href="https://wa.me/18492763532?text=Hola!%20Vi%20su%20p%C3%A1gina%20web%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20productos%20Amway"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-bold text-sm transition-colors duration-200 flex items-center gap-2"
+              className="bg-green-700 hover:bg-green-800 text-white px-8 py-3 rounded-full font-bold text-sm transition-colors duration-200 flex items-center gap-2"
             >
               📲 Escribir por WhatsApp
             </a>

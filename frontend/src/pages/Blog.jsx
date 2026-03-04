@@ -349,7 +349,7 @@ export default function Blog() {
             href="https://wa.me/18492763532?text=Hola!%20Le%C3%AD%20el%20blog%20de%20VitaGloss%20RD%20y%20tengo%20una%20pregunta"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-green-500 text-white font-bold px-8 py-3.5 rounded-2xl transition-all hover:scale-105 shadow-lg shadow-green-200"
+            className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-green-700 text-white font-bold px-8 py-3.5 rounded-2xl transition-all hover:scale-105 shadow-lg shadow-green-200"
           >
             💬 Consultar por WhatsApp
           </a>

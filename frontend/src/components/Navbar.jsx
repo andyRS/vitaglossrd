@@ -116,7 +116,7 @@ export default function Navbar() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Pedir ahora por WhatsApp"
-                  className="bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 shadow-md shadow-green-200 hover:shadow-lg hover:scale-105"
+                  className="bg-green-700 hover:bg-green-800 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 shadow-md shadow-green-200 hover:shadow-lg hover:scale-105"
             >
               <span aria-hidden="true">📲</span>
               <span>Pedir ahora</span>
@@ -208,7 +208,7 @@ export default function Navbar() {
                   href="https://wa.me/18492763532?text=Hola!%20Quiero%20conocer%20los%20productos%20de%20VitaGloss%20RD"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white px-4 py-3.5 rounded-xl font-bold text-sm transition-colors shadow-md shadow-green-100"
+                  className="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-800 text-white px-4 py-3.5 rounded-xl font-bold text-sm transition-colors shadow-md shadow-green-100"
                 >
                   📲 Pedir por WhatsApp
                 </a>

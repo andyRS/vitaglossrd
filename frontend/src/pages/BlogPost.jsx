@@ -295,7 +295,7 @@ export default function BlogPost() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Compartir este artículo en WhatsApp"
-                  className="flex items-center gap-2 bg-[#25D366] hover:bg-green-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors mb-2"
+                  className="flex items-center gap-2 bg-[#25D366] hover:bg-green-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors mb-2"
                 >
                   📲 Compartir en WhatsApp
                 </a>
@@ -350,7 +350,7 @@ export default function BlogPost() {
                   href="https://wa.me/18492763532?text=Hola!%20Le%C3%AD%20un%20art%C3%ADculo%20del%20blog%20y%20tengo%20preguntas"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block bg-[#25D366] hover:bg-green-500 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors"
+                  className="block bg-[#25D366] hover:bg-green-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors"
                 >
                   Escribir por WhatsApp
                 </a>
@@ -365,7 +365,7 @@ export default function BlogPost() {
             href={shareWA}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-green-500 text-white text-sm font-bold py-3 rounded-2xl transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-green-700 text-white text-sm font-bold py-3 rounded-2xl transition-colors"
           >
             📲 Compartir
           </a>

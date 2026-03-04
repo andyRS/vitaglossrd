@@ -62,7 +62,7 @@ export default function WhatsAppFloat() {
               href={whatsappURL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-block w-full bg-green-500 hover:bg-green-600 text-white text-xs font-bold py-1.5 px-3 rounded-xl text-center transition-colors"
+              className="mt-2 inline-block w-full bg-green-700 hover:bg-green-800 text-white text-xs font-bold py-1.5 px-3 rounded-xl text-center transition-colors"
             >
               {productoActual ? '¡Quiero este producto! →' : 'Hacer mi pedido →'}
             </a>
@@ -81,7 +81,7 @@ export default function WhatsAppFloat() {
         transition={{ delay: 1, type: 'spring', stiffness: 200 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
-        className="w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-2xl shadow-green-500/40 transition-colors relative"
+        className="w-14 h-14 bg-green-700 hover:bg-green-800 rounded-full flex items-center justify-center shadow-2xl shadow-green-500/40 transition-colors relative"
         onClick={() => setMostrarBurbuja(false)}
       >
         {/* Ping animado */}

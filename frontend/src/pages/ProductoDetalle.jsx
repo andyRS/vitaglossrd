@@ -993,7 +993,7 @@ export default function ProductoDetalle() {
                   href={`https://wa.me/18492763532?text=${encodeURIComponent('Hola VitaGloss RD! 👋 Quiero pedir el Kit Completo Glister™ (Pasta + Spray + Enjuague) al precio combo de RD$2,700. ¿Cómo lo proceso?')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-green-500 hover:bg-green-400 text-white font-bold px-6 py-3 rounded-2xl transition-all hover:scale-105 text-sm whitespace-nowrap"
+                  className="bg-green-700 hover:bg-green-800 text-white font-bold px-6 py-3 rounded-2xl transition-all hover:scale-105 text-sm whitespace-nowrap"
                 >
                   Pedir kit →
                 </a>
