@@ -33,6 +33,7 @@ import Dashboard from './pages/Dashboard'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
 import Privacidad from './pages/Privacidad'
+import Devoluciones from './pages/Devoluciones'
 import Terminos from './pages/Terminos'
 import Unete from './pages/Unete'
 
@@ -75,6 +76,7 @@ function Layout() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/privacidad" element={<Privacidad />} />
+          <Route path="/devoluciones" element={<Devoluciones />} />
           <Route path="/terminos" element={<Terminos />} />
           <Route path="/unete" element={<Unete />} />
           <Route
