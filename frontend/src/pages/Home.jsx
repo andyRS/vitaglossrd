@@ -271,7 +271,10 @@ export default function Home() {
             </AnimatePresence>
 
             {/* Imagen */}
-            <AnimatePresence mode="wait">
+            {/* initial={false}: deshabilita la animación de entrada en el primer render,
+               evitando que el LCP quede a opacity:0 hasta que framer-motion corra.
+               Las animaciones de transición entre slides siguen funcionando. */}
+            <AnimatePresence mode="wait" initial={false}>
               <m.div
                 key={slide.id + '-img'}
                 initial={{ opacity: 0, scale: 0.85, x: 40 }}
@@ -572,7 +575,7 @@ export default function Home() {
           </m.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {productos.map((p, i) => (
+            {productos.slice(0, 8).map((p, i) => (
               <m.div
                 key={p.id}
                 variants={fadeUp}
