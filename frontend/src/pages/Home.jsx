@@ -182,14 +182,19 @@ export default function Home() {
       {/* ====== HERO SLIDER ====== */}
       <section className={`relative min-h-screen bg-gradient-to-br ${slide.bg} flex items-center overflow-hidden transition-all duration-700`}>
 
-        {/* Fondo decorativo */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-10" style={{ background: slide.acento, filter: 'blur(80px)' }} />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full opacity-10" style={{ background: slide.acento, filter: 'blur(80px)' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-5" style={{ background: slide.acento, filter: 'blur(120px)' }} />
-          <div className="absolute inset-0 opacity-5" style={{
-            backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
+        {/* Fondo decorativo — un solo elemento en lugar de 4 para reducir nodos DOM */}
+        <div
+          className="absolute inset-0 overflow-hidden pointer-events-none"
+          style={{
+            backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+            backgroundBlendMode: 'overlay',
+          }}
+        >
+          <div className="absolute inset-0" style={{
+            background: `radial-gradient(circle at 80% -20%, ${slide.acento}18 0%, transparent 40%),
+                         radial-gradient(circle at 0% 110%, ${slide.acento}18 0%, transparent 40%),
+                         radial-gradient(circle at 50% 50%, ${slide.acento}08 0%, transparent 60%)`,
           }} />
         </div>
 
