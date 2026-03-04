@@ -21,9 +21,10 @@ import WhatsAppFloat from './components/WhatsAppFloat'
 import LeadPopup from './components/LeadPopup'
 import CartDrawer from './components/CartDrawer'
 import CookieConsent from './components/CookieConsent'
+// Home es la ruta inicial — eager para que el LCP no espere un chunk extra
+import Home from './pages/Home'
 
 // ── Páginas lazy: se parsean/compilan solo cuando el usuario navega a ellas ──
-const Home           = lazy(() => import('./pages/Home'))
 const Catalogo       = lazy(() => import('./pages/Catalogo'))
 const ProductoDetalle= lazy(() => import('./pages/ProductoDetalle'))
 const Equipo         = lazy(() => import('./pages/Equipo'))

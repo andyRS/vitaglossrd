@@ -32,7 +32,13 @@ export default function Footer() {
             <div className="mb-2">
               <img
                 src="/logo-footer-n.webp"
+                srcSet="/logo-footer-n-200w.webp 200w, /logo-footer-n-400w.webp 400w, /logo-footer-n.webp 612w"
+                sizes="144px"
                 alt="VitaGloss RD"
+                width="144"
+                height="96"
+                loading="lazy"
+                decoding="async"
                 className="h-24 w-auto object-contain drop-shadow-lg"
               />
             </div>
