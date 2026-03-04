@@ -14,7 +14,7 @@ const slides = [
     titulo: 'Sonríe con',
     tituloColor: 'confianza',
     subtitulo: 'Descubre la línea Glister™ de Amway, diseñada para proteger, blanquear y fortalecer tu sonrisa desde el primer uso.',
-    imagen: '/124106SP-690px-01.jpg',
+    imagen: '/124106SP-690px-01.webp',
     cta: 'Ver Pasta Dental',
     ctaLink: '/producto/1',
     bg: 'from-[#0a1628] via-[#1B3A6B] to-[#0f2a54]',
@@ -27,7 +27,7 @@ const slides = [
     titulo: 'Fortalece tu',
     tituloColor: 'sistema inmune',
     subtitulo: 'Vitamina C Nutrilite™ de acción prolongada. Energía y defensas naturales para toda tu familia, cada día.',
-    imagen: '/109741CO-690px-01.png',
+    imagen: '/109741CO-690px-01.webp',
     cta: 'Ver Vitamina C',
     ctaLink: '/producto/4',
     bg: 'from-[#0f1f0a] via-[#1a3d10] to-[#0a2408]',
@@ -40,7 +40,7 @@ const slides = [
     titulo: 'Frescura que',
     tituloColor: 'dura todo el día',
     subtitulo: 'Enjuague y spray bucal Glister™. Elimina el 99.9% de bacterias y mantén tu aliento fresco a donde vayas.',
-    imagen: '/124111-690px-01.jpg',
+    imagen: '/124111-690px-01.webp',
     cta: 'Ver Spray Bucal',
     ctaLink: '/producto/2',
     bg: 'from-[#0d1a2e] via-[#1a2f4a] to-[#0d1f3a]',
@@ -781,9 +781,9 @@ export default function Home() {
                 {/* Productos del kit */}
                 <div className="grid grid-cols-3 gap-3 mb-8">
                   {[
-                    { nombre: 'Pasta Dental Glister™', imagen: '/124106SP-690px-01.jpg', precio: 899, id: 1 },
-                    { nombre: 'Spray Bucal Glister™', imagen: '/124111-690px-01.jpg', precio: 820, id: 2 },
-                    { nombre: 'Enjuague Bucal Glister™', imagen: '/124108-690px-01.jpg', precio: 1169, id: 3 },
+                    { nombre: 'Pasta Dental Glister™', imagen: '/124106SP-690px-01.webp', precio: 899, id: 1 },
+                    { nombre: 'Spray Bucal Glister™', imagen: '/124111-690px-01.webp', precio: 820, id: 2 },
+                    { nombre: 'Enjuague Bucal Glister™', imagen: '/124108-690px-01.webp', precio: 1169, id: 3 },
                   ].map((item, i) => (
                     <motion.div
                       key={i}

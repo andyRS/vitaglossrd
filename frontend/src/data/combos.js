@@ -18,9 +18,9 @@ export const combos = [
     badge: '🔥 Más Popular',
     badgeColor: 'bg-orange-500',
     productos: [
-      { nombre: 'Pasta Dental Glister™', cantidad: '1 unidad (200g)', img: '/124106SP-690px-01.jpg', precio: PRECIOS[1].precio },
-      { nombre: 'Enjuague Bucal Glister™', cantidad: '1 botella (72ml)', img: '/124108-690px-01.jpg', precio: PRECIOS[3].precio },
-      { nombre: 'Spray Bucal Glister™', cantidad: '1 envase (14ml)', img: '/124111-690px-01.jpg', precio: PRECIOS[2].precio },
+      { nombre: 'Pasta Dental Glister™', cantidad: '1 unidad (200g)', img: '/124106SP-690px-01.webp', precio: PRECIOS[1].precio },
+      { nombre: 'Enjuague Bucal Glister™', cantidad: '1 botella (72ml)', img: '/124108-690px-01.webp', precio: PRECIOS[3].precio },
+      { nombre: 'Spray Bucal Glister™', cantidad: '1 envase (14ml)', img: '/124111-690px-01.webp', precio: PRECIOS[2].precio },
     ],
     precioNormal: PRECIOS[1].precio + PRECIOS[3].precio + PRECIOS[2].precio,
     precioCombo: COMBO_PRECIOS['kit-glister-completo'].precioCombo,
@@ -45,7 +45,7 @@ export const combos = [
     badge: '🛡️ Protección Total',
     badgeColor: 'bg-emerald-600',
     productos: [
-      { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.png', precio: PRECIOS[4].precio },
+      { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.webp', precio: PRECIOS[4].precio },
       { nombre: 'Vitamina D Nutrilite™', cantidad: '180 comprimidos', img: '/nutrilite-vitamina-d.jpg', precio: PRECIOS[17].precio },
       { nombre: 'Defensa Zinc Nutrilite™', cantidad: '60 pastillas', img: '/nutrilite-zinc-defensa-inmunologica.jpg', precio: PRECIOS[11].precio },
     ],
@@ -128,7 +128,7 @@ export const combos = [
     productos: [
       { nombre: 'Pelo Piel y Uñas Nutrilite™', cantidad: '60 comprimidos', img: '/nutrilite-pelo-piel-unas.jpg', precio: PRECIOS[19].precio },
       { nombre: 'Vitamina E Masticable', cantidad: '270 tabletas', img: '/nutrilite-vitamina-e.jpg', precio: PRECIOS[14].precio },
-      { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.png', precio: PRECIOS[4].precio },
+      { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.webp', precio: PRECIOS[4].precio },
     ],
     precioNormal: PRECIOS[19].precio + PRECIOS[14].precio + PRECIOS[4].precio,
     precioCombo: COMBO_PRECIOS['kit-belleza-total'].precioCombo,
@@ -180,8 +180,8 @@ export const combos = [
     badge: '👨‍👩‍👧 Para toda la familia',
     badgeColor: 'bg-green-600',
     productos: [
-      { nombre: 'Pasta Dental Glister™', cantidad: '1 unidad (200g)', img: '/124106SP-690px-01.jpg', precio: PRECIOS[1].precio },
-      { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.png', precio: PRECIOS[4].precio },
+      { nombre: 'Pasta Dental Glister™', cantidad: '1 unidad (200g)', img: '/124106SP-690px-01.webp', precio: PRECIOS[1].precio },
+      { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.webp', precio: PRECIOS[4].precio },
       { nombre: 'Multivitamínico Niños', cantidad: '60 tabletas masticables', img: '/multivitaminico-ninos-nutrilite.jpg', precio: PRECIOS[8].precio },
     ],
     precioNormal: PRECIOS[1].precio + PRECIOS[4].precio + PRECIOS[8].precio,

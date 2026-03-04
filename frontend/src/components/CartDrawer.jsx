@@ -166,14 +166,14 @@ export default function CartDrawer() {
                 {/* Upsell — Spray Bucal si no está en el carrito */}
                 {step === 'cart' && !items.find(i => i.id === 2) && (
                   <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 rounded-2xl px-4 py-3 flex items-center gap-3">
-                    <img src="/124111-690px-01.jpg" alt="Spray Bucal" className="w-12 h-12 object-contain flex-shrink-0" />
+                    <img src="/124111-690px-01.webp" alt="Spray Bucal" className="w-12 h-12 object-contain flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-bold text-teal-700">💡 ¡Agrega esto!</p>
                       <p className="text-xs text-gray-600 truncate">Spray Bucal Glister™ — <span className="font-black text-teal-600">RD$820</span></p>
                       <p className="text-[10px] text-gray-400">Aliento fresco todo el día • Cabe en el bolsillo</p>
                     </div>
                     <button
-                      onClick={() => addItem({ id: 2, nombre: 'Spray Bucal Glister™', imagen: '/124111-690px-01.jpg', precio: 820 })}
+                      onClick={() => addItem({ id: 2, nombre: 'Spray Bucal Glister™', imagen: '/124111-690px-01.webp', precio: 820 })}
                       className="bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors flex-shrink-0"
                     >
                       + Añadir
