@@ -15,6 +15,7 @@ const slides = [
     tituloColor: 'confianza',
     subtitulo: 'Descubre la línea Glister™ de Amway, diseñada para proteger, blanquear y fortalecer tu sonrisa desde el primer uso.',
     imagen: '/124106SP-690px-01.webp',
+    imagen400w: '/124106SP-400w.webp',
     cta: 'Ver Pasta Dental',
     ctaLink: '/producto/1',
     bg: 'from-[#0a1628] via-[#1B3A6B] to-[#0f2a54]',
@@ -28,6 +29,7 @@ const slides = [
     tituloColor: 'sistema inmune',
     subtitulo: 'Vitamina C Nutrilite™ de acción prolongada. Energía y defensas naturales para toda tu familia, cada día.',
     imagen: '/109741CO-690px-01.webp',
+    imagen400w: '/109741CO-400w.webp',
     cta: 'Ver Vitamina C',
     ctaLink: '/producto/4',
     bg: 'from-[#0f1f0a] via-[#1a3d10] to-[#0a2408]',
@@ -41,6 +43,7 @@ const slides = [
     tituloColor: 'dura todo el día',
     subtitulo: 'Enjuague y spray bucal Glister™. Elimina el 99.9% de bacterias y mantén tu aliento fresco a donde vayas.',
     imagen: '/124111-690px-01.webp',
+    imagen400w: '/124111-400w.webp',
     cta: 'Ver Spray Bucal',
     ctaLink: '/producto/2',
     bg: 'from-[#0d1a2e] via-[#1a2f4a] to-[#0d1f3a]',
@@ -223,7 +226,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[auto] sm:min-h-[80vh]">
 
             {/* Texto */}
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
               <m.div
                 key={slide.id + '-text'}
                 initial={{ opacity: 0, x: -40 }}
@@ -324,15 +327,14 @@ export default function Home() {
                     boxShadow: `0 0 0 2px ${slide.acento}90, 0 0 25px ${slide.acento}50, 0 0 60px ${slide.acento}20`,
                   }}>
                   <img
-                    src={slide.imagen}
-                    srcSet={`${slide.imagen.replace('-690px-01.webp','-400w.webp').replace('-690px-01','-400w')} 400w, ${slide.imagen} 690w`}
-                    sizes="(max-width: 640px) 176px, (max-width: 768px) 240px, (max-width: 1024px) 288px, 320px"
+                    src={slide.imagen400w || slide.imagen}
+                    srcSet={slide.imagen400w ? `${slide.imagen400w} 400w, ${slide.imagen} 690w` : undefined}
+                    sizes={slide.imagen400w ? '(max-width: 640px) 176px, (max-width: 768px) 240px, (max-width: 1024px) 288px, 320px' : undefined}
                     alt="Producto"
+                    width="320"
+                    height="320"
                     className="w-44 sm:w-60 md:w-72 lg:w-80 h-44 sm:h-60 md:h-72 lg:h-80 object-contain"
-                    style={{
-                      filter: `drop-shadow(0 20px 30px ${slide.acento}70)`,
-                      mixBlendMode: 'screen',
-                    }}
+                    style={{ filter: `drop-shadow(0 20px 30px ${slide.acento}70)` }}
                     fetchPriority={slideActivo === 0 ? 'high' : 'low'}
                     loading={slideActivo === 0 ? 'eager' : 'lazy'}
                   />
