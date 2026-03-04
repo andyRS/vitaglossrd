@@ -18,6 +18,8 @@ jobs:
   generate-post:
     name: Generar y publicar nuevo artículo
     runs-on: ubuntu-latest
+    # Solo correr en el repositorio principal (no en forks ni backup)
+    if: github.repository == 'arosadoclud/vitaglossrd'
 
     # Permisos para que el workflow pueda hacer commit al repo
     permissions:
