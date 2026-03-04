@@ -47,6 +47,8 @@ export default function ProductoCard({ producto }) {
         )}
         <img
           src={producto.imagen}
+          srcSet={producto.imagen400w ? `${producto.imagen400w} 400w, ${producto.imagen} 690w` : undefined}
+          sizes={producto.imagen400w ? '(max-width: 640px) calc(50vw - 32px), 308px' : undefined}
           alt={producto.nombre}
           loading="lazy"
           decoding="async"

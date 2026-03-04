@@ -83,6 +83,7 @@ export const productos = [
       "/124106SP-690px-04.webp"
     ],
     imagen: "/124106SP-690px-01.webp",
+    imagen400w: "/124106SP-400w.webp",
     rating: 4.8,
     reviewCount: 47,
     usosPorEnvase: 198,
@@ -156,11 +157,12 @@ export const productos = [
       "/124111-690px-04.webp"
     ],
     imagen: "/124111-690px-01.webp",
+    imagen400w: "/124111-400w.webp",
     rating: 4.7,
     reviewCount: 23,
     usosPorEnvase: 223,
     badge: "Nuevo",
-    badgeColor: "bg-green-500"
+    badgeColor: "bg-green-700"
   },
   {
     id: 3,
@@ -229,6 +231,7 @@ export const productos = [
       "/124108-690px-03.webp"
     ],
     imagen: "/124108-690px-01.webp",
+    imagen400w: "/124108-400w.webp",
     rating: 4.9,
     reviewCount: 38,
     usosPorEnvase: 100,
@@ -304,6 +307,7 @@ export const productos = [
       "/109741CO-690px-01.webp"
     ],
     imagen: "/109741CO-690px-01.webp",
+    imagen400w: "/109741CO-400w.webp",
     rating: 4.9,
     reviewCount: 62,
     usosPorEnvase: 60,
@@ -480,7 +484,7 @@ export const productos = [
     reviewCount: 28,
     usosPorEnvase: 10,
     badge: "Inicio",
-    badgeColor: "bg-green-500"
+    badgeColor: "bg-green-700"
   },
   {
     id: 8,

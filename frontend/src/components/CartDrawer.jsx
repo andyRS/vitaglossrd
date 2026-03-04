@@ -166,7 +166,17 @@ export default function CartDrawer() {
                 {/* Upsell — Spray Bucal si no está en el carrito */}
                 {step === 'cart' && !items.find(i => i.id === 2) && (
                   <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 rounded-2xl px-4 py-3 flex items-center gap-3">
-                    <img src="/124111-690px-01.webp" alt="Spray Bucal" className="w-12 h-12 object-contain flex-shrink-0" />
+                    <img
+                      src="/124111-690px-01.webp"
+                      srcSet="/124111-400w.webp 400w, /124111-690px-01.webp 690w"
+                      sizes="48px"
+                      alt="Spray Bucal"
+                      loading="lazy"
+                      decoding="async"
+                      width="48"
+                      height="48"
+                      className="w-12 h-12 object-contain flex-shrink-0"
+                    />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-bold text-teal-700">💡 ¡Agrega esto!</p>
                       <p className="text-xs text-gray-600 truncate">Spray Bucal Glister™ — <span className="font-black text-teal-600">RD$820</span></p>
