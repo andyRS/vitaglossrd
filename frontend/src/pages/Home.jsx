@@ -652,7 +652,7 @@ export default function Home() {
                 nombre: 'María Fernández',
                 ciudad: 'Santo Domingo',
                 producto: 'Pasta Dental Glister™',
-                foto: 'https://randomuser.me/api/portraits/women/44.jpg',
+                foto: '/Maria-Fernandez.webp',
                 estrellas: 5,
                 texto: 'Llevo 3 meses usándola y mis dientes nunca habían lucido tan blancos. Mi dentista me preguntó qué pasta usaba. ¡La recomiendo al 100%!',
               },
@@ -660,7 +660,7 @@ export default function Home() {
                 nombre: 'Carlos Martínez',
                 ciudad: 'Santiago',
                 producto: 'Vitamina C Nutrilite™',
-                foto: 'https://randomuser.me/api/portraits/men/32.jpg',
+                foto: '/carlos-martinez.webp',
                 estrellas: 5,
                 texto: 'Desde que empecé a tomar la Vitamina C no me he enfermado en meses. Antes me agarraba gripe cada mes. Ahora trabajo sin parar y con energía.',
               },
@@ -668,7 +668,7 @@ export default function Home() {
                 nombre: 'Luisa Rodríguez',
                 ciudad: 'La Romana',
                 producto: 'Kit Completo Glister™',
-                foto: 'https://randomuser.me/api/portraits/women/68.jpg',
+                foto: '/Luisa-Rodriguez.webp',
                 estrellas: 5,
                 texto: 'Pedí el kit completo y fue la mejor decisión. El servicio de VitaGloss RD es excelente, rápido y los productos llegan en perfectas condiciones.',
               },
@@ -676,7 +676,7 @@ export default function Home() {
                 nombre: 'Andrés Peña',
                 ciudad: 'San Pedro de Macorís',
                 producto: 'Spray Bucal Glister™',
-                foto: 'https://randomuser.me/api/portraits/men/75.jpg',
+                foto: '/andres-pena.webp',
                 estrellas: 4,
                 texto: 'Muy bueno para el día a día. Lo uso antes de reuniones y citas. El aliento se mantiene fresco bastante tiempo. Me gustaría que el envase fuera un poco más grande, pero el producto es excelente.',
               },
@@ -684,7 +684,7 @@ export default function Home() {
                 nombre: 'Patricia Gómez',
                 ciudad: 'Puerto Plata',
                 producto: 'Pasta Dental Glister™',
-                foto: 'https://randomuser.me/api/portraits/women/55.jpg',
+                foto: '/patricia-gomez.webp',
                 estrellas: 5,
                 texto: 'Mis hijos también la usan ahora. Es suave pero efectiva. Noto menos sensibilidad y mucho más frescura que con la pasta de supermercado.',
               },
@@ -692,7 +692,7 @@ export default function Home() {
                 nombre: 'Roberto Díaz',
                 ciudad: 'Higüey',
                 producto: 'Vitamina C Nutrilite™',
-                foto: 'https://randomuser.me/api/portraits/men/61.jpg',
+                foto: '/Roberto-diaz.webp',
                 estrellas: 4,
                 texto: 'Llevo dos meses tomándola. Noto que me recupero mejor después de entrenar. El envío tardó un día más de lo esperado, pero el producto en sí es muy bueno. Lo sigo comprando.',
               },
@@ -717,7 +717,7 @@ export default function Home() {
                 <p className="text-gray-600 text-sm leading-relaxed mb-5 italic">"{t.texto}"</p>
                 {/* Autor */}
                 <div className="flex items-center gap-3">
-                  <AvatarInitials name={t.nombre} size={44} />
+                  <img src={t.foto} alt={t.nombre} className="w-11 h-11 rounded-full object-cover object-top flex-shrink-0" />
                   <div>
                     <p className="font-bold text-dark text-sm">{t.nombre}</p>
                     <p className="text-gray-400 text-xs">{t.ciudad} · {t.producto}</p>
