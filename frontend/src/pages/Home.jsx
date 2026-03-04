@@ -209,11 +209,6 @@ export default function Home() {
         {/* Fondo decorativo — un solo elemento en lugar de 4 para reducir nodos DOM */}
         <div
           className="absolute inset-0 overflow-hidden pointer-events-none"
-          style={{
-            backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
-            backgroundSize: '40px 40px',
-            backgroundBlendMode: 'overlay',
-          }}
         >
           <div className="absolute inset-0" style={{
             background: `radial-gradient(circle at 80% -20%, ${slide.acento}18 0%, transparent 40%),
