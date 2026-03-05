@@ -189,7 +189,7 @@ client.on('message', async (msg) => {
 
   console.log(`📥 Mensaje de ${numero}: "${texto.substring(0, 60)}${texto.length > 60 ? '...' : ''}"`)
 
-  // ── Detectar saludo automático de WhatsApp Business (click en anuncio de FB) ──
+  // ── Solo responder a saludos automáticos de anuncios de Facebook ──────────────
   const textoLower = texto.toLowerCase()
   const esAutoGreeting =
     textoLower.includes('cómo podemos ayudarte') ||
@@ -198,20 +198,13 @@ client.on('message', async (msg) => {
     textoLower === '¡hola!' ||
     textoLower === 'hola'
 
-  if (esAutoGreeting) {
-    console.log(`🎯 Auto-greeting detectado de ${numero}, enviando bienvenida de anuncios`)
-    await msg.reply(
-      `¡Hola! 👋 Bienvenido/a a *VitaGloss RD*. Soy Vita 😊\n\n` +
-      `Vi que llegaste desde uno de nuestros anuncios en Facebook. ¿Cuál de estos productos te interesa?\n\n` +
-      `🦴 *Cal Mag D* — fuerza para tus huesos — RD$1,270\n` +
-      `💇 *Pelo Piel y Uñas* — belleza desde adentro — RD$1,700\n` +
-      `👶 *Vitaminas para Niños (Kids Daily)* — crecimiento y defensas — RD$1,399\n` +
-      `🛡️ *Vitamina C Plus* — defensas diarias — RD$1,099\n\n` +
-      `Cuéntame cuál te llamó la atención y te ayudo con toda la info 🙏`
-    )
+  if (!esAutoGreeting) {
+    console.log(`⏭️ Mensaje ignorado (no es lead de Facebook): ${numero}`)
     return
   }
 
+  // Es lead de Facebook → activar Gemini
+  console.log(`🎯 Lead de Facebook detectado de ${numero}, activando Vita con IA`)
   const respuesta = await responderConIA(texto, numero)
   if (respuesta) {
     await msg.reply(respuesta)
