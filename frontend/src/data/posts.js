@@ -1572,7 +1572,7 @@ export const posts = [
     fecha: '2026-03-04',
     fechaActualizacion: '2026-03-04',
     tiempoLectura: '8 min',
-    imagen: '/kit-envejecimiento-saludable.webp',
+    imagen: '/colageno-hidrolizado.webp',
     imagenCover: true,
     autor: 'Andy Rosado',
     tags: ["colágeno hidrolizado","suplementos RD","piel saludable","articulaciones","antienvejecimiento"],
