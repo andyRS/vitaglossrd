@@ -13,9 +13,67 @@ require('dotenv').config()
 const express    = require('express')
 const qrcode     = require('qrcode')
 const { Client, LocalAuth } = require('whatsapp-web.js')
+const { GoogleGenerativeAI } = require('@google/generative-ai')
+const { buildCatalogContext, buscarProducto } = require('./catalog')
 
-const PORT       = process.env.WA_PORT  || 3002
+const PORT       = process.env.WA_PORT   || 3002
 const SECRET_KEY = process.env.WA_SECRET || 'vitagloss_wa_2026'
+const GEMINI_KEY = process.env.GEMINI_API_KEY || ''
+
+// ── Gemini AI ─────────────────────────────────────────────────────────────────
+const genAI     = GEMINI_KEY ? new GoogleGenerativeAI(GEMINI_KEY) : null
+const aiModel   = genAI ? genAI.getGenerativeModel({ model: 'gemini-2.0-flash' }) : null
+
+const SYSTEM_PROMPT = `Eres la asistente virtual de VitaGloss RD, una tienda de productos Amway/Nutrilite en República Dominicana.
+Tu nombre es *Vita* 🟢.
+Respondes SOLO en español, de forma amable, breve y directa (máx 3 párrafos).
+Si el cliente quiere comprar o pedir precio, dale el link del producto.
+Nunca inventes precios. Si no sabes algo, di: "Permíteme consultarlo con nuestra asesora".
+No discutas temas fuera de salud, nutrición o la tienda.
+Siempre incluye un emoji al inicio de tu respuesta.
+
+=== CATÁLOGO DE PRODUCTOS ===
+${buildCatalogContext()}
+
+=== FIN DEL CATÁLOGO ===
+Para pedir, el cliente puede escribir al WhatsApp de ventas: https://wa.me/18093246663
+Sitio web: https://vitaglossrd.vercel.app`
+
+// Anti-spam: { numero: timestamp_ultimo_mensaje }
+const cooldowns = new Map()
+const COOLDOWN_MS = 2000  // 2 segundos entre respuestas por usuario
+
+async function responderConIA(mensajeTexto, numero) {
+  // Rate-limit por usuario
+  const ahora = Date.now()
+  if (cooldowns.has(numero) && ahora - cooldowns.get(numero) < COOLDOWN_MS) return null
+  cooldowns.set(numero, ahora)
+
+  // Ignorar mensajes muy cortos o de status
+  if (!mensajeTexto || mensajeTexto.length < 2) return null
+
+  // Si no hay API key, respuesta de fallback
+  if (!aiModel) {
+    const encontrados = buscarProducto(mensajeTexto)
+    if (encontrados.length > 0) {
+      const p = encontrados[0]
+      return `🟢 *${p.nombre}* — RD$${p.precio.toLocaleString()}\n${p.desc}\nVer más: ${p.url}\n\n¿Te gustaría pedirlo? Escríbenos: https://wa.me/18093246663`
+    }
+    return `🟢 Hola, soy *Vita*, asistenta de VitaGloss RD. ¿En qué te puedo ayudar? Visita nuestro catálogo: https://vitaglossrd.vercel.app/catalogo`
+  }
+
+  try {
+    const chat = aiModel.startChat({
+      history: [],
+      systemInstruction: SYSTEM_PROMPT,
+    })
+    const result = await chat.sendMessage(mensajeTexto)
+    return result.response.text()
+  } catch (err) {
+    console.error('⚠️  Gemini error:', err.message)
+    return `🟢 Hola, en este momento tengo un problema técnico. Por favor escríbenos directamente: https://wa.me/18093246663`
+  }
+}
 
 const app = express()
 app.use(express.json())
@@ -77,6 +135,26 @@ client.on('auth_failure', (msg) => {
   isReady   = false
   lastError = msg
   console.error('❌ Error de autenticación:', msg)
+})
+
+// ── Responder mensajes entrantes con IA ────────────────────────────────────────
+client.on('message', async (msg) => {
+  // Ignorar mensajes de grupos, estados y del propio bot
+  if (msg.isGroupMsg || msg.from === 'status@broadcast' || msg.fromMe) return
+
+  // Solo responder mensajes de texto
+  if (msg.type !== 'chat') return
+
+  const texto  = (msg.body || '').trim()
+  const numero = msg.from  // formato: 18091234567@c.us
+
+  console.log(`📥 Mensaje de ${numero}: "${texto.substring(0, 60)}${texto.length > 60 ? '...' : ''}"`)
+
+  const respuesta = await responderConIA(texto, numero)
+  if (respuesta) {
+    await msg.reply(respuesta)
+    console.log(`📤 Respuesta enviada a ${numero}`)
+  }
 })
 
 // Iniciar cliente
