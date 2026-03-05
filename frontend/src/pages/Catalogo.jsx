@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
 import ProductoCard from '../components/ProductoCard'
@@ -10,11 +10,13 @@ const categorias = [
   { label: 'Vitaminas', icono: '🌿' },
 ]
 
+const INITIAL_COUNT = 12
+
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 16 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.5, delay: i * 0.08, ease: 'easeOut' }
+    transition: { duration: 0.3, delay: Math.min(i, 4) * 0.06, ease: 'easeOut' }
   })
 }
 
@@ -25,8 +27,9 @@ export default function Catalogo() {
   })
   const [categoriaActiva, setCategoriaActiva] = useState('Todos')
   const [busqueda, setBusqueda] = useState('')
+  const [visibles, setVisibles] = useState(INITIAL_COUNT)
 
-  const productosFiltrados = productos.filter(p => {
+  const productosFiltrados = useMemo(() => productos.filter(p => {
     const coincideCategoria = categoriaActiva === 'Todos' || p.categoria === categoriaActiva
     const q = busqueda.toLowerCase().trim()
     const coincideBusqueda = !q ||
@@ -35,15 +38,21 @@ export default function Catalogo() {
       p.descripcion.toLowerCase().includes(q) ||
       (p.articulo && p.articulo.toLowerCase().includes(q))
     return coincideCategoria && coincideBusqueda
-  })
+  }), [categoriaActiva, busqueda])
+
+  const productosVisibles = productosFiltrados.slice(0, visibles)
+  const hayMas = visibles < productosFiltrados.length
+
+  function cambiarFiltro(label) {
+    setCategoriaActiva(label)
+    setVisibles(INITIAL_COUNT)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
 
       {/* Header */}
       <div className="relative bg-gradient-to-br from-primary via-blue-800 to-blue-900 text-white pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div className="absolute -top-20 -right-20 w-72 h-72 bg-secondary/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl" />
 
@@ -105,7 +114,7 @@ export default function Catalogo() {
             {categorias.map((cat) => (
               <button
                 key={cat.label}
-                onClick={() => setCategoriaActiva(cat.label)}
+                onClick={() => cambiarFiltro(cat.label)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
                   categoriaActiva === cat.label
                     ? 'bg-primary text-white shadow-md shadow-primary/20 scale-105'
@@ -125,16 +134,16 @@ export default function Catalogo() {
 
       {/* Grid de productos */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="sync">
           <m.div
             key={categoriaActiva}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
-            {productosFiltrados.map((p, i) => (
+            {productosVisibles.map((p, i) => (
               <m.div
                 key={p.id}
                 variants={fadeUp}
@@ -147,6 +156,17 @@ export default function Catalogo() {
             ))}
           </m.div>
         </AnimatePresence>
+
+        {hayMas && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => setVisibles(v => v + 12)}
+              className="px-8 py-3 rounded-2xl bg-primary text-white font-bold hover:bg-primary/90 transition-all duration-200 hover:scale-105 shadow-md shadow-primary/20"
+            >
+              Ver más productos ({productosFiltrados.length - visibles} restantes)
+            </button>
+          </div>
+        )}
 
         {productosFiltrados.length === 0 && (
           <div className="text-center py-24 text-gray-400">
