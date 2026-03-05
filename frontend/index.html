@@ -41,6 +41,17 @@
     <meta name="twitter:description" content="Productos Amway originales para tu salud bucal y bienestar en República Dominicana." />
     <meta name="twitter:image" content="https://vitaglossrd.com/logoVitaglossRd.png" />
     <title>VitaGloss RD — Tu salud, tu sonrisa | Distribuidor Amway RD</title>
+    <!-- CSS crítico inline: pinta el fondo y tipografía básica mientras el bundle
+         CSS completo se carga de forma no bloqueante. Esto elimina el flash blanco
+         y mantiene LCP/FCP rápidos incluso antes de que llegue index-*.css. -->
+    <style>
+      *,::before,::after{box-sizing:border-box;margin:0;padding:0}
+      html{scroll-behavior:smooth;font-size:16px}
+      body{font-family:'Inter',sans-serif;color:#2D2D2D;background:#fff;overflow-x:hidden;min-height:100vh}
+      #root{min-height:100vh}
+      /* Navbar placeholder — evita layout shift mientras carga Tailwind */
+      body>div{display:flex;flex-direction:column}
+    </style>
     <!-- Google tag (gtag.js) — diferido tras load + requestIdleCallback
          para no bloquear el hilo principal. Reemplaza G-XXXXXXXXXX con tu ID real de GA4. -->
     <script src="/init-ga.js" defer></script>
