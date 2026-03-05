@@ -132,9 +132,9 @@ export default function Home() {
           'https://www.facebook.com/vitaglossrd',
         ],
         makesOffer: [
-          { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Pasta Dental Glister™ Multi-Action' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Vitamina C Nutrilite™' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Double X Nutrilite™' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Thing', name: 'Pasta Dental Glister™ Multi-Action' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Thing', name: 'Vitamina C Nutrilite™' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Thing', name: 'Double X Nutrilite™' } },
         ],
       },
       {
