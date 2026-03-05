@@ -41,7 +41,7 @@ Sitio web: https://vitaglossrd.vercel.app`
 // Modelo con systemInstruction cargado una sola vez
 const aiModel = genAI
   ? genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-lite',
+      model: 'gemini-2.5-flash',
       systemInstruction: SYSTEM_PROMPT,
     })
   : null
