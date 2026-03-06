@@ -1460,7 +1460,7 @@ export const posts = [
     titulo: 'Flúor en la pasta dental: mitos y verdades que debes conocer en RD',
     excerpt:
       '¿El flúor es peligroso o esencial? Desmontamos los mitos más comunes y te explicamos qué dice la ciencia para los dominicanos.',
-    categoria: 'Salud Bucal',
+    categoria: 'Salud bucal',
     fecha: '2026-03-04',
     fechaActualizacion: '2026-03-04',
     tiempoLectura: '7 min',
@@ -1496,7 +1496,7 @@ export const posts = [
     titulo: 'Sensibilidad dental: por qué te duele el frío y cómo aliviarlo en casa',
     excerpt:
       'Ese dolor punzante al tomar algo frío tiene explicación. Descubre qué causa la sensibilidad dental y qué puedes hacer desde tu casa antes de ir al dentista.',
-    categoria: 'Salud Bucal',
+    categoria: 'Salud bucal',
     fecha: '2026-03-04',
     fechaActualizacion: '2026-03-04',
     tiempoLectura: '7 min',
