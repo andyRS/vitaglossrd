@@ -195,6 +195,10 @@ client.on('message', async (msg) => {
     textoLower.includes('cómo podemos ayudarte') ||
     textoLower.includes('como podemos ayudarte') ||
     textoLower.includes('¿cómo puedo ayudarte') ||
+    textoLower.includes('quiero más información') ||
+    textoLower.includes('quiero mas informacion') ||
+    textoLower.includes('más información') ||
+    textoLower.includes('mas informacion') ||
     textoLower === '¡hola!' ||
     textoLower === 'hola'
 
