@@ -289,13 +289,13 @@ export default function Blog() {
                         className="group flex flex-col bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full"
                       >
                         {/* Imagen */}
-                        <div className="relative bg-gradient-to-br from-[#0a1628] to-[#1B3A6B] h-56 flex items-center justify-center overflow-hidden">
+                        <div className={`relative bg-gradient-to-br from-[#0a1628] to-[#1B3A6B] flex items-center justify-center overflow-hidden ${post.imagenCover ? 'h-52' : 'h-44'}`}>
                           {post.imagenCover ? (
                             <img
                               src={post.imagen}
                               alt={post.titulo}
                               width="400"
-                              height="224"
+                              height="208"
                               loading="lazy"
                               decoding="async"
                               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -304,11 +304,11 @@ export default function Blog() {
                             <img
                               src={post.imagen}
                               alt={post.titulo}
-                              width="176"
-                              height="176"
+                              width="144"
+                              height="144"
                               loading="lazy"
                               decoding="async"
-                              className="h-44 w-44 object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-500"
+                              className="h-32 w-32 object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-500"
                             />
                           )}
                           <div className="absolute top-3 left-3">
