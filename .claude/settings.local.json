@@ -23,7 +23,9 @@
       "Bash(where npm)",
       "Bash(where:*)",
       "Bash(cmd /c \"for %I in \\(\"\"C:\\\\Users\\\\Andy3\\\\Desktop\\\\Proyectos Portafolio arosado\\\\Proyecto Amwey\"\"\\) do echo %~sI\")",
-      "Bash(cmd /c \"dir /x \"\"C:\\\\Users\\\\Andy3\\\\Desktop\"\" | grep -i Proye\")"
+      "Bash(cmd /c \"dir /x \"\"C:\\\\Users\\\\Andy3\\\\Desktop\"\" | grep -i Proye\")",
+      "Bash(python3 -c \":*)",
+      "Bash(pip install PyPDF2 -q)"
     ]
   }
 }
