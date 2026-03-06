@@ -328,9 +328,19 @@ export default function Blog() {
                           <h3 className="font-black text-primary text-base leading-snug mb-2 group-hover:text-secondary transition-colors line-clamp-2">
                             {post.titulo}
                           </h3>
-                          <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-4">
+                          <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-3">
                             {post.excerpt}
                           </p>
+                          {post.tags?.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mb-4">
+                              {post.tags.slice(0, 2).map(tag => (
+                                <span key={tag} className="bg-gray-100 text-gray-400 text-xs px-2.5 py-0.5 rounded-full">
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <div className="flex-1" />
                           <span className="text-secondary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
                             Leer más <span>→</span>
                           </span>
