@@ -952,16 +952,16 @@ export default function Home() {
             viewport={{ once: true }}
             className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden"
           >
-            <div className="overflow-x-auto">
-            <div className="grid grid-cols-3 text-center min-w-[360px]">
-              <div className="p-4 border-r border-white/10">
-                <p className="text-white/40 text-xs font-semibold uppercase tracking-wide mb-3">Característica</p>
+            <div>
+            <div className="grid text-center" style={{gridTemplateColumns:'2fr 1.5fr 1.5fr'}}>
+              <div className="p-3 sm:p-4 border-r border-white/10">
+                <p className="text-white/40 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-2 sm:mb-3">Característica</p>
               </div>
-              <div className="p-4 border-r border-white/10 bg-green-500/10">
-                <p className="text-green-300 text-xs font-bold uppercase tracking-wide mb-3">Nutrilite™ / Glister™</p>
+              <div className="p-3 sm:p-4 border-r border-white/10 bg-green-500/10">
+                <p className="text-green-300 text-[10px] sm:text-xs font-bold uppercase tracking-wide mb-2 sm:mb-3">Nutrilite™ / Glister™</p>
               </div>
-              <div className="p-4">
-                <p className="text-white/40 text-xs font-semibold uppercase tracking-wide mb-3">Marcas comunes</p>
+              <div className="p-3 sm:p-4">
+                <p className="text-white/40 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-2 sm:mb-3">Marcas comunes</p>
               </div>
             </div>
             {[
@@ -971,15 +971,15 @@ export default function Home() {
               ['Sin parabenos ni SLS', '✅ Sí', '❌ Muchas contienen'],
               ['Liberación prolongada (Vit. C)', '✅ 8 horas', '❌ Inmediata'],
             ].map(([feature, v1, v2], i) => (
-              <div key={i} className={`grid grid-cols-3 text-center border-t border-white/10 min-w-[360px] ${i % 2 === 0 ? 'bg-white/3' : ''}`}>
-                <div className="p-4 flex items-center justify-center">
-                  <p className="text-white/70 text-sm">{feature}</p>
+              <div key={i} className={`grid text-center border-t border-white/10 ${i % 2 === 0 ? 'bg-white/3' : ''}`} style={{gridTemplateColumns:'2fr 1.5fr 1.5fr'}}>
+                <div className="p-3 sm:p-4 flex items-center justify-start sm:justify-center pl-3 sm:pl-4">
+                  <p className="text-white/70 text-xs sm:text-sm text-left sm:text-center">{feature}</p>
                 </div>
-                <div className="p-4 border-x border-white/10 bg-green-500/5 flex items-center justify-center">
-                  <p className="text-green-300 font-semibold text-sm">{v1}</p>
+                <div className="p-3 sm:p-4 border-x border-white/10 bg-green-500/5 flex items-center justify-center">
+                  <p className="text-green-300 font-semibold text-xs sm:text-sm">{v1}</p>
                 </div>
-                <div className="p-4 flex items-center justify-center">
-                  <p className="text-white/40 text-sm">{v2}</p>
+                <div className="p-3 sm:p-4 flex items-center justify-center">
+                  <p className="text-white/40 text-xs sm:text-sm">{v2}</p>
                 </div>
               </div>
             ))}
