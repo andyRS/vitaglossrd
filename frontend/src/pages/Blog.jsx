@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { m } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useSEO } from '../hooks/useSEO'
 import { posts, categorias } from '../data/posts'
 
@@ -108,6 +108,13 @@ export default function Blog() {
 
   const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
+  const [showScrollTop, setShowScrollTop] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 500)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   const postsFiltrados = useMemo(() => {
     return posts.filter(p => {
       const matchCat = categoriaActiva === 'Todas' || p.categoria === categoriaActiva
@@ -125,6 +132,7 @@ export default function Blog() {
   const postsGrid = postsFiltrados.slice(1)
 
   return (
+    <>
     <div className="bg-white min-h-screen">
       {/* ── HERO ── */}
       <section className="bg-gradient-to-br from-[#0a1628] via-[#1B3A6B] to-[#0f2a54] pt-20 sm:pt-28 pb-12 sm:pb-16 px-4">
@@ -158,7 +166,7 @@ export default function Blog() {
       </section>
 
       {/* ── FILTROS ── */}
-      <div className="sticky top-16 sm:top-[72px] z-10 bg-white border-b border-gray-100 shadow-sm">
+      <div className="sticky top-[60px] sm:top-[64px] z-10 bg-white border-b border-gray-100 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto scrollbar-hide" role="group" aria-label="Filtrar por categoría">
           {categorias.map(cat => (
             <button
@@ -177,7 +185,7 @@ export default function Blog() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 pt-4 pb-8">
         {postsFiltrados.length === 0 ? (
           <div className="text-center py-24">
             <span className="text-5xl block mb-4">🔍</span>
@@ -377,5 +385,25 @@ export default function Blog() {
         </div>
       </section>
     </div>
+
+      {/* ── BOTÓN SUBIR ── */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <m.button
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.7 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Volver arriba"
+            className="fixed bottom-24 right-5 z-40 bg-primary text-white w-11 h-11 rounded-full shadow-lg shadow-primary/30 flex items-center justify-center hover:bg-secondary transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            </svg>
+          </m.button>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
