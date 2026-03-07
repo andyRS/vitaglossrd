@@ -6,7 +6,7 @@
  *
  * Lo que hace:
  *   1. Lee los posts existentes en frontend/src/data/posts.js
- *   2. Llama a Claude (Anthropic) para generar el texto del artículo
+ *   2. Llama a Claude (Anthropic) para generar el texto del artículo (1500+ palabras)
  *   3. Llama a DALL-E 3 (OpenAI) para generar una imagen única y personalizada
  *   4. Inserta el nuevo post en posts.js con la imagen descargada
  *   5. Listo — el commit/push lo hace GitHub Actions (o tú manualmente)
@@ -132,33 +132,38 @@ FORMAT: landscape 16:9, subject sharp and centered, soft bokeh background, profe
   }
 }
 
-// ─── Lista de temas banneados — para evitar duplicados exactos ───────────────
+// ─── Lista de temas que generan artículos profundos de 1500+ palabras ──────
 const TEMAS_SUGERIDOS = [
-  'flúor en pasta dental — mitos y verdades para dominicanos',
-  'cómo elegir un cepillo de dientes en República Dominicana',
-  'qué es la gingivitis y cómo prevenirla con productos naturales',
+  'flúor en pasta dental — mitos y verdades para dominicanos en 2026',
+  'cómo elegir un cepillo de dientes: guía completa para dominicanos',
   'el efecto del agua con cloro en los dientes de los dominicanos',
-  'proteína Whey vs vegetal para atletas en RD',
-  'hierro y anemia en mujeres dominicanas — suplementación correcta',
+  'proteína Whey vs vegetal para atletas dominicanos — análisis completo',
+  'hierro y anemia en mujeres dominicanas — suplementación correcta en 2026',
   'probióticos y salud digestiva en el Caribe — qué dice la ciencia',
-  'magnesio para el estrés en República Dominicana',
-  'coenzima Q10 beneficios para el corazón en RD',
-  'cúrcuma y cúrcuma con pimienta negra — antiinflamatorio natural en RD',
-  'colágeno hidrolizado — qué tipo comprar en República Dominicana',
-  'melatonina para el insomnio — uso correcto en RD',
-  'vitamina B12 en vegetarianos dominicanos',
-  'biotina para el cabello y las uñas — ¿funciona en RD?',
-  'sensibilidad dental causas y tratamiento sin dentista',
-  'encías que sangran — causas y solución con Glister',
-  'manchas en los dientes por café — cómo tratarlas en RD',
-  'sellantes dentales para niños en República Dominicana',
-  'suplementos durante el embarazo en República Dominicana',
-  'cómo leer una etiqueta de suplementos y no caer en mentiras',
-  'antioxidantes para proteger la piel del sol caribeño',
+  'magnesio para el estrés crónico en República Dominicana',
+  'coenzima Q10 beneficios para el corazón dominicano — guía completa',
+  'cúrcuma con pimienta negra — antiinflamatorio natural en RD',
+  'colágeno hidrolizado — qué tipo realmente funciona en República Dominicana',
+  'melatonina para el insomnio dominicano — uso correcto, dosis y riesgos',
+  'vitamina B12 en vegetarianos dominicanos — señales de déficit y soluciones',
+  'biotina para el cabello y las uñas en República Dominicana — la verdad',
+  'sensibilidad dental en el Caribe — causas, tratamiento y prevención',
+  'manchas en los dientes por café — cómo tratarlas sin dañar el esmalte en RD',
+  'sellantes dentales para niños dominicanos — guía para padres',
+  'suplementos durante el embarazo en República Dominicana — guía completa',
+  'cómo leer una etiqueta de suplementos y detectar fraudes en RD',
+  'antioxidantes para proteger la piel del sol caribeño — ciencia y productos',
   'vitaminas para el rendimiento académico en estudiantes dominicanos',
-  'suplementos para personas mayores de 60 en RD',
-  'chia y omega 3 vegetal vs omega 3 marino — diferencias',
-  'el papel del flúor en adultos mayores en República Dominicana',
+  'suplementos para personas mayores de 60 en República Dominicana',
+  'omega 3 vegetal vs omega 3 marino — diferencias que importan en RD',
+  'flúor en adultos mayores dominicanos — necesidad, dosis y beneficios',
+  'hierro en niños dominicanos — cuándo suplementar y cómo hacerlo bien',
+  'insomnio en el Caribe — causas específicas y soluciones naturales para RD',
+  'alimentos pro-inflamatorios más consumidos en República Dominicana',
+  'hidratación y electrolitos en el calor dominicano — más allá del agua',
+  'azúcar y salud bucal — el vínculo que los dominicanos deben entender',
+  'osteoporosis en la mujer dominicana — prevención desde los 30 años',
+  'síndrome metabólico en RD — causas, diagnóstico y nutrición correctiva',
 ]
 
 // ─── helper: escapar comillas dentro de template literals ───────────────────
@@ -203,53 +208,60 @@ async function main() {
   console.log(`📝 Generando post #${nextId}…  Tema sugerido: "${temaSugerido}"`)
 
   // 2 ── Prompt a Claude ─────────────────────────────────────────────────────
-  const prompt = `Eres Andy Rosado, experto en salud bucal y nutrición de República Dominicana. Escribes para el blog VitaGloss RD que vende productos Amway (Glister™ y Nutrilite™).
+  const prompt = `Eres Andy Rosado, experto en salud bucal y nutrición de República Dominicana. Escribes para el blog VitaGloss RD que vende productos Amway (Glister™ y Nutrilite™). Tus artículos son reconocidos por su profundidad, contexto caribeño específico y citas a investigación real.
 
 ARTÍCULOS YA PUBLICADOS (NO repitas estos temas ni uses el mismo slug):
 ${titulos.map((t, i) => `${i + 1}. ${t} [slug: ${slugs[i]}]`).join('\n')}
 
 TEMA SUGERIDO PARA HOY: "${temaSugerido}"
-→ Puedes ajustar el ángulo o enfoque, pero el tema debe ser diferente a todos los anteriores.
+→ Puedes ajustar el ángulo o enfoque, pero el tema debe ser completamente diferente a todos los anteriores.
 
 PRODUCTOS DISPONIBLES (usa el ID más relevante en productoRelacionadoId):
 ID 1  → Glister™ Multi-Action Pasta Dental
 ID 2  → Glister™ Spray Bucal
 ID 3  → Glister™ Enjuague Bucal
 ID 4  → Vitamina C Nutrilite™
-ID 6  → Double X Nutrilite™ (multivitamínico premium)
+ID 6  → Double X Nutrilite™ (multivitamínico premium con 22 concentrados de plantas)
 ID 9  → Ácido Fólico Nutrilite™
 ID 10 → Cal Mag D Nutrilite™ (calcio + magnesio + vitamina D)
-ID 11 → Zinc Nutrilite™
+ID 11 → Zinc Defensa Inmunológica Nutrilite™
 ID 17 → Vitamina D Nutrilite™
 ID 18 → Omega-3 Nutrilite™
-ID 20 → Proteína Vegetal Nutrilite™
+ID 20 → Proteína Vegetal Nutrilite™ (soya, trigo y guisante)
 ID 21 → Kit Envejecimiento Saludable Nutrilite™
 
 RESPONDE SOLO con un JSON válido (sin markdown, sin texto extra) con esta estructura exacta:
 {
   "titulo": "Título atractivo en español (máx 70 chars)",
   "slug": "slug-unico-en-kebab-case-diferente-a-todos-los-anteriores",
-  "excerpt": "Resumen de 1-2 oraciones (máx 160 chars) que genere curiosidad",
-  "metaDescripcion": "Meta SEO de 140-160 chars que incluya 'República Dominicana' y verbo de acción (compra, descubre, aprende)",
-  "categoria": "Salud Bucal" | "Nutrición" | "Suplementos" | "Estilo de Vida",
+  "excerpt": "Resumen de 1-2 oraciones (máx 160 chars) que genere curiosidad y urgencia",
+  "metaDescripcion": "Meta SEO de 140-160 chars que incluya 'República Dominicana' y verbo de acción",
+  "categoria": "Salud bucal" | "Nutrición" | "Suplementos" | "Bienestar",
   "tiempoLectura": "X min",
   "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
   "productoRelacionadoId": <número de la lista anterior>,
+  "faqs": [
+    { "pregunta": "Pregunta frecuente real del tema", "respuesta": "Respuesta directa de 2-3 oraciones" },
+    { "pregunta": "Segunda pregunta frecuente", "respuesta": "Respuesta directa de 2-3 oraciones" }
+  ],
   "contenido": "<HTML completo del artículo>"
 }
 
-REGLAS PARA EL CONTENIDO HTML:
-- Mínimo 900 palabras, máximo 1300 palabras
-- Estructura: introducción (2 párrafos) → secciones con <h2> → lista <ul><li> con al menos un bloque → párrafo mencionando producto VitaGloss RD de forma natural → conclusión con CTA suave
-- Usar <strong> para destacar datos importantes
-- Mencionar "República Dominicana" o "RD" al menos 4 veces
-- No usar expresiones de IA genéricas ("en resumen", "es importante destacar", "no dudes en")
-- Tono: conversacional, directo, como lo hace un dominicano informado
-- Al final agregar: <p class="cta-inline">¿Quieres <strong>[beneficio principal]</strong>? Escríbenos por WhatsApp y te orientamos sin compromiso.</p>`
+REGLAS PARA EL CONTENIDO HTML (MUY IMPORTANTE — cumple todas):
+- MÍNIMO 1500 palabras, máximo 2000 palabras. Esto es crítico para SEO.
+- Estructura obligatoria: introducción (2-3 párrafos) → 5 a 7 secciones con <h2> → al menos 2 bloques <ul><li> con 5+ items → mención natural del producto VitaGloss RD → sección de preguntas frecuentes usando <h2>Preguntas frecuentes sobre [tema]</h2> → CTA final
+- Usar <h3> para subsecciones dentro de las secciones principales
+- Usar <strong> para destacar datos, estadísticas y nombres de nutrientes/productos
+- Citar estudios reales (por ejemplo: "Un metaanálisis publicado en el American Journal of Clinical Nutrition...", "Según la OPS...", "El estudio GAIT encontró...")
+- Mencionar "República Dominicana" o "RD" al menos 6 veces con contexto local específico (datos epidemiológicos dominicanos, hábitos alimenticios locales, productos disponibles en RD, clima caribeño)
+- Incluir al menos un bloque con datos numéricos o rangos de referencia (dosis, valores de laboratorio, estadísticas)
+- NO usar frases genéricas de IA: "en resumen", "es importante destacar", "en definitiva", "no dudes en"
+- Tono: conversacional pero informado, como un médico dominicano que habla con su paciente
+- Cerrar con: <p class="cta-inline">¿Quieres <strong>[beneficio principal específico]</strong>? Escríbenos por WhatsApp y te orientamos sin compromiso.</p>`
 
   const message = await anthropic.messages.create({
     model: 'claude-opus-4-5',
-    max_tokens: 4096,
+    max_tokens: 6000,
     messages: [{ role: 'user', content: prompt }],
   })
 
@@ -275,6 +287,13 @@ REGLAS PARA EL CONTENIDO HTML:
     }
   }
 
+  // Validar longitud mínima del contenido (1500 palabras ≈ 8000 chars de HTML)
+  const wordCount = postData.contenido.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
+  console.log(`📊 Palabras en contenido: ~${wordCount}`)
+  if (wordCount < 1200) {
+    console.warn(`⚠️  Contenido corto (${wordCount} palabras). Se publicará igualmente, pero considera regenerar.`)
+  }
+
   if (slugs.includes(postData.slug)) {
     postData.slug = `${postData.slug}-${today.replace(/-/g, '')}`
     console.warn(`⚠️  Slug duplicado — se usó: ${postData.slug}`)
@@ -296,6 +315,15 @@ REGLAS PARA EL CONTENIDO HTML:
   const tagsStr = JSON.stringify(postData.tags)
   const contenidoHtml = escaparParaJs(postData.contenido)
 
+  // Construir bloque de faqs si existen
+  let faqsBlock = ''
+  if (postData.faqs && postData.faqs.length > 0) {
+    const faqsJson = postData.faqs
+      .map(f => `      { pregunta: '${escaparComillaSimple(f.pregunta)}', respuesta: '${escaparComillaSimple(f.respuesta)}' }`)
+      .join(',\n')
+    faqsBlock = `\n    faqs: [\n${faqsJson},\n    ],`
+  }
+
   const nuevoPost = `  {
     id: ${nextId},
     slug: '${escaparComillaSimple(postData.slug)}',
@@ -311,7 +339,7 @@ REGLAS PARA EL CONTENIDO HTML:
     autor: 'Andy Rosado',
     tags: ${tagsStr},
     productoRelacionadoId: ${postData.productoRelacionadoId},
-    metaDescripcion: '${escaparComillaSimple(postData.metaDescripcion)}',
+    metaDescripcion: '${escaparComillaSimple(postData.metaDescripcion)}',${faqsBlock}
     contenido: \`${contenidoHtml}\`,
   },`
 

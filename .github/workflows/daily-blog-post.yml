@@ -32,7 +32,11 @@ jobs:
         with:
           fetch-depth: 0   # necesario para git push
 
-      # 2 ── Configurar Node.js ──────────────────────────────────────────────
+      # 2 ── Pull latest para evitar conflictos con ediciones manuales ───────
+      - name: Pull latest changes
+        run: git pull --rebase origin main || true
+
+      # 3 ── Configurar Node.js ──────────────────────────────────────────────
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -40,13 +44,13 @@ jobs:
           cache: 'npm'
           cache-dependency-path: scripts/package-lock.json
 
-      # 3 ── Instalar dependencias del script ───────────────────────────────
+      # 4 ── Instalar dependencias del script ───────────────────────────────
       - name: Instalar dependencias
         run: |
           cd scripts
           npm install
 
-      # 4 ── Generar el nuevo artículo con Claude ────────────────────────────
+      # 5 ── Generar el nuevo artículo con Claude ────────────────────────────
       - name: Generar artículo con IA
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
