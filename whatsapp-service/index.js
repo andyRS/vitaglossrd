@@ -329,6 +329,8 @@ client.on('message', async (msg) => {
   console.log(`📥 Mensaje de ${numero}: "${texto.substring(0, 60)}${texto.length > 60 ? '...' : ''}"`)
 
   const textoLower = texto.toLowerCase()
+  // Normalizar: quitar acentos para comparaciones más robustas
+  const textoNorm = textoLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
   // ── Limpiar sesiones expiradas ──────────────────────────────────────────
   const ahora = Date.now()
@@ -352,30 +354,62 @@ client.on('message', async (msg) => {
 
   // ── Detectar mensaje inicial de lead de Facebook ─────────────────────────
   const esLeadFacebook =
-    textoLower.includes('vi el anuncio') ||
-    textoLower.includes('ví el anuncio') ||
-    textoLower.includes('más información') ||
-    textoLower.includes('mas informacion') ||
-    textoLower.includes('me dan más') ||
-    textoLower.includes('me dan mas') ||
-    textoLower.includes('cómo podemos ayudarte') ||
-    textoLower.includes('como podemos ayudarte') ||
-    textoLower.includes('¿cómo puedo ayudarte') ||
-    textoLower.includes('quiero más información') ||
-    textoLower.includes('quiero mas informacion') ||
-    textoLower.includes('pelo piel') ||
-    textoLower.includes('cal mag') ||
-    textoLower.includes('vitamina c plus') ||
-    textoLower.includes('niños nutrilite') ||
-    textoLower.includes('ninos nutrilite') ||
-    textoLower.includes('serenoa') ||
-    textoLower.includes('ortiga') ||
-    textoLower.includes('próstata') ||
-    textoLower.includes('prostata') ||
-    textoLower.includes('flujo urinario') ||
-    textoLower.includes('salud masculina') ||
-    textoLower === '¡hola!' ||
-    textoLower === 'hola'
+    textoNorm.includes('vi el anuncio') ||
+    textoNorm.includes('informacion') ||
+    textoNorm.includes('quiero info') ||
+    textoNorm.includes('me dan mas') ||
+    textoNorm.includes('como podemos ayudarte') ||
+    textoNorm.includes('como puedo ayudarte') ||
+    textoNorm.includes('para que sirve') ||
+    textoNorm.includes('cuanto cuesta') ||
+    textoNorm.includes('cual es el precio') ||
+    textoNorm.includes('tienen disponible') ||
+    textoNorm.includes('pelo') ||
+    textoNorm.includes('piel') ||
+    textoNorm.includes('unas') ||
+    textoNorm.includes('cabello') ||
+    textoNorm.includes('cal mag') ||
+    textoNorm.includes('calcio') ||
+    textoNorm.includes('vitamina') ||
+    textoNorm.includes('capsula') ||
+    textoNorm.includes('masticable') ||
+    textoNorm.includes('pastilla') ||
+    textoNorm.includes('ninos') ||
+    textoNorm.includes('nina') ||
+    textoNorm.includes('nino') ||
+    textoNorm.includes('bebe') ||
+    textoNorm.includes('serenoa') ||
+    textoNorm.includes('ortiga') ||
+    textoNorm.includes('prostata') ||
+    textoNorm.includes('flujo urinario') ||
+    textoNorm.includes('salud masculina') ||
+    textoNorm.includes('suplemento') ||
+    textoNorm.includes('nutrilite') ||
+    textoNorm.includes('amway') ||
+    textoNorm.includes('omega') ||
+    textoNorm.includes('calcio') ||
+    textoNorm.includes('magnesio') ||
+    textoNorm.includes('proteina') ||
+    textoNorm.includes('colágeno') ||
+    textoNorm.includes('colageno') ||
+    textoNorm.includes('biotina') ||
+    textoNorm.includes('zinc') ||
+    textoNorm.includes('huesos') ||
+    textoNorm.includes('articulacion') ||
+    textoNorm.includes('immune') ||
+    textoNorm.includes('inmune') ||
+    textoNorm.includes('defensa') ||
+    textoNorm.includes('hola') ||
+    textoNorm.includes('buenas') ||
+    textoNorm.includes('buen dia') ||
+    textoNorm.includes('buenos dias') ||
+    textoNorm.includes('buenas tardes') ||
+    textoNorm.includes('buenas noches') ||
+    textoNorm.includes('precio') ||
+    textoNorm.includes('comprar') ||
+    textoNorm.includes('adquirir') ||
+    textoNorm.includes('pedido') ||
+    textoNorm.includes('disponible')
 
   if (!esLeadFacebook) {
     console.log(`⏭️ Mensaje ignorado (no es lead de Facebook): ${numero}`)
