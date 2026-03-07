@@ -106,15 +106,17 @@ export default function Blog() {
   const [categoriaActiva, setCategoriaActiva] = useState('Todas')
   const [busqueda, setBusqueda] = useState('')
 
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
   const postsFiltrados = useMemo(() => {
     return posts.filter(p => {
       const matchCat = categoriaActiva === 'Todas' || p.categoria === categoriaActiva
-      const q = busqueda.toLowerCase()
+      const q = norm(busqueda)
       const matchQ =
         !q ||
-        p.titulo.toLowerCase().includes(q) ||
-        p.excerpt.toLowerCase().includes(q) ||
-        p.tags.some(t => t.includes(q))
+        norm(p.titulo).includes(q) ||
+        norm(p.excerpt).includes(q) ||
+        p.tags.some(t => norm(t).includes(q))
       return matchCat && matchQ
     })
   }, [categoriaActiva, busqueda])
