@@ -320,15 +320,22 @@ client.on('message', async (msg) => {
   // Ignorar mensajes de grupos, estados y del propio bot
   if (msg.from.endsWith('@g.us') || msg.from === 'status@broadcast' || msg.fromMe) return
 
-  // Solo responder mensajes de texto
-  if (msg.type !== 'chat') return
+  // Solo responder mensajes de texto (chat, template = click desde anuncio de Facebook)
+  const TIPOS_PERMITIDOS = ['chat', 'template', 'template_button_reply', 'interactive', 'button']
+  if (!TIPOS_PERMITIDOS.includes(msg.type)) {
+    console.log(`⏭️ Tipo de mensaje ignorado: ${msg.type} de ${msg.from}`)
+    return
+  }
 
-  const texto  = (msg.body || '').trim()
+  const texto  = (msg.body || msg.caption || '').trim()
   const numero = msg.from  // formato: 18091234567@c.us
 
-  console.log(`📥 Mensaje de ${numero}: "${texto.substring(0, 60)}${texto.length > 60 ? '...' : ''}"`)
+  // Si llegó de un anuncio de Facebook sin texto (clic puro), tratarlo como saludo
+  const textoEfectivo = texto || '¡Hola! Quiero más información'
 
-  const textoLower = texto.toLowerCase()
+  console.log(`📥 Mensaje de ${numero} [tipo:${msg.type}]: "${textoEfectivo.substring(0, 60)}${textoEfectivo.length > 60 ? '...' : ''}"`)
+
+  const textoLower = textoEfectivo.toLowerCase()
   // Normalizar: quitar acentos para comparaciones más robustas
   const textoNorm = textoLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
@@ -344,7 +351,7 @@ client.on('message', async (msg) => {
   // ── Si el usuario ya tiene una sesión activa, responde sin filtrar ──────
   if (activeSessions.has(numero)) {
     console.log(`💬 Continuación de sesión activa: ${numero}`)
-    const respuesta = await responderConIA(texto, numero)
+    const respuesta = await responderConIA(textoEfectivo, numero)
     if (respuesta) {
       await msg.reply(respuesta)
       console.log(`📤 Respuesta enviada a ${numero}`)
@@ -353,7 +360,9 @@ client.on('message', async (msg) => {
   }
 
   // ── Detectar mensaje inicial de lead de Facebook ─────────────────────────
+  // Mensajes tipo template/button vienen de anuncios de Facebook → siempre lead
   const esLeadFacebook =
+    msg.type !== 'chat' ||
     textoNorm.includes('vi el anuncio') ||
     textoNorm.includes('informacion') ||
     textoNorm.includes('quiero info') ||
@@ -417,9 +426,9 @@ client.on('message', async (msg) => {
   }
 
   // Es lead de Facebook → crear sesión y activar Gemini
-  console.log(`🎯 Lead de Facebook detectado de ${numero}, activando Vita con IA`)
+  console.log(`🎯 Lead de Facebook detectado de ${numero} [tipo:${msg.type}], activando Vita con IA`)
   activeSessions.set(numero, { lastActivity: Date.now(), history: [] })
-  const respuesta = await responderConIA(texto, numero)
+  const respuesta = await responderConIA(textoEfectivo, numero)
   if (respuesta) {
     await msg.reply(respuesta)
     console.log(`📤 Respuesta enviada a ${numero}`)
