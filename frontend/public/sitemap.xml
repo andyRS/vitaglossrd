@@ -40,6 +40,18 @@
   <url><loc>https://vitaglossrd.com/producto/24</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://vitaglossrd.com/producto/25</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://vitaglossrd.com/producto/26</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vitaglossrd.com/producto/27</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vitaglossrd.com/producto/28</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url>
+    <loc>https://vitaglossrd.com/producto/29</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://vitaglossrd.com/serenoa.webp</image:loc>
+      <image:title>Nutrilite™ Serenoa Repens y Raíz de Ortiga — Salud Masculina | VitaGloss RD</image:title>
+    </image:image>
+  </url>
 
   <!-- BLOG ÍNDICE -->
   <url><loc>https://vitaglossrd.com/blog</loc><lastmod>2026-03-07</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
