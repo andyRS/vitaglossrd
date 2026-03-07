@@ -1622,7 +1622,7 @@ export const posts = [
     titulo: 'Encías que sangran: por qué pasa y cómo detenerlo de verdad',
     excerpt:
       'Ver sangre al cepillarte no es normal. Descubre qué está pasando en tu boca y cómo revertirlo antes de que empeore.',
-    categoria: 'Salud Bucal',
+    categoria: 'Salud bucal',
     fecha: '2026-03-07',
     fechaActualizacion: '2026-03-07',
     tiempoLectura: '7 min',
