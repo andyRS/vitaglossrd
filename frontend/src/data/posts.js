@@ -1967,6 +1967,7 @@ export const posts = [
     imagen: '/Pelo_-Piel-y-Uñas-Nutrilite.webp',
     autor: 'Andy Rosado',
     tags: ['pelo piel uñas', 'biotina', 'colágeno', 'nutrilite', 'belleza'],
+    metaDescripcion: 'Descubre qué vitaminas realmente mejoran el cabello, la piel y uñas en República Dominicana. Guía con evidencia real sobre biotina, zinc y vitamina C — VitaGloss RD.',
     faqs: [
       { pregunta: '¿La biotina realmente hace crecer el cabello?', respuesta: 'La biotina mejora el crecimiento del cabello en personas con déficit de biotina (lo cual sí existe pero no es tan común). En personas con niveles normales, la evidencia es débil. Sin embargo, combinada con otros nutrientes como silicio, zinc y vitamina C, sí hay estudios que muestran mejora en calidad y retención del cabello.' },
       { pregunta: '¿Cuánto tiempo tarda en verse el efecto en pelo y uñas?', respuesta: 'El cabello crece aproximadamente 1-1.5 cm al mes. Cambios visibles en grosor, brillo y caída generalmente toman 3-6 meses de suplementación consistente. Las uñas responden más rápido, en 6-8 semanas.' },
@@ -2047,6 +2048,7 @@ export const posts = [
     imagen: '/Nutrilite Fibra en polvo-transparente.webp',
     autor: 'Andy Rosado',
     tags: ['fibra', 'digestión', 'microbioma', 'nutrilite', 'bienestar'],
+    metaDescripcion: 'La dieta dominicana tiene un déficit grave de fibra. Conoce sus consecuencias, soluciones naturales y cómo la Fibra Nutrilite puede mejorar tu salud en RD.',
     faqs: [
       { pregunta: '¿Cuánta fibra necesito al día?', respuesta: 'Las recomendaciones actuales son 25g/día para mujeres adultas y 38g/día para hombres adultos. La ingesta promedio en países latinoamericanos es de 12-15g — menos de la mitad de lo recomendado.' },
       { pregunta: '¿La Fibra en Polvo Nutrilite tiene sabor?', respuesta: 'La Fibra en Polvo Nutrilite es prácticamente insabora e inodora. Se puede mezclar con agua, jugos, batidos o incluso en preparaciones de cocina sin alterar el sabor del alimento.' },
@@ -2142,6 +2144,7 @@ export const posts = [
     imagen: '/Nutrilite Suplemento nutricional Slimmetry-transparente.png',
     autor: 'Andy Rosado',
     tags: ['slimmetry', 'peso', 'nutrilite', 'metabolismo', 'bienestar'],
+    metaDescripcion: 'Revisión honesta de Slimmetry Nutrilite: ingredientes, para quién funciona y quién no debe tomarlo. Aprende a usarlo correctamente en República Dominicana.',
     faqs: [
       { pregunta: '¿Slimmetry es para hombres o solo para mujeres?', respuesta: 'Es para ambos. No contiene hormonas ni actúa sobre vías específicamente femeninas. Sus mecanismos (control glucémico, saciedad, termogénesis moderada) funcionan en cualquier adulto.' },
       { pregunta: '¿Puedo tomar Slimmetry si tengo hipertensión?', respuesta: 'Precaución. Algunos ingredientes termogénicos pueden elevar ligeramente la presión arterial o la frecuencia cardíaca. Consulta a tu médico antes de tomarlo si tienes hipertensión o condición cardiovascular.' },
@@ -2228,6 +2231,7 @@ export const posts = [
     imagen: '/Nutrilite™ Glucosamina – Suministro para 30 días Articulaciones.jpg',
     autor: 'Andy Rosado',
     tags: ['glucosamina', 'articulaciones', 'cartílago', 'nutrilite', 'bienestar'],
+    metaDescripcion: 'Guía completa sobre glucosamina para articulaciones en República Dominicana. Descubre para quién funciona, cuándo empezar y qué dice la evidencia científica.',
     faqs: [
       { pregunta: '¿La glucosamina es efectiva para la artritis reumatoide?', respuesta: 'La glucosamina ha mostrado mayor beneficio en la osteoartritis (desgaste) que en la artritis reumatoide (inflamatoria autoinmune). Para artritis reumatoide, el tratamiento médico especializado es esencial.' },
       { pregunta: '¿Se puede tomar glucosamina si soy alérgico al marisco?', respuesta: 'La glucosamina se extrae tradicionalmente de conchas de mariscos. Si tienes alergia grave a mariscos, consulta a tu médico. Existen formas de glucosamina vegetal (fermentación de maíz) sin proteínas de marisco.' },
@@ -2309,6 +2313,7 @@ export const posts = [
     imagen: '/Multivitamínico diario para niños Nutrilite.jpg',
     autor: 'Andy Rosado',
     tags: ['vitaminas niños', 'multivitamínico niños', 'nutrilite', 'nutrición infantil'],
+    metaDescripcion: '¿Tu hijo realmente necesita vitaminas? Guía para padres dominicanos sobre déficits comunes en RD, DHA infantil y cuándo suplementar con seguridad.',
     faqs: [
       { pregunta: '¿A partir de qué edad se pueden dar vitaminas a los niños?', respuesta: 'El Multivitamínico para Niños Nutrilite está indicado para niños de 4 años en adelante. Para niños menores de 4 años, la suplementación debe ser guiada por el pediatra.' },
       { pregunta: '¿Las vitaminas masticables tienen azúcar?', respuesta: 'El Multivitamínico Niños Nutrilite usa saborizantes naturales y edulcorantes sin azúcar añadida. Consulta la etiqueta del lote específico si tu hijo tiene restricciones dietéticas.' },
