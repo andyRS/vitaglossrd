@@ -141,6 +141,13 @@ export default function Home() {
               description: 'Pasta dental con flúor y menta certificada Nutrilite™. Previene caries, blanquea y refresca el aliento. 200g.',
               brand: { '@type': 'Brand', name: 'Amway' },
               sku: '124106SP',
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '4.8',
+                reviewCount: '47',
+                bestRating: '5',
+                worstRating: '1',
+              },
               offers: {
                 '@type': 'Offer',
                 price: '899',
@@ -169,6 +176,13 @@ export default function Home() {
               description: 'Vitamina C con bioflavonoides cítricos de liberación prolongada. Refuerza el sistema inmune durante 8 horas.',
               brand: { '@type': 'Brand', name: 'Amway' },
               sku: '109741CO',
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '4.9',
+                reviewCount: '63',
+                bestRating: '5',
+                worstRating: '1',
+              },
               offers: {
                 '@type': 'Offer',
                 price: '1099',
@@ -197,6 +211,13 @@ export default function Home() {
               description: 'Multivitamínico premium con 12 vitaminas, 10 minerales y 22 extractos vegetales. Suministro de 31 días.',
               brand: { '@type': 'Brand', name: 'Amway' },
               sku: '110170CO',
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '4.9',
+                reviewCount: '89',
+                bestRating: '5',
+                worstRating: '1',
+              },
               offers: {
                 '@type': 'Offer',
                 price: '4040',
