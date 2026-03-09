@@ -4,7 +4,7 @@ export default function Devoluciones() {
   useSEO({
     title: 'Política de Devoluciones',
     description: 'Política de devoluciones de VitaGloss RD. Aceptamos devoluciones de productos defectuosos. Conoce nuestro proceso y condiciones.',
-    canonical: 'https://www.vitaglossrd.com/devoluciones',
+    canonical: 'https://vitaglossrd.com/devoluciones',
   })
 
   return (

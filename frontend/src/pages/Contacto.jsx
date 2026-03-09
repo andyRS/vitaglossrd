@@ -6,13 +6,13 @@ export default function Contacto() {
   useSEO({
     title: 'Contacto — VitaGloss RD',
     description: 'Contáctanos por WhatsApp para hacer tu pedido de productos Amway en República Dominicana. Respondemos en minutos. Lunes a sábado 8am–8pm.',
-    canonical: 'https://www.vitaglossrd.com/contacto',
+    canonical: 'https://vitaglossrd.com/contacto',
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'LocalBusiness',
       name: 'VitaGloss RD',
-      image: 'https://www.vitaglossrd.com/logo_final.png',
-      url: 'https://www.vitaglossrd.com',
+      image: 'https://vitaglossrd.com/logo_final.png',
+      url: 'https://vitaglossrd.com',
       telephone: '+18492763532',
       email: 'vitaglossrd@gmail.com',
       description: 'Distribuidor independiente Amway en República Dominicana. Productos originales de salud bucal y nutrición con envío a todo el país.',
