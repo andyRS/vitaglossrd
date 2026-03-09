@@ -1446,8 +1446,8 @@ export const productos = [
       { label: "Certificaciones", valor: "Halal · Kosher · NSF" },
       { label: "Artículo", valor: "NUTRI-MAG" }
     ],
-    imagenes: ["/106542MX-690px-01.webp"],
-    imagen: "/106542MX-690px-01.webp",
+    imagenes: ["/magnesio.webp"],
+    imagen: "/magnesio.webp",
     rating: 4.8,
     reviewCount: 12,
     usosPorEnvase: 30,
