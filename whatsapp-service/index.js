@@ -204,7 +204,7 @@ ${buildCatalogContext()}
 
 === FIN DEL CATÁLOGO ===
 Sitio web: https://vitaglossrd.com
-WhatsApp de ventas: https://wa.me/18093246663`
+WhatsApp de ventas: https://wa.me/18492763532`
 
 // Modelo con systemInstruction cargado una sola vez
 const aiModel = genAI
@@ -237,7 +237,7 @@ async function responderConIA(mensajeTexto, numero) {
     const encontrados = buscarProducto(mensajeTexto)
     if (encontrados.length > 0) {
       const p = encontrados[0]
-      return `🟢 *${p.nombre}* — RD$${p.precio.toLocaleString()}\n${p.desc}\nVer más: ${p.url}\n\n¿Te gustaría pedirlo? Escríbenos: https://wa.me/18093246663`
+      return `🟢 *${p.nombre}* — RD$${p.precio.toLocaleString()}\n${p.desc}\nVer más: ${p.url}\n\n¿Te gustaría pedirlo? Escríbenos: https://wa.me/18492763532`
     }
     return `🟢 Hola, soy *Vita*, asistenta de VitaGloss RD. ¿En qué te puedo ayudar? Visita nuestro catálogo: https://vitaglossrd.com/catalogo`
   }
@@ -266,7 +266,7 @@ async function responderConIA(mensajeTexto, numero) {
     return respuesta
   } catch (err) {
     console.error('⚠️  Gemini error:', err.message)
-    return `🟢 Hola, en este momento tengo un problema técnico. Por favor escríbenos directamente: https://wa.me/18093246663`
+    return `🟢 Hola, en este momento tengo un problema técnico. Por favor escríbenos directamente: https://wa.me/18492763532`
   }
 }
 

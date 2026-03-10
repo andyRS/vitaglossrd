@@ -40,6 +40,7 @@ const Privacidad     = lazy(() => import('./pages/Privacidad'))
 const Devoluciones   = lazy(() => import('./pages/Devoluciones'))
 const Terminos       = lazy(() => import('./pages/Terminos'))
 const Unete          = lazy(() => import('./pages/Unete'))
+const LandingPeloPiel = lazy(() => import('./pages/LandingPeloPiel'))
 
 // Fallback mínimo mientras se carga un chunk
 function PageSpinner() {
@@ -51,7 +52,7 @@ function PageSpinner() {
 }
 
 // Páginas que NO deben mostrar el Navbar/Footer público
-const DASHBOARD_ROUTES = ['/dashboard', '/unete']
+const DASHBOARD_ROUTES = ['/dashboard', '/unete', '/pelo-piel-unas']
 
 // Detecta ?ref= en URL y guarda en sessionStorage para atribuir leads
 function RefTracker() {
@@ -93,6 +94,7 @@ function Layout() {
           <Route path="/devoluciones" element={<Devoluciones />} />
           <Route path="/terminos" element={<Terminos />} />
           <Route path="/unete" element={<Unete />} />
+          <Route path="/pelo-piel-unas" element={<LandingPeloPiel />} />
           <Route
             path="/dashboard"
             element={
