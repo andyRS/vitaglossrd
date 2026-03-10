@@ -567,8 +567,8 @@ export const productos = [
       { label: "Recomendado para", valor: "Mujeres en etapa reproductiva" },
       { label: "Artículo", valor: "102046" }
     ],
-    imagenes: ["/Nutrilite-Ácido-fólico.webp"],
-    imagen: "/Nutrilite-Ácido-fólico.webp",
+    imagenes: ["/acido-folico.webp"],
+    imagen: "/acido-folico.webp",
     rating: 4.7,
     reviewCount: 29,
     usosPorEnvase: 90,
