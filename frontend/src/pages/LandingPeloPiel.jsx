@@ -5,6 +5,7 @@
  */
 import { useEffect, useState, useRef } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 const WA_NUMBER  = '18492763532'
 const WA_MESSAGE = encodeURIComponent('¡Hola! Vi el anuncio de Pelo Piel y Uñas Nutrilite y quiero más información 💇‍♀️')
@@ -1010,6 +1011,8 @@ export default function LandingPeloPiel() {
           </div>
         </div>
       </footer>
+
+      <SpeedInsights />
     </div>
   )
 }
