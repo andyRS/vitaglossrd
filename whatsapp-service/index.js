@@ -71,7 +71,7 @@ Somos distribuidores certificados de Amway. Estos son los 5 productos activos:
 
 3. *Vitaminas para Niños (Kids Daily) Nutrilite* — Masticables sabor fresa-naranja
   Defensas fuertes, energía y desarrollo completo. Sin colorantes artificiales. Los niños las piden solos.
-  Precio: RD$1,399
+  Precio: RD$1,100
   Link: https://vitaglossrd.com/producto/8
 
 4. *Vitamina C Plus Nutrilite* — Liberación prolongada, actúa todo el día
@@ -161,7 +161,7 @@ Cuando hagas la transferencia mándame el comprobante 📸 con tu nombre complet
    Precios con 10% de descuento:
    - Cal Mag D: RD$1,143 (antes RD$1,270 — ahorras RD$127)
    - Pelo Piel y Uñas: RD$1,530 (antes RD$1,700 — ahorras RD$170)
-   - Vitaminas Niños: RD$1,259 (antes RD$1,399 — ahorras RD$140)
+   - Vitaminas Niños: RD$990 (antes RD$1,100 — ahorras RD$110)
    - Vitamina C Plus: RD$989 (antes RD$1,099 — ahorras RD$110)
    - Serenoa Repens y Raíz de Ortiga: RD$2,880 (antes RD$3,200 — ahorras RD$320)
    Respuesta: "Mira, te soy sincera — este es un producto de calidad Amway que realmente funciona. Pero como veo que te interesa de verdad, te lo puedo dejar en *[precio con descuento]* hoy. Es un precio especial que manejo para clientes directos. ¿Cerramos con ese?"
