@@ -1,6 +1,9 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { 
+      "source": "/:path((?!ads\\.txt$|robots\\.txt$|sitemap\\.xml$|google-merchant-feed\\.xml$|.*\\..+$).*)", 
+      "destination": "/index.html" 
+    }
   ],
   "headers": [
     {
