@@ -8,6 +8,7 @@ const categorias = [
   { label: 'Todos', icono: '✨' },
   { label: 'Salud Bucal', icono: '🦷' },
   { label: 'Vitaminas', icono: '🌿' },
+  { label: 'Energizantes', icono: '⚡' },
 ]
 
 const fadeUp = {

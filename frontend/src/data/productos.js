@@ -1597,7 +1597,7 @@ export const productos = [
     id: 30,
     nombre: "XS™ Energy + Focus",
     nombreCorto: "Suplemento XS™ Energy + Focus",
-    categoria: "Energía y Rendimiento",
+    categoria: "Energizantes",
     articulo: "XS-ENERGY-FOCUS",
     ...PRECIOS[30],
     pv: 3.90,
