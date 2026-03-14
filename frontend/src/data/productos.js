@@ -1592,5 +1592,80 @@ export const productos = [
     usosPorEnvase: 33,
     badge: "Salud Masculina",
     badgeColor: "bg-green-700"
+  },
+  {
+    id: 30,
+    nombre: "XS™ Energy + Focus",
+    nombreCorto: "Suplemento XS™ Energy + Focus",
+    categoria: "Energía y Rendimiento",
+    articulo: "XS-ENERGY-FOCUS",
+    ...PRECIOS[30],
+    pv: 3.90,
+    bv: 557.0,
+    disponible: true,
+    stock: "En stock",
+    stockUnidades: 6,
+    ventasSemana: 10,
+    descripcion: "60 comprimidos. Ayuda a maximizar la resistencia física y aumentar la concentración mental durante el ejercicio. Con cafeína natural de té verde y extracto de rhodiola rosea.",
+    descripcionLarga: "Da lo mejor en tu entrenamiento.\n\nAyuda a maximizar la resistencia física y aumentar la concentración mental durante el ejercicio.†\n\nLa cafeína natural del extracto de té verde combinado con extractos de rhodiola rosea ayuda a mejorar la resistencia física y la concentración mental para lograr entrenamientos más intensos.†\n\nLa investigación sugiere que la rhodiola rosea mejora el sistema de respuesta ante el estrés del cuerpo, lo cual puede ayudar con el tiempo de recuperación.†",
+    beneficios: [
+      "Maximiza la resistencia física durante el ejercicio",
+      "Aumenta la concentración mental para entrenamientos más intensos",
+      "Cafeína natural derivada del extracto de té verde (75 mg por comprimido)",
+      "Rhodiola rosea apoya el sistema de respuesta ante el estrés y la recuperación",
+      "Aporta Vitamina C (30 mg, 33% del valor diario)",
+      "Contiene espinaca deshidratada y concentrado de acerola",
+      "Certificación Halal y Kosher"
+    ],
+    instrucciones: [
+      "Tomar uno o dos comprimidos antes de realizar actividad física.",
+      "No consumir más de dos comprimidos por día.",
+      "No se recomienda para niños, mujeres embarazadas o en período de lactancia y personas sensibles a la cafeína.",
+      "Los niños menores de 12 años, las mujeres embarazadas o que amamantan y las personas que tienen una enfermedad deben consultar con un médico antes de usar este producto.",
+      "Mantener fuera del alcance de los niños."
+    ],
+    advertencia: "Contiene 0.002 oz (75 mg) de cafeína por comprimido. No se recomienda para niños, mujeres embarazadas o en período de lactancia y personas sensibles a la cafeína. Los niños menores de 12 años, las mujeres embarazadas o que amamantan y las personas que tienen una enfermedad deben consultar con un médico antes de usar este producto. Mantener fuera del alcance de los niños.",
+    ingredientesTexto: "Porción: 1 Tableta\n\nVitamina C (de ácido ascórbico y concentrado de acerola) 30 mg — 33%\nRhodiola rosea (raíz) 100 mg — †\nCafeína (de extracto de té verde, hojas) 75 mg — †\nEspinaca deshidratada (hojas) 50 mg — †\nMezcla patentada de concentrado de acerola 50 mg — †\n\n*El porcentaje del valor diario se basa en una dieta de 2,000 calorías. †Valor diario no establecido.\n\nOtros ingredientes: Dextrosa, Celulosa microcristalina, Crospovidona, Maltodextrina, Dióxido de silicio, Hidroxipropilmetilcelulosa, Ácido esteárico, Glicerina, Estearato de magnesio, Cera de carnaúba.",
+    faqs: [
+      {
+        pregunta: "¿El Suplemento XS™ Energy + Focus contiene cafeína?",
+        respuesta: "Sí. El Suplemento XS™ Energy + Focus contiene 0.002 oz (75 mg) de cafeína por comprimido, aproximadamente la cantidad que se encuentra en una taza de café. Una dosis diaria de dos comprimidos brinda 0.005 oz (150 mg) de cafeína."
+      },
+      {
+        pregunta: "¿De dónde se obtiene la cafeína del Suplemento XS™ Energy + Focus?",
+        respuesta: "La cafeína del Suplemento XS™ Energy + Focus se obtiene naturalmente del extracto de té verde."
+      },
+      {
+        pregunta: "¿El Suplemento XS™ Energy + Focus contiene lactosa u otro producto derivado de la leche?",
+        respuesta: "No, el Suplemento XS™ Energy + Focus no contiene lactosa u otro producto derivado de la leche."
+      },
+      {
+        pregunta: "¿El Suplemento XS™ Energy + Focus cuenta con certificación Halal?",
+        respuesta: "Sí."
+      }
+    ],
+    certificaciones: [
+      { nombre: "Halal", descripcion: "Halal" },
+      { nombre: "Kosher", descripcion: "Certificación Kosher" }
+    ],
+    detalles: [
+      { label: "Contenido", valor: "60 comprimidos" },
+      { label: "Cafeína", valor: "75 mg por comprimido (de té verde)" },
+      { label: "Rhodiola rosea", valor: "100 mg por comprimido" },
+      { label: "Vitamina C", valor: "30 mg (33% VD)" },
+      { label: "Uso", valor: "1-2 comprimidos antes del ejercicio" },
+      { label: "Máximo diario", valor: "2 comprimidos" },
+      { label: "Certificaciones", valor: "Halal · Kosher" },
+      { label: "Sin", valor: "Lactosa ni derivados lácteos" },
+      { label: "Artículo", valor: "XS-ENERGY-FOCUS" }
+    ],
+    imagenes: ["/energia-enfoque-xs.webp"],
+    imagen: "/energia-enfoque-xs.webp",
+    imagen400w: "/energia-enfoque-xs.webp",
+    rating: 4.8,
+    reviewCount: 0,
+    usosPorEnvase: 60,
+    badge: "Energía",
+    badgeColor: "bg-orange-500"
   }
 ]
