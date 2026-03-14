@@ -44,6 +44,7 @@ export const PRECIOS = {
   28: { precio:   1600, precioOriginal:  2462 }, // Nutrilite™ Cerocarb
   29: { precio:   3200, precioOriginal:  4923 }, // Serenoa Repens y Raíz de Ortiga
   30: { precio:   3200, precioOriginal:  4923 }, // XS Energy + Focus
+  31: { precio:   2500, precioOriginal:  3846 }, // Bebida Energizante XS Jugo Burbujeante
 }
 
 // ── PRECIOS DE COMBOS/KITS ──────────────────────────────────

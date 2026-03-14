@@ -1667,5 +1667,83 @@ export const productos = [
     usosPorEnvase: 60,
     badge: "Energía",
     badgeColor: "bg-orange-500"
+  },
+  {
+    id: 31,
+    nombre: "Jugo de Energía XS™ Burbujeante",
+    nombreCorto: "XS™ Jugo de Energía Burbujeante – Mango, Piña y Guayaba",
+    categoria: "Energizantes",
+    articulo: "XS-JUGO-BURBUJEANTE",
+    ...PRECIOS[31],
+    pv: 5.80,
+    bv: 829.0,
+    disponible: true,
+    stock: "En stock",
+    stockUnidades: 10,
+    ventasSemana: 12,
+    descripcion: "12 latas de 355 mL. Bebida energizante con sabor a mango, piña y guayaba. 25% de jugo natural, 280% de Vitamina C, vitaminas B y 114 mg de cafeína. Sin azúcar agregada.",
+    descripcionLarga: "¡Energía para despertar tu día!\n\nImpúlsate con la ayuda de esta energizante y deliciosa bebida con sabor a mango, piña y guayaba que te ayudará a vivir tu día al máximo.\n\nContiene 25% de jugo natural de frutas proveniente de concentrado y el 280% de tus requerimientos diarios de vitamina C.\nHecha con una mezcla de ingredientes de primera calidad, hierbas y vitaminas B.\nContiene 114 mg de cafeína, comparable con una taza de café de 10 onzas.\nSin azúcar agregada.",
+    beneficios: [
+      "Energía y enfoque para vivir el día al máximo",
+      "25% de jugo natural de frutas (mango, piña, guayaba)",
+      "280% del valor diario de Vitamina C por lata",
+      "Vitaminas B: Niacina 140%, B6 420%, B12 6,960%, Pantoténico 140%",
+      "114 mg de cafeína natural (equivalente a una taza de café de 10 oz)",
+      "Sin azúcar agregada — 11 g de azúcar naturales de la fruta",
+      "Sabores 100% naturales, sin colorantes artificiales",
+      "Certificación Unión Ortodoxa (Kosher)"
+    ],
+    instrucciones: [
+      "Disfruta diariamente hasta dos productos de Energía XS™ (bebidas de energía XS™, XS™ Energy + Focus o Pre-entrenamiento intenso XS™) para mantenerte con energía y enfoque.",
+      "No se recomienda para niños, mujeres embarazadas o que amamantan, ni para personas sensibles a la cafeína.",
+      "Si tienes más preguntas, consulta a tu médico."
+    ],
+    advertencia: "Contiene 114 mg de cafeína por porción. No se recomienda para niños, mujeres embarazadas o que amamantan, ni para personas sensibles a la cafeína.",
+    ingredientesTexto: "Porción: 1 lata (355 mL / 12 oz líq.)\n\nCalorías 50\nGrasas totales 0 g (0%)\nSodio 10 mg (0%)\nCarbohidratos totales 11 g (4%) — Azúcares totales 11 g (incluye 0 g de azúcar agregado)\nProteína 2 g\nPotasio 74 mg (2%)\nVitamina C 256 mg (280%)\nNiacina 23 mg (140%)\nVitamina B6 7.2 mg (420%)\nVitamina B12 167 mcg (6,960%)\nÁcido pantoténico 7 mg (140%)\n\nIngredientes: Agua carbonatada, jugo de uva blanca concentrado, jugo de manzana concentrado, taurina, L-glutamina, ácido ascórbico (vitamina C), ácido cítrico, ácido málico, cafeína, sorbato de potasio (conservante), jugo de toronja rosada concentrado, sucralosa, acesulfamo de potasio, jugo de verduras (colorante), niacinamida, D-pantotenato de calcio, saborizante natural, clorhidrato de piridoxina, extracto de raíz de Panax ginseng, extracto de raíz de Panax quinquefolius, cianocobalamina.",
+    faqs: [
+      {
+        pregunta: "¿Cuánta azúcar hay en los Jugos de Energía XS™ Burbujeantes?",
+        respuesta: "Los sabores de los Jugos de Energía XS™ Burbujeantes tienen 11 g de azúcar, derivados naturalmente del jugo de fruta, y sin azúcar agregada."
+      },
+      {
+        pregunta: "¿Existe la posibilidad de tener una sobredosis de vitaminas B?",
+        respuesta: "Las vitaminas B son parte del grupo de vitaminas llamadas «solubles en agua». Las cantidades excesivas de vitaminas solubles en agua se eliminan con la orina."
+      },
+      {
+        pregunta: "¿Las Bebidas de Energía XS™ contienen saborizantes y colorantes artificiales?",
+        respuesta: "No. Las Bebidas de Energía XS™ solo contienen sabores naturales y usan ingredientes naturales para obtener su color intenso."
+      },
+      {
+        pregunta: "¿Las bebidas de energía XS™ tienen certificación Kosher?",
+        respuesta: "Sí."
+      },
+      {
+        pregunta: "¿Se cambiaron los sabores o fórmulas de las bebidas de energía XS™ al pasar al tamaño de 12 onzas?",
+        respuesta: "No se realizaron cambios ni a sabores ni a fórmulas, pero se mejoró el diseño de las latas para maximizar la experiencia del usuario."
+      }
+    ],
+    certificaciones: [
+      { nombre: "Kosher", descripcion: "Unión Ortodoxa (OU Kosher)" }
+    ],
+    detalles: [
+      { label: "Contenido", valor: "12 latas × 355 mL (12 oz líq.)" },
+      { label: "Sabor", valor: "Mango, piña y guayaba" },
+      { label: "Cafeína", valor: "114 mg por lata" },
+      { label: "Vitamina C", valor: "256 mg (280% VD)" },
+      { label: "Jugo natural", valor: "25% de concentrado de frutas" },
+      { label: "Azúcar agregada", valor: "0 g" },
+      { label: "Calorías", valor: "50 por lata" },
+      { label: "Uso máximo", valor: "2 productos XS™ por día" },
+      { label: "Certificación", valor: "Unión Ortodoxa (Kosher)" },
+      { label: "Artículo", valor: "XS-JUGO-BURBUJEANTE" }
+    ],
+    imagenes: ["/bebida-energizante.webp"],
+    imagen: "/bebida-energizante.webp",
+    imagen400w: "/bebida-energizante.webp",
+    rating: 4.9,
+    reviewCount: 0,
+    usosPorEnvase: 12,
+    badge: "Sin Azúcar",
+    badgeColor: "bg-yellow-500"
   }
 ]
