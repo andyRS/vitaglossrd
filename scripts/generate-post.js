@@ -78,56 +78,57 @@ async function generarImagenDallE(titulo, tags, slug, openaiKey) {
 
   const openai = new OpenAI({ apiKey: openaiKey })
 
-  // Construir prompt: fotografía realista del tema, sin texto ni animaciones
+  // ── Prompt engineered for hyperrealistic people & photography ──────────
   const temasPrincipales = tags.slice(0, 4).join(', ')
-  const prompt = `Photorealistic editorial photograph for a health blog article titled: "${titulo}". \
-The image MUST visually represent THIS specific topic — NOT generic health imagery or random products. \
-Keywords for context: ${temasPrincipales}. \
-\
-CRITICAL: The subject must match "${titulo}" precisely. Think like a magazine photo editor: \
-- "bleeding gums" → close-up of a hand gently touching gum area, slight dramatic lighting, clinical mood \
-- "children vitamins" → happy child holding a chewable tablet, colorful fruit around \
-- "dental whitening" → extreme close-up of bright white teeth, confident smile \
-- "probiotics / gut health" → cross-section healthy gut concept, yogurt, fermented foods \
-- "omega 3" → fresh salmon, walnuts, fish oil capsules on dark slate surface \
-- "hair biotin" → thick shiny hair flowing, biotin capsules nearby \
-- "vitamin C / immune" → sliced citrus fruits, vibrant orange colors, energetic feel \
-- "dental sensitivity" → person wincing at hot/cold drink, teeth in focus \
-- "calcium / bones" → strong person, dairy products, clean minimal style \
-\
-STYLE: editorial DSLR photography, cinematic lighting, magazine quality. \
-REALISM: ultra-realistic photograph. NOT illustration. NOT 3D render. NOT cartoon. NOT generic product shelf. \
-COLORS: natural tones that match topic mood — warm oranges for nutrition, clinical white/teal for dental, earthy green for wellness. \
-NO text, NO readable labels, NO watermarks, NO logos. \
-FORMAT: landscape 16:9, subject sharp and centered, soft bokeh background, professional health magazine cover quality.`
+  const prompt = `A single photorealistic editorial photograph — indistinguishable from a real DSLR photo — for a health and wellness article titled: "${titulo}".
 
-  console.log(`🎨 Generando imagen con DALL-E 3 para: "${titulo}"`)
+TOPIC KEYWORDS: ${temasPrincipales}.
+
+SUBJECT DIRECTION — pick the most fitting:
+- If the topic involves people (vitamins for kids, smiling, confidence, energy, hair, skin): show a real-looking Dominican or Latin woman/man/child doing the relevant action. Face must look 100% human: real skin texture with visible pores, natural asymmetry, realistic eyes with reflections, individual hair strands, slight skin imperfections — NOT perfect AI skin.
+- If the topic is a product/supplement: arrange the product with natural ingredients (fruits, plants, capsules) on a textured surface, shot like a high-end editorial still life.
+- If the topic is dental: extreme close-up of a real human smile, natural warm tooth color, realistic gum texture, soft studio light.
+
+CAMERA & LENS (include in rendering): Shot on Sony A7R V, 85mm f/1.4 lens, ISO 400, natural window light or professional softbox. Shallow depth of field. Bokeh background.
+
+SKIN REALISM (critical for people): subsurface scattering, visible pores, light skin translucency at ears/nose tips, individual facial hair stubble or fine hair, natural micro-wrinkles around eyes, slight color variation in skin tone.
+
+MOOD & COLOR: warm, inviting, premium health magazine — teal and deep blue accents matching VitaGloss RD brand. Natural color grading, not oversaturated.
+
+STRICT RULES:
+- NO text, NO labels, NO logos, NO watermarks anywhere in the image.
+- NOT a 3D render, NOT a cartoon, NOT an illustration, NOT AI-looking plastic skin.
+- People must look like real Dominican/Caribbean individuals — natural features.
+- Landscape 16:9 composition, subject sharp, background softly blurred.`
+
+  console.log(`🎨 Generando imagen con gpt-image-1 para: "${titulo}"`)
 
   try {
     const response = await openai.images.generate({
-      model: 'dall-e-3',
+      model: 'gpt-image-1',   // El mismo modelo que usa ChatGPT — MUCHO mejor en personas reales
       prompt,
       n: 1,
-      size: '1792x1024',   // landscape, alta resolución
-      quality: 'hd',       // misma calidad que usa ChatGPT (standard = $0.04, hd = $0.08)
-      response_format: 'url',
+      size: '1536x1024',      // Landscape 3:2 — máxima calidad disponible en gpt-image-1
+      quality: 'high',        // low / medium / high
     })
 
-    const imageUrl = response.data[0].url
-    console.log(`✅ Imagen generada por DALL-E 3`)
+    // gpt-image-1 devuelve base64, no URL
+    const b64 = response.data[0].b64_json
+    const imageBuffer = Buffer.from(b64, 'base64')
+    console.log(`✅ Imagen generada con gpt-image-1`)
 
     // Crear carpeta /public/blog/ si no existe
     const blogDir = path.join(__dirname, '../frontend/public/blog')
     if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true })
 
     const destino = path.join(blogDir, `${slug}.png`)
-    await descargarArchivo(imageUrl, destino)
+    fs.writeFileSync(destino, imageBuffer)
 
     console.log(`✅ Imagen guardada: /blog/${slug}.png`)
     return `/blog/${slug}.png`
 
   } catch (err) {
-    console.warn(`⚠️  Error generando imagen con DALL-E 3: ${err.message} — se usará imagen de producto`)
+    console.warn(`⚠️  Error generando imagen con gpt-image-1: ${err.message} — se usará imagen de producto`)
     return null
   }
 }
