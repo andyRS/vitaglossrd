@@ -54,7 +54,7 @@ function PageSpinner() {
 }
 
 // Páginas que NO deben mostrar el Navbar/Footer público
-const DASHBOARD_ROUTES = ['/dashboard', '/unete', '/pelo-piel-unas', '/academia']
+const DASHBOARD_ROUTES = ['/dashboard', '/unete', '/pelo-piel-unas', '/academia', '/mi-equipo-ventas']
 
 // Detecta ?ref= en URL y guarda en sessionStorage para atribuir leads
 function RefTracker() {
@@ -108,6 +108,14 @@ function Layout() {
           />
           <Route
             path="/academia"
+            element={
+              <ProtectedRoute>
+                <Academia />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mi-equipo-ventas"
             element={
               <ProtectedRoute>
                 <Academia />
