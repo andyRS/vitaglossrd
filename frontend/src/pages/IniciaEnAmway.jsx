@@ -33,8 +33,8 @@ const PASOS = [
   {
     num: '03',
     icon: '📝',
-    titulo: 'Regístrate en Amway.com',
-    desc: 'El proceso toma menos de 10 minutos desde tu celular. Te guío paso a paso en tiempo real si lo necesitas.',
+    titulo: 'Regístrate gratis en Amway.com',
+    desc: 'El registro no tiene ningún costo. El proceso toma menos de 10 minutos. Una vez registrado, compras los productos que tú quieres distribuir.',
     color: 'from-blue-500 to-indigo-600',
   },
   {
@@ -49,34 +49,35 @@ const PASOS = [
 const MODALIDADES = [
   {
     nombre: 'Distribuidor ABO',
-    precio: 'Desde RD$1,500',
+    precio: 'Registro 100% gratuito',
     icono: '🏪',
     color: 'border-emerald-400 bg-emerald-50',
     colorTitulo: 'text-emerald-700',
     badge: 'Más popular',
     badgeColor: 'bg-emerald-500',
     items: [
+      'Registro sin ningún costo',
       'Código de distribuidor activo',
-      'Acceso a la tienda Amway.com',
-      'Descuentos de hasta 30% en productos',
+      'Compras los productos que TÚ quieres distribuir',
+      'Descuentos de hasta 30% en tus pedidos',
       'Bonificaciones por ventas y equipo',
       'Capacitación completa con Andy',
     ],
   },
   {
     nombre: 'Cliente Preferido',
-    precio: 'Gratis',
+    precio: 'Registro 100% gratuito',
     icono: '⭐',
     color: 'border-blue-300 bg-blue-50',
     colorTitulo: 'text-blue-700',
-    badge: 'Para empezar',
+    badge: 'Sin compromiso',
     badgeColor: 'bg-blue-500',
     items: [
-      'Compras a precio preferencial',
-      'Acceso a productos Amway directos',
-      'Sin compromiso de ventas',
-      'Opción de subir a ABO después',
-      'Asesoría personalizada incluida',
+      'Registro sin ningún costo',
+      'Acceso a productos Amway a precio especial',
+      'Compras solo lo que necesitas, cuando quieras',
+      'Sin metas ni compromisos de venta',
+      'Puedes subir a ABO en cualquier momento',
     ],
   },
 ]
@@ -91,6 +92,10 @@ const BENEFICIOS = [
 ]
 
 const FAQS = [
+  {
+    q: '¿Cuánto cuesta registrarse en Amway?',
+    a: 'El registro es 100% gratuito. No pagas nada para obtener tu código de distribuidor. Lo único que haces es comprar los productos que tú mismo quieres distribuir — exactamente como en cualquier negocio propio.',
+  },
   {
     q: '¿Necesito experiencia previa en ventas?',
     a: 'Cero. Yo empecé sin experiencia. La Academia VitaGloss RD y mi acompañamiento personal te enseñan absolutamente todo paso a paso.',
