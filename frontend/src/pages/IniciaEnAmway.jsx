@@ -33,7 +33,7 @@ const PASOS = [
   {
     num: '03',
     icon: '📝',
-    titulo: 'Regístrate gratis en Amway.com',
+    titulo: 'Regístrate gratis en AMWAY',
     desc: 'Solo necesitas tu nombre, apellido y un correo electrónico válido. Recibirás un enlace de verificación y tú mismo/a completas el registro — sin ayuda de nadie más.',
     color: 'from-blue-500 to-indigo-600',
   },
