@@ -364,8 +364,8 @@ export default function IniciaEnAmway() {
       {/* ── SOBRE ANDY ──────────────────────────────────────────────────────── */}
       <section className="max-w-4xl mx-auto px-4 pb-20">
         <m.div {...fadeUp()} className="flex flex-col sm:flex-row items-center gap-8 bg-white/3 border border-white/8 rounded-3xl p-8">
-          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-5xl sm:text-6xl flex-shrink-0 shadow-xl shadow-emerald-900/40">
-            🧑‍💼
+          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl overflow-hidden flex-shrink-0 shadow-xl shadow-emerald-900/40">
+            <img src="/Foto-profesional.webp" alt="Andy Rosado" className="w-full h-full object-cover object-top" />
           </div>
           <div>
             <p className="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-1">Tu guía en este proceso</p>
