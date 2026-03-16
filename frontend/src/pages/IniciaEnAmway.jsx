@@ -255,7 +255,7 @@ export default function IniciaEnAmway() {
           {/* YT Player */}
           <div className="aspect-video bg-black">
             <iframe
-              src={`https://www.youtube.com/embed/${VIDEO_ID}?rel=0&modestbranding=1&color=white`}
+              src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0&modestbranding=1&color=white`}
               title="Cómo iniciar en Amway — Modalidades de registro · VitaGloss RD"
               className="w-full h-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
