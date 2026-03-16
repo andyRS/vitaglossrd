@@ -149,30 +149,6 @@ const TESTIMONIOS = [
     inicial: 'P',
     color: 'from-fuchsia-500 to-purple-600',
   },
-  {
-    nombre: 'Ernesto S.',
-    ubicacion: 'La Vega',
-    texto: 'Estaba buscando un ingreso extra sin dejar mi trabajo. Con Amway puedo trabajar a mi ritmo, en mis horas libres. Ya llevo 3 meses y cada mes vendo un poco más.',
-    estrellas: 5,
-    inicial: 'E',
-    color: 'from-lime-500 to-green-600',
-  },
-  {
-    nombre: 'Daniela P.',
-    ubicacion: 'Santiago Rodríguez',
-    texto: 'Andy me contactó rápido después de que llené el formulario. Me explicó todo en una llamada de WhatsApp y esa misma tarde ya estaba registrada. Superó mis expectativas.',
-    estrellas: 5,
-    inicial: 'D',
-    color: 'from-sky-500 to-cyan-600',
-  },
-  {
-    nombre: 'Miguel H.',
-    ubicacion: 'Barahona',
-    texto: 'Los productos Amway se venden solos porque la gente ya los conoce y confía en ellos. Yo solo los ofrezco y la gente pide. Muy diferente a vender productos desconocidos.',
-    estrellas: 5,
-    inicial: 'M',
-    color: 'from-red-500 to-orange-500',
-  },
 ]
 
 const FAQS = [
