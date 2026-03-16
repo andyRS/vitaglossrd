@@ -54,7 +54,7 @@ export default function Unete() {
   useSEO({
     title: 'Únete al equipo VitaGloss RD — Gana un extra vendiendo Amway',
     description: 'Regístrate gratis al webinar y descubre cómo generar ingresos extras desde casa vendiendo productos Amway. Capacitación incluida.',
-    canonical: 'https://vitaglossrd.com/unete',
+    canonical: 'https://www.vitaglossrd.com/unete',
   })
 
   const formRef = useRef(null)

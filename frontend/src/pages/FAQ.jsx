@@ -169,7 +169,7 @@ export default function FAQ() {
   useSEO({
     title: 'Preguntas Frecuentes',
     description: 'Resolvemos tus dudas sobre Pasta Dental Glister™, Vitamina C, Omega, Double X™ y todos los productos Amway Nutrilite™ en VitaGloss RD. Envío a todo el país.',
-    canonical: 'https://vitaglossrd.com/faq',
+    canonical: 'https://www.vitaglossrd.com/faq',
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',

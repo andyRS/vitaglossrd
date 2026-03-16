@@ -5,13 +5,13 @@ export default function SobreNosotros() {
   useSEO({
     title: 'Sobre Nosotros — VitaGloss RD',
     description: 'Somos VitaGloss RD, distribuidores independientes Amway en República Dominicana. Llevamos más de 3 años ofreciendo productos originales de salud bucal y nutrición con envío a todo el país.',
-    canonical: 'https://vitaglossrd.com/sobre-nosotros',
+    canonical: 'https://www.vitaglossrd.com/sobre-nosotros',
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'VitaGloss RD',
-      url: 'https://vitaglossrd.com',
-      logo: 'https://vitaglossrd.com/logo_final.png',
+      url: 'https://www.vitaglossrd.com',
+      logo: 'https://www.vitaglossrd.com/logo_final.png',
       description: 'Distribuidor independiente Amway en República Dominicana especializado en productos de salud bucal, vitaminas y suplementos nutricionales Nutrilite.',
       email: 'vitaglossrd@gmail.com',
       telephone: '+18492763532',

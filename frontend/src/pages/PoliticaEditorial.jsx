@@ -5,18 +5,18 @@ export default function PoliticaEditorial() {
   useSEO({
     title: 'Política Editorial — VitaGloss RD',
     description: 'Cómo creamos nuestro contenido: estándares editoriales, proceso de revisión, divulgación de afiliados y criterios de calidad del blog VitaGloss RD.',
-    canonical: 'https://vitaglossrd.com/politica-editorial',
+    canonical: 'https://www.vitaglossrd.com/politica-editorial',
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
       name: 'Política Editorial — VitaGloss RD',
-      url: 'https://vitaglossrd.com/politica-editorial',
+      url: 'https://www.vitaglossrd.com/politica-editorial',
       description: 'Estándares editoriales, divulgación de afiliados y criterios de calidad del blog de VitaGloss RD.',
       publisher: {
         '@type': 'Organization',
         name: 'VitaGloss RD',
-        url: 'https://vitaglossrd.com',
-        logo: { '@type': 'ImageObject', url: 'https://vitaglossrd.com/logoVitaglossRd.png' },
+        url: 'https://www.vitaglossrd.com',
+        logo: { '@type': 'ImageObject', url: 'https://www.vitaglossrd.com/logoVitaglossRd.png' },
       },
     },
   })

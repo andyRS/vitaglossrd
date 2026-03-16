@@ -4,7 +4,7 @@ export default function Privacidad() {
   useSEO({
     title: 'Política de Privacidad',
     description: 'Política de privacidad de VitaGloss RD. Cómo recopilamos, usamos y protegemos tu información personal.',
-    canonical: 'https://vitaglossrd.com/privacidad',
+    canonical: 'https://www.vitaglossrd.com/privacidad',
   })
 
   return (

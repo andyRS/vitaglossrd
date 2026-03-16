@@ -304,8 +304,8 @@ export default function IniciaEnAmway() {
   useSEO({
     title: 'Cómo iniciar en Amway – VitaGloss RD con Andy Rosado',
     description: 'Aprende las modalidades de registro en Amway y cómo empezar a vender desde tu celular con el equipo VitaGloss RD. Video explicativo completo.',
-    canonical: 'https://vitaglossrd.com/empieza',
-    ogImage: 'https://vitaglossrd.com/Foto-profesional.webp',
+    canonical: 'https://www.vitaglossrd.com/empieza',
+    ogImage: 'https://www.vitaglossrd.com/Foto-profesional.webp',
   })
 
   const videoRef = useRef(null)

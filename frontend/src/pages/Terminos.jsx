@@ -4,7 +4,7 @@ export default function Terminos() {
   useSEO({
     title: 'Términos de Uso',
     description: 'Términos y condiciones de uso del sitio VitaGloss RD. Proceso de compra, envíos, garantías y política de devoluciones.',
-    canonical: 'https://vitaglossrd.com/terminos',
+    canonical: 'https://www.vitaglossrd.com/terminos',
   })
 
   return (
