@@ -117,6 +117,62 @@ const TESTIMONIOS = [
     inicial: 'Y',
     color: 'from-violet-500 to-purple-600',
   },
+  {
+    nombre: 'Ramón D.',
+    ubicacion: 'San Pedro de Macorís',
+    texto: 'Lo que más me gustó es que no tuve que invertir nada para empezar. Me registré, recibí mi código y Andy me enseñó cómo hacer mis primeras ventas por WhatsApp.',
+    estrellas: 5,
+    inicial: 'R',
+    color: 'from-orange-500 to-amber-500',
+  },
+  {
+    nombre: 'Luisa F.',
+    ubicacion: 'Puerto Plata',
+    texto: 'Soy ama de casa y esto me cambió la vida. Vendo por Instagram y WhatsApp desde mi teléfono. El primer mes ya recuperé lo que gasté en mis productos.',
+    estrellas: 5,
+    inicial: 'L',
+    color: 'from-pink-500 to-rose-500',
+  },
+  {
+    nombre: 'José A.',
+    ubicacion: 'Santo Domingo Este',
+    texto: 'Tenía dudas al principio, pero Andy me respondió todas mis preguntas antes de registrarme. Esa confianza me convenció. Hoy recomiendo los productos Nutrilite a toda mi familia.',
+    estrellas: 5,
+    inicial: 'J',
+    color: 'from-cyan-500 to-blue-500',
+  },
+  {
+    nombre: 'Patricia V.',
+    ubicacion: 'Higüey',
+    texto: 'Lo que más valoro es la Academia. Tiene videos explicando cada producto y cómo venderlo. Nunca me sentí perdida porque tenía todo el material disponible.',
+    estrellas: 5,
+    inicial: 'P',
+    color: 'from-fuchsia-500 to-purple-600',
+  },
+  {
+    nombre: 'Ernesto S.',
+    ubicacion: 'La Vega',
+    texto: 'Estaba buscando un ingreso extra sin dejar mi trabajo. Con Amway puedo trabajar a mi ritmo, en mis horas libres. Ya llevo 3 meses y cada mes vendo un poco más.',
+    estrellas: 5,
+    inicial: 'E',
+    color: 'from-lime-500 to-green-600',
+  },
+  {
+    nombre: 'Daniela P.',
+    ubicacion: 'Santiago Rodríguez',
+    texto: 'Andy me contactó rápido después de que llené el formulario. Me explicó todo en una llamada de WhatsApp y esa misma tarde ya estaba registrada. Superó mis expectativas.',
+    estrellas: 5,
+    inicial: 'D',
+    color: 'from-sky-500 to-cyan-600',
+  },
+  {
+    nombre: 'Miguel H.',
+    ubicacion: 'Barahona',
+    texto: 'Los productos Amway se venden solos porque la gente ya los conoce y confía en ellos. Yo solo los ofrezco y la gente pide. Muy diferente a vender productos desconocidos.',
+    estrellas: 5,
+    inicial: 'M',
+    color: 'from-red-500 to-orange-500',
+  },
 ]
 
 const FAQS = [
@@ -530,7 +586,7 @@ export default function IniciaEnAmway() {
           <h2 className="text-3xl sm:text-4xl font-black">Personas que ya empezaron</h2>
           <p className="text-white/40 mt-2">Miembros reales del equipo VitaGloss RD</p>
         </m.div>
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {TESTIMONIOS.map((t, i) => (
             <m.div key={i} {...fadeUp(i * 0.1)} className="bg-white/3 border border-white/8 rounded-3xl p-6 flex flex-col gap-4">
               <div className="flex gap-0.5">
