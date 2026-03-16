@@ -462,8 +462,8 @@ export default function LandingPeloPiel() {
     }
 
     const DESC = 'Suplemento de biotina, zinc y colágeno para cabello que se cae, uñas frágiles y piel opaca. Nutrilite™ certificado Amway. Envío a domicilio en República Dominicana. Pago contra entrega en Santo Domingo.'
-    const URL  = 'https://vitaglossrd.com/pelo-piel-unas'
-    const IMG  = 'https://vitaglossrd.com/Pelo_-Piel-y-Uñas-Nutrilite.webp'
+    const URL  = 'https://www.vitaglossrd.com/pelo-piel-unas'
+    const IMG  = 'https://www.vitaglossrd.com/Pelo_-Piel-y-Uñas-Nutrilite.webp'
 
     setMeta('meta[name="description"]',          'name',    'description')
     setMeta('meta[name="description"]',          'content', DESC)

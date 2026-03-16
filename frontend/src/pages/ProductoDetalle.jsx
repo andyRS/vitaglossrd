@@ -283,7 +283,7 @@ export default function ProductoDetalle() {
     }
   }
 
-  const SITE = 'https://vitaglossrd.com'
+  const SITE = 'https://www.vitaglossrd.com'
   useSEO({
     title: producto?.nombre ?? 'Producto',
     description: producto?.descripcion ?? 'Producto Amway original en VitaGloss RD. Envío a todo el país.',

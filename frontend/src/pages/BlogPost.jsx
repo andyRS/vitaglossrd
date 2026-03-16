@@ -6,7 +6,7 @@ import { getPostBySlug, getPostsRelacionados } from '../data/posts'
 import { buildTOC } from '../utils/toc'
 import { productos } from '../data/productos'
 
-const SITE_URL = 'https://vitaglossrd.com'
+const SITE_URL = 'https://www.vitaglossrd.com'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },

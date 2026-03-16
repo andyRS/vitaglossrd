@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const SITE_URL = 'https://vitaglossrd.com'
+const SITE_URL = 'https://www.vitaglossrd.com'
 const SITE_OG_IMAGE = `${SITE_URL}/og-default.jpg`
 
 // Helper: upsert a <meta> by attribute selector
@@ -46,7 +46,7 @@ export function useSEO({
 } = {}) {
   const fullTitle    = title ? `${title} | VitaGloss RD` : 'VitaGloss RD — Tu salud, tu sonrisa'
   const resolvedImg  = ogImage || SITE_OG_IMAGE
-  const resolvedUrl  = canonical || SITE_URL
+  const resolvedUrl  = (canonical || SITE_URL).replace('https://vitaglossrd.com', 'https://www.vitaglossrd.com')
   const isArticle    = canonical && canonical.includes('/blog/')
 
   useEffect(() => {

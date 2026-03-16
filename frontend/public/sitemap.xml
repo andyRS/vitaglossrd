@@ -3,354 +3,354 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <!-- PÁGINAS PRINCIPALES -->
-  <url><loc>https://vitaglossrd.com/</loc><lastmod>2026-03-07</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://vitaglossrd.com/catalogo</loc><lastmod>2026-03-07</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://vitaglossrd.com/combos</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/sobre-nosotros</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vitaglossrd.com/equipo</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://vitaglossrd.com/contacto</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vitaglossrd.com/faq</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://vitaglossrd.com/privacidad</loc><lastmod>2026-02-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://vitaglossrd.com/terminos</loc><lastmod>2026-02-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://vitaglossrd.com/politica-editorial</loc><lastmod>2025-01-01</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://www.vitaglossrd.com/</loc><lastmod>2026-03-07</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.vitaglossrd.com/catalogo</loc><lastmod>2026-03-07</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.vitaglossrd.com/combos</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/sobre-nosotros</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.vitaglossrd.com/equipo</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.vitaglossrd.com/contacto</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.vitaglossrd.com/faq</loc><lastmod>2026-02-27</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.vitaglossrd.com/privacidad</loc><lastmod>2026-02-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.vitaglossrd.com/terminos</loc><lastmod>2026-02-27</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.vitaglossrd.com/politica-editorial</loc><lastmod>2025-01-01</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
 
   <!-- PRODUCTOS -->
-  <url><loc>https://vitaglossrd.com/producto/1</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/2</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/3</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/4</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/5</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/6</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/7</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/8</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/9</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/10</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/11</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/12</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/13</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/14</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/15</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/16</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/17</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/18</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/19</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/20</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/21</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/22</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/23</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/24</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/25</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/26</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/27</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vitaglossrd.com/producto/28</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/1</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/2</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/3</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/4</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/5</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/6</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/7</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/8</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/9</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/10</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/11</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/12</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/13</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/14</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/15</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/16</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/17</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/18</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/19</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/20</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/21</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/22</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/23</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/24</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/25</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/26</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/27</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.vitaglossrd.com/producto/28</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url>
-    <loc>https://vitaglossrd.com/producto/29</loc>
+    <loc>https://www.vitaglossrd.com/producto/29</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/serenoa.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/serenoa.webp</image:loc>
       <image:title>Nutrilite™ Serenoa Repens y Raíz de Ortiga — Salud Masculina | VitaGloss RD</image:title>
     </image:image>
   </url>
 
   <!-- BLOG ÍNDICE -->
-  <url><loc>https://vitaglossrd.com/blog</loc><lastmod>2026-03-07</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.vitaglossrd.com/blog</loc><lastmod>2026-03-07</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
 
   <!-- BLOG ARTÍCULOS -->
   <url>
-    <loc>https://vitaglossrd.com/blog/vitamina-c-farmacia-vs-nutrilite</loc>
+    <loc>https://www.vitaglossrd.com/blog/vitamina-c-farmacia-vs-nutrilite</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/109741CO-690px-01.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/109741CO-690px-01.webp</image:loc>
       <image:title>¿Por qué la Vitamina C de farmacia no te está funcionando? — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/glister-vs-pasta-supermercado</loc>
+    <loc>https://www.vitaglossrd.com/blog/glister-vs-pasta-supermercado</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/124106SP-690px-01.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/124106SP-690px-01.webp</image:loc>
       <image:title>Glister™ vs pasta de supermercado: la comparativa que nadie te hace — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/como-blanquear-dientes-sin-danar-esmalte</loc>
+    <loc>https://www.vitaglossrd.com/blog/como-blanquear-dientes-sin-danar-esmalte</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/esmalte-dientes.jpg</image:loc>
+      <image:loc>https://www.vitaglossrd.com/esmalte-dientes.jpg</image:loc>
       <image:title>Cómo blanquear los dientes de forma segura (sin destruir tu esmalte) — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/errores-comprar-suplementos-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/errores-comprar-suplementos-republica-dominicana</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/solucion-nutricion-diaria.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/solucion-nutricion-diaria.webp</image:loc>
       <image:title>3 errores que cometes al comprar vitaminas en República Dominicana — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/habitos-salud-bucal-dominicanos</loc>
+    <loc>https://www.vitaglossrd.com/blog/habitos-salud-bucal-dominicanos</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/salud-bucal.jpg</image:loc>
+      <image:loc>https://www.vitaglossrd.com/salud-bucal.jpg</image:loc>
       <image:title>4 hábitos de salud bucal que todo dominicano debería adoptar en 2026 — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/sistema-inmune-caribe-vitaminas</loc>
+    <loc>https://www.vitaglossrd.com/blog/sistema-inmune-caribe-vitaminas</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/109741CO-690px-01.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/109741CO-690px-01.webp</image:loc>
       <image:title>Sistema inmune en el Caribe: por qué necesitas más vitaminas de lo que crees — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/guia-definitiva-salud-bucal-dominicanos-2026</loc>
+    <loc>https://www.vitaglossrd.com/blog/guia-definitiva-salud-bucal-dominicanos-2026</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/guia-definitiva-bucal.jpg</image:loc>
+      <image:loc>https://www.vitaglossrd.com/guia-definitiva-bucal.jpg</image:loc>
       <image:title>La guía definitiva de salud bucal para dominicanos en 2026 — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/cada-cuanto-cambiar-pasta-dental</loc>
+    <loc>https://www.vitaglossrd.com/blog/cada-cuanto-cambiar-pasta-dental</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/124106SP-690px-02.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/124106SP-690px-02.webp</image:loc>
       <image:title>¿Cada cuánto debes cambiar tu pasta dental y por qué importa? — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/mal-aliento-cronico-causas-soluciones</loc>
+    <loc>https://www.vitaglossrd.com/blog/mal-aliento-cronico-causas-soluciones</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/124111-690px-01.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/124111-690px-01.webp</image:loc>
       <image:title>Mal aliento crónico: causas reales y cómo eliminarlo de una vez — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/enjuague-bucal-alcohol-vs-sin-alcohol</loc>
+    <loc>https://www.vitaglossrd.com/blog/enjuague-bucal-alcohol-vs-sin-alcohol</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/124108-690px-01.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/124108-690px-01.webp</image:loc>
       <image:title>Enjuague bucal con alcohol vs sin alcohol: qué dice la ciencia — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/rutina-higiene-bucal-completa-5-minutos</loc>
+    <loc>https://www.vitaglossrd.com/blog/rutina-higiene-bucal-completa-5-minutos</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/rutina-higiene.jpg</image:loc>
+      <image:loc>https://www.vitaglossrd.com/rutina-higiene.jpg</image:loc>
       <image:title>Cómo armar tu rutina de higiene bucal completa en 5 minutos — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/placa-bacteriana-adultos-como-eliminarla</loc>
+    <loc>https://www.vitaglossrd.com/blog/placa-bacteriana-adultos-como-eliminarla</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/placa-bacteriana.jpg</image:loc>
+      <image:loc>https://www.vitaglossrd.com/placa-bacteriana.jpg</image:loc>
       <image:title>Placa bacteriana: qué es, cómo se forma y cómo eliminarla realmente — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/guia-suplementos-nutrilite-principiantes</loc>
+    <loc>https://www.vitaglossrd.com/blog/guia-suplementos-nutrilite-principiantes</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/solucion-nutricion-diaria.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/solucion-nutricion-diaria.webp</image:loc>
       <image:title>Guía completa de suplementos Nutrilite para principiantes en RD — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/double-x-para-que-sirve-quien-debe-tomarlo</loc>
+    <loc>https://www.vitaglossrd.com/blog/double-x-para-que-sirve-quien-debe-tomarlo</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Multivitamina%20Double%20X%20de%20Nutrilite-reemplazo%20para%2031%20d%C3%ADas-transpart.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Multivitamina%20Double%20X%20de%20Nutrilite-reemplazo%20para%2031%20d%C3%ADas-transpart.webp</image:loc>
       <image:title>¿Para qué sirve el Double X Nutrilite y quién debería tomarlo? — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/acido-folico-cuando-tomarlo-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/acido-folico-cuando-tomarlo-republica-dominicana</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Nutrilite-%C3%81cido-f%C3%B3lico.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Nutrilite-%C3%81cido-f%C3%B3lico.webp</image:loc>
       <image:title>Ácido fólico: cuándo tomarlo, cuánto necesitas y por qué importa — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/calcio-magnesio-vitamina-d-el-trio-que-casi-nadie-toma-bien</loc>
+    <loc>https://www.vitaglossrd.com/blog/calcio-magnesio-vitamina-d-el-trio-que-casi-nadie-toma-bien</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Nutrilite%20Cal%20Mag%20D-transparente.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Nutrilite%20Cal%20Mag%20D-transparente.webp</image:loc>
       <image:title>Calcio, Magnesio y Vitamina D: el trío que casi nadie toma correctamente — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/omega-3-republica-dominicana-beneficios-dosis</loc>
+    <loc>https://www.vitaglossrd.com/blog/omega-3-republica-dominicana-beneficios-dosis</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/omega-nutrilite.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/omega-nutrilite.webp</image:loc>
       <image:title>Omega 3 en República Dominicana: beneficios completos y cuál es la dosis correcta — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/vitamina-d-sol-caribe-necesitas-suplementos</loc>
+    <loc>https://www.vitaglossrd.com/blog/vitamina-d-sol-caribe-necesitas-suplementos</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Vitamina-D-transparente.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Vitamina-D-transparente.webp</image:loc>
       <image:title>Vitamina D y el sol del Caribe: ¿realmente necesitas suplementos en RD? — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/zinc-inmunidad-evidencia-cientifica-como-tomarlo</loc>
+    <loc>https://www.vitaglossrd.com/blog/zinc-inmunidad-evidencia-cientifica-como-tomarlo</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/nutrilite-zinc-defensa-inmunologica.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/nutrilite-zinc-defensa-inmunologica.webp</image:loc>
       <image:title>Zinc para la inmunidad: qué dice la evidencia y cómo tomarlo correctamente — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/envejecimiento-saludable-40-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/envejecimiento-saludable-40-republica-dominicana</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/kit-envejecimiento-saludable.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/kit-envejecimiento-saludable.webp</image:loc>
       <image:title>Envejecimiento saludable a los 40+: lo que debes hacer ahora en RD — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/proteina-vegetal-vs-animal-cual-es-mejor</loc>
+    <loc>https://www.vitaglossrd.com/blog/proteina-vegetal-vs-animal-cual-es-mejor</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/protenia-vegetal-transparente.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/protenia-vegetal-transparente.webp</image:loc>
       <image:title>Proteína vegetal vs proteína animal: cuál es mejor para ti en 2026 — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/pelo-piel-unas-vitaminas-que-realmente-funcionan</loc>
+    <loc>https://www.vitaglossrd.com/blog/pelo-piel-unas-vitaminas-que-realmente-funcionan</loc>
     <lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Pelo_-Piel-y-U%C3%B1as-Nutrilite.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Pelo_-Piel-y-U%C3%B1as-Nutrilite.webp</image:loc>
       <image:title>Pelo, piel y uñas: las vitaminas que realmente funcionan (y las que no) — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/fibra-dietetica-dominicanos-deficit</loc>
+    <loc>https://www.vitaglossrd.com/blog/fibra-dietetica-dominicanos-deficit</loc>
     <lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Nutrilite%20Fibra%20en%20polvo-transparente.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Nutrilite%20Fibra%20en%20polvo-transparente.webp</image:loc>
       <image:title>Fibra dietética en dominicanos: por qué casi todos tenemos déficit y cómo solucionarlo — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/slimmetry-nutrilite-resena-honesta-resultados</loc>
+    <loc>https://www.vitaglossrd.com/blog/slimmetry-nutrilite-resena-honesta-resultados</loc>
     <lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Nutrilite%20Suplemento%20nutricional%20Slimmetry-transparente.png</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Nutrilite%20Suplemento%20nutricional%20Slimmetry-transparente.png</image:loc>
       <image:title>Slimmetry Nutrilite: revisión honesta de un suplemento para el manejo del peso — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/glucosamina-articulaciones-quien-necesita-cuando</loc>
+    <loc>https://www.vitaglossrd.com/blog/glucosamina-articulaciones-quien-necesita-cuando</loc>
     <lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Nutrilite%E2%84%A2%20Glucosamina%20%E2%80%93%20Suministro%20para%2030%20d%C3%ADas%20Articulaciones.jpg</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Nutrilite%E2%84%A2%20Glucosamina%20%E2%80%93%20Suministro%20para%2030%20d%C3%ADas%20Articulaciones.jpg</image:loc>
       <image:title>Glucosamina para las articulaciones: quién la necesita y cuándo empezar — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/vitaminas-para-ninos-guia-padres-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/vitaminas-para-ninos-guia-padres-republica-dominicana</loc>
     <lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/Multivitam%C3%ADnico%20diario%20para%20ni%C3%B1os%20Nutrilite.jpg</image:loc>
+      <image:loc>https://www.vitaglossrd.com/Multivitam%C3%ADnico%20diario%20para%20ni%C3%B1os%20Nutrilite.jpg</image:loc>
       <image:title>Vitaminas para niños en RD: guía para padres sin alarmismo — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/chia-omega-3-vegetal-vs-marino-diferencias-absorcion</loc>
+    <loc>https://www.vitaglossrd.com/blog/chia-omega-3-vegetal-vs-marino-diferencias-absorcion</loc>
     <lastmod>2026-03-03</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/omega-nutrilite.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/omega-nutrilite.webp</image:loc>
       <image:title>Chía vs Omega-3 marino: ¿cuál absorbe mejor tu cuerpo? — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/fluor-pasta-dental-mitos-verdades-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/fluor-pasta-dental-mitos-verdades-republica-dominicana</loc>
     <lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/fluor-pastadental.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/fluor-pastadental.webp</image:loc>
       <image:title>Flúor en la pasta dental: mitos y verdades que debes conocer en RD — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/curcuma-pimienta-negra-antiinflamatorio-natural-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/curcuma-pimienta-negra-antiinflamatorio-natural-republica-dominicana</loc>
     <lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/curcuma-pimienta-negra-antiinflamatorio.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/curcuma-pimienta-negra-antiinflamatorio.webp</image:loc>
       <image:title>Cúrcuma con pimienta negra: el antiinflamatorio natural que RD ignora — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/sensibilidad-dental-causas-alivio-sin-dentista</loc>
+    <loc>https://www.vitaglossrd.com/blog/sensibilidad-dental-causas-alivio-sin-dentista</loc>
     <lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/sensibilidad-dental.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/sensibilidad-dental.webp</image:loc>
       <image:title>Sensibilidad dental: por qué te duele el frío y cómo aliviarlo en casa — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/antioxidantes-proteger-piel-sol-caribeno-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/antioxidantes-proteger-piel-sol-caribeno-republica-dominicana</loc>
     <lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/antioxidantes-sol-caribeno-proteger-piel.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/antioxidantes-sol-caribeno-proteger-piel.webp</image:loc>
       <image:title>Antioxidantes y sol caribeño: cómo proteger tu piel desde adentro — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/coenzima-q10-beneficios-corazon-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/coenzima-q10-beneficios-corazon-republica-dominicana</loc>
     <lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/blog/coenzima-q10-beneficios-corazon-republica-dominicana.png</image:loc>
+      <image:loc>https://www.vitaglossrd.com/blog/coenzima-q10-beneficios-corazon-republica-dominicana.png</image:loc>
       <image:title>Coenzima Q10: el nutriente cardíaco que los dominicanos ignoran — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/manchas-cafe-dientes-como-quitarlas-sin-danar-esmalte</loc>
+    <loc>https://www.vitaglossrd.com/blog/manchas-cafe-dientes-como-quitarlas-sin-danar-esmalte</loc>
     <lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/manchas-cafe-dientes.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/manchas-cafe-dientes.webp</image:loc>
       <image:title>Manchas de café en los dientes: cómo quitarlas sin dañar tu esmalte — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/colageno-hidrolizado-tipos-cual-comprar-republica-dominicana</loc>
+    <loc>https://www.vitaglossrd.com/blog/colageno-hidrolizado-tipos-cual-comprar-republica-dominicana</loc>
     <lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/colageno-hidrolizado.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/colageno-hidrolizado.webp</image:loc>
       <image:title>Colágeno hidrolizado en RD: qué tipo comprar y cuál es puro cuento — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/hierro-anemia-mujeres-dominicanas-suplementacion-correcta</loc>
+    <loc>https://www.vitaglossrd.com/blog/hierro-anemia-mujeres-dominicanas-suplementacion-correcta</loc>
     <lastmod>2026-03-05</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/hierro-anemia.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/hierro-anemia.webp</image:loc>
       <image:title>Hierro y anemia en mujeres dominicanas: cómo suplementarte bien — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/probioticos-salud-digestiva-caribe-ciencia</loc>
+    <loc>https://www.vitaglossrd.com/blog/probioticos-salud-digestiva-caribe-ciencia</loc>
     <lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/probioticos.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/probioticos.webp</image:loc>
       <image:title>Probióticos en el Caribe: qué dice la ciencia sobre tu salud digestiva — VitaGloss RD</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://vitaglossrd.com/blog/encias-sangran-causas-solucion-gingivitis</loc>
+    <loc>https://www.vitaglossrd.com/blog/encias-sangran-causas-solucion-gingivitis</loc>
     <lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
     <image:image>
-      <image:loc>https://vitaglossrd.com/encias-que-sangran.webp</image:loc>
+      <image:loc>https://www.vitaglossrd.com/encias-que-sangran.webp</image:loc>
       <image:title>Encías que sangran: por qué pasa y cómo detenerlo de verdad — VitaGloss RD</image:title>
     </image:image>
   </url>
