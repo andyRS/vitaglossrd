@@ -34,7 +34,7 @@ const PASOS = [
     num: '03',
     icon: '📝',
     titulo: 'Regístrate gratis en Amway.com',
-    desc: 'El registro no tiene ningún costo. El proceso toma menos de 10 minutos. Una vez registrado, compras los productos que tú quieres distribuir.',
+    desc: 'Solo necesitas tu nombre, apellido y un correo electrónico válido. Recibirás un enlace de verificación y tú mismo/a completas el registro — sin ayuda de nadie más.',
     color: 'from-blue-500 to-indigo-600',
   },
   {
@@ -93,8 +93,8 @@ const BENEFICIOS = [
 
 const FAQS = [
   {
-    q: '¿Cuánto cuesta registrarse en Amway?',
-    a: 'El registro es 100% gratuito. No pagas nada para obtener tu código de distribuidor. Lo único que haces es comprar los productos que tú mismo quieres distribuir — exactamente como en cualquier negocio propio.',
+    q: '¿Qué necesito para registrarme en Amway?',
+    a: 'Solo tu nombre, apellido y un correo electrónico válido. Amway te envía un enlace de verificación y tú mismo/a completas el proceso desde tu celular o computadora — sin costo y sin intermediarios.',
   },
   {
     q: '¿Necesito experiencia previa en ventas?',
