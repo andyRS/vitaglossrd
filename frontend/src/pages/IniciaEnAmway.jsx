@@ -586,7 +586,7 @@ export default function IniciaEnAmway() {
           <h2 className="text-3xl sm:text-4xl font-black">Personas que ya empezaron</h2>
           <p className="text-white/40 mt-2">Miembros reales del equipo VitaGloss RD</p>
         </m.div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {TESTIMONIOS.map((t, i) => (
             <m.div key={i} {...fadeUp(i * 0.1)} className="bg-white/3 border border-white/8 rounded-3xl p-6 flex flex-col gap-4">
               <div className="flex gap-0.5">
