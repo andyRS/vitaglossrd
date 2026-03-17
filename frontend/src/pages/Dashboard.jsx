@@ -81,12 +81,7 @@ const WA_TEMPLATES_BY_STAGE = [
     desc: 'Para leads que ya mostraron interés',
     plantillas: [
       { producto: 'Cierre con urgencia', msg: '¡Hola! 🌟 Solo quería decirte que esta semana estamos con stock limitado del *Combo Salud Completa* (Glister™ + Vitamina C). Si quieres aprovecharlo, puedo apartarte uno hoy mismo. ¿Lo confirmamos?' },
-      { producto: 'Combo personalizado', msg: '¡Hola! 😊 Pensando en lo que me dijiste, te armé un combo ideal:
-
-• *Nutrilite™ Daily* — vitaminas diarias
-• *Glister™ Pasta Dental* — cuidado bucal
-
-Juntos tienen un descuento especial. ¿Te lo aparto?' },
+      { producto: 'Combo personalizado', msg: '¡Hola! 😊 Pensando en lo que me dijiste, te armé un combo ideal:\n\n• *Nutrilite™ Daily* — vitaminas diarias\n• *Glister™ Pasta Dental* — cuidado bucal\n\nJuntos tienen un descuento especial. ¿Te lo aparto?' },
     ],
   },
   {
