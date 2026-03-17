@@ -103,4 +103,29 @@ router.get('/', async (req, res) => {
   }
 })
 
+// ── GET /api/dashboard/ranking — Top vendedores del mes ─────────────────
+router.get('/ranking', async (req, res) => {
+  try {
+    const ahora = new Date()
+    const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1)
+    const ventas = await Sale.find({
+      fecha: { $gte: inicioMes },
+      estado: { $ne: 'cancelado' },
+    }).populate('vendedor', 'nombre')
+
+    const mapa = {}
+    ventas.forEach(v => {
+      if (!v.vendedor) return
+      const id = v.vendedor._id.toString()
+      if (!mapa[id]) mapa[id] = { nombre: v.vendedor.nombre, total: 0, ventas: 0 }
+      mapa[id].total += v.total
+      mapa[id].ventas += 1
+    })
+    const ranking = Object.values(mapa).sort((a, b) => b.total - a.total).slice(0, 5)
+    res.json({ ranking })
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener ranking.' })
+  }
+})
+
 module.exports = router

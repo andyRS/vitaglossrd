@@ -33,7 +33,7 @@ const leadSchema = new mongoose.Schema({
   },
   origen: {
     type: String,
-    enum: ['whatsapp', 'referido', 'web', 'instagram', 'facebook', 'otro'],
+    enum: ['whatsapp', 'referido', 'web', 'instagram', 'facebook', 'amway-landing', 'otro'],
     default: 'whatsapp',
   },
   fechaContacto: {

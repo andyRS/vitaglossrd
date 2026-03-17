@@ -39,11 +39,17 @@ export const api = {
 
   // Dashboard
   getDashboard: () => request('GET', '/dashboard', null, true),
+  getTeamRanking: () => request('GET', '/dashboard/ranking', null, true),
+
+  // Members
+  getMembers: () => request('GET', '/members'),
+  getTeamMembersAdmin: () => request('GET', '/members/admin/all', null, true),
 
   // Leads
   getLeads: () => request('GET', '/leads', null, true),
   createLead: (body) => request('POST', '/leads', body, true),
   createPublicLead: (body) => request('POST', '/leads/public', body), // sin auth
+  getCupos: () => request('GET', '/leads/cupos'),
   updateLead: (id, body) => request('PATCH', `/leads/${id}`, body, true),
   deleteLead: (id) => request('DELETE', `/leads/${id}`, null, true),
 

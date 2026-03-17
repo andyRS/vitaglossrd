@@ -311,13 +311,7 @@ export default function IniciaEnAmway() {
   const videoRef = useRef(null)
   const formRef  = useRef(null)
   const [shown, setShown] = useState(false)
-  const [cupos] = useState(() => {
-    const saved = sessionStorage.getItem('vg_cupos_amway')
-    if (saved) return parseInt(saved)
-    const val = Math.floor(Math.random() * 4) + 4 // 4–7
-    sessionStorage.setItem('vg_cupos_amway', val)
-    return val
-  })
+  const [cupos, setCupos] = useState(5)
 
   useEffect(() => {
     const t = setTimeout(() => setShown(true), 400)
@@ -327,6 +321,8 @@ export default function IniciaEnAmway() {
         content_category: 'Amway',
       })
     }
+    // Cargar cupos reales desde el backend
+    api.getCupos().then(d => { if (d?.disponibles) setCupos(d.disponibles) }).catch(() => {})
     return () => clearTimeout(t)
   }, [])
 

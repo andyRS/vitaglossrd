@@ -59,14 +59,49 @@ function waMessageForEstado(order) {
 
 const TABS_ALL = ['📊 Resumen', '👥 Leads', '💰 Ventas', '💬 Plantillas', '📦 Pedidos Web', '⚙️ Perfil', '💲 Precios']
 
-const WA_TEMPLATES = [
-  { producto: 'Glister™ Pasta Dental', msg: '¡Hola! 👋 Te cuento sobre *Glister™*, la pasta dental con flúor activo de Amway. Combate caries, blanquea los dientes y elimina el mal aliento desde la primera semana. 🦷✨ ¿Te interesa saber el precio y cómo pedirla?' },
-  { producto: 'Enjuague Bucal Glister™', msg: '¡Hola! 🙂 Tengo disponible el *Enjuague Bucal Glister™* antibacterial que destruye gérmenes por 12 horas sin alcohol. Ideal para una boca siempre fresca. ¿Quieres más información?' },
-  { producto: 'Nutrilite™ Vitamina C Plus', msg: '¡Hola! 👋 Te recuerdo que tenemos *Nutrilite™ Vitamina C Plus* con bioflavonoides naturales. Refuerza el sistema inmune, reduce cansancio y cuida tu piel. Viene en 90 tabletas masticables. ¿Te interesa?' },
-  { producto: 'Nutrilite™ Daily (Multivitamínico)', msg: '¡Hola! ¿Sabías que con *Nutrilite™ Daily* tienes 24 vitaminas y minerales en una sola pastilla al día? 💊 Energía, defensas altas y bienestar total. Precio especial esta semana. ¿Hablamos?' },
-  { producto: 'Combo Salud Completa', msg: '¡Hola! 🌟 Tengo un *Combo Salud Completa* con pasta Glister™ + enjuague bucal + vitamina C Nutrilite™. Todo junto tiene un descuento especial. ¿Te lo detallo?' },
-  { producto: 'Seguimiento de cliente', msg: '¡Hola! 😊 Quería saber cómo te fue con el producto que pediste. ¿Notaste algún cambio? Tu opinión me importa mucho. ¡Cualquier duda, aquí estoy! 💪' },
+const WA_TEMPLATES_BY_STAGE = [
+  {
+    etapa: '🔵 Primer Contacto',
+    desc: 'Para romper el hielo con leads nuevos',
+    plantillas: [
+      { producto: 'Apertura — vitaminas Nutrilite™', msg: '¡Hola! 👋 Vi que podría interesarte mejorar tu salud o generar ingresos extra. Tenemos las vitaminas *Nutrilite™* de Amway, las más vendidas en RD. ¿Te cuento cuáles son las más solicitadas y sus precios?' },
+      { producto: 'Apertura — salud bucal Glister™', msg: '¡Hola! 😊 Soy del equipo VitaGloss RD. Tenemos disponible la pasta dental y enjuague *Glister™* de Amway, con flúor activo y acción antibacterial. Muchas familias en RD la usan como parte de su rutina. ¿Te interesa recibir más información y el precio?' },
+    ],
+  },
+  {
+    etapa: '🟡 Seguimiento (Día 3)',
+    desc: 'Para retomar contacto con leads que no respondieron',
+    plantillas: [
+      { producto: 'Recordatorio amigable', msg: '¡Hola de nuevo! 🙋 Solo quería saber si tuviste chance de revisar lo que te envié sobre nuestros productos Amway. Tenemos promo especial esta semana. ¿Te puedo contar más detalles?' },
+      { producto: 'Seguimiento Nutrilite™ Daily', msg: '¡Hola! 👋 La semana pasada hablamos de Nutrilite™. Te comento que el multivitamínico *Nutrilite™ Daily* es el favorito del equipo — energía y defensas altas en una sola pastilla al día. ¿Hablamos hoy?' },
+    ],
+  },
+  {
+    etapa: '🟢 Cierre',
+    desc: 'Para leads que ya mostraron interés',
+    plantillas: [
+      { producto: 'Cierre con urgencia', msg: '¡Hola! 🌟 Solo quería decirte que esta semana estamos con stock limitado del *Combo Salud Completa* (Glister™ + Vitamina C). Si quieres aprovecharlo, puedo apartarte uno hoy mismo. ¿Lo confirmamos?' },
+      { producto: 'Combo personalizado', msg: '¡Hola! 😊 Pensando en lo que me dijiste, te armé un combo ideal:
+
+• *Nutrilite™ Daily* — vitaminas diarias
+• *Glister™ Pasta Dental* — cuidado bucal
+
+Juntos tienen un descuento especial. ¿Te lo aparto?' },
+    ],
+  },
+  {
+    etapa: '⭐ Post-venta',
+    desc: 'Para mantener clientes activos y generar recompra',
+    plantillas: [
+      { producto: 'Seguimiento Nutrilite™ Daily (Multivitamínico)', msg: '¡Hola! ¿Sabías que con *Nutrilite™ Daily* tienes 24 vitaminas y minerales en una sola pastilla al día? 💊 Energía, defensas altas y bienestar total. Precio especial esta semana. ¿Hablamos?' },
+      { producto: 'Recompra + recomendación', msg: '¡Hola! 👋 ¿Cómo te fue con el producto? Queria saber si ya se te está terminando 😄 Si quieres que te aparte otro, avísame. Y si conoces a alguien que también quiera mejorar su salud, te doy un descuento adicional por cada amigo que compre. 🎁' },
+      { producto: 'Seguimiento de cliente', msg: '¡Hola! 😊 Quería saber cómo te fue con el producto que pediste. ¿Notaste algún cambio? Tu opinión me importa mucho. ¡Cualquier duda, aquí estoy! 💪' },
+    ],
+  },
 ]
+
+// Mantener compatibilidad con la variable anterior (por si se usa en algún otro lugar)
+const WA_TEMPLATES = WA_TEMPLATES_BY_STAGE.flatMap(s => s.plantillas)
 
 function copyToClipboard(text) {
   if (navigator.clipboard) return navigator.clipboard.writeText(text)
@@ -165,6 +200,13 @@ export default function Dashboard() {
   // templates copy feedback
   const [copied, setCopied] = useState(null)
 
+  // ranking
+  const [ranking, setRanking] = useState([])
+  const [loadingRanking, setLoadingRanking] = useState(false)
+
+  // team members (para asignación de leads, admin only)
+  const [teamMembers, setTeamMembers] = useState([])
+
   // ── fetch on tab change ──────────────────────────────────────────────────
   const loadStats = useCallback(async () => {
     setLoadingStats(true)
@@ -193,6 +235,39 @@ export default function Dashboard() {
     } catch {}
     finally { setLoadingOrders(false) }
   }, [])
+
+  const loadRanking = useCallback(async () => {
+    setLoadingRanking(true)
+    try { const d = await api.getTeamRanking(); setRanking(d.ranking || []) } catch {}
+    finally { setLoadingRanking(false) }
+  }, [])
+
+  const loadTeamMembers = useCallback(async () => {
+    if (user?.rol !== 'admin') return
+    try { const d = await api.getTeamMembersAdmin(); setTeamMembers(d.members || []) } catch {}
+  }, [user?.rol])
+
+  // ── CSV export helpers ─────────────────────────────────────────────────
+  const toCSV = (headers, rows) => {
+    const escape = v => `"${String(v ?? '').replace(/"/g, '""')}"`
+    return [headers, ...rows].map(r => r.map(escape).join(',')).join('\n')
+  }
+  const downloadCSV = (csv, filename) => {
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
+    URL.revokeObjectURL(url)
+  }
+  const exportLeadsCSV = () => {
+    const h = ['Nombre', 'Teléfono', 'Producto', 'Estado', 'Origen', 'Nota', 'Fecha']
+    const r = leads.map(l => [l.nombre, l.telefono, l.productoInteres, l.estado, l.origen, l.nota, new Date(l.createdAt).toLocaleDateString('es-DO')])
+    downloadCSV(toCSV(h, r), `leads-${new Date().toISOString().split('T')[0]}.csv`)
+  }
+  const exportSalesCSV = () => {
+    const h = ['Cliente', 'Fecha', 'Total RD$', 'Método Pago', 'Estado', 'Notas']
+    const r = sales.map(v => [v.cliente, new Date(v.fecha).toLocaleDateString('es-DO'), v.total, v.metodoPago, v.estado, v.notas])
+    downloadCSV(toCSV(h, r), `ventas-${new Date().toISOString().split('T')[0]}.csv`)
+  }
 
   // ── order helpers ──────────────────────────────────────────────────────────
   const orderTotal = (items) => items.reduce((s, i) => s + (Number(i.precio) || 0) * (Number(i.cantidad) || 1), 0)
@@ -234,7 +309,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadStats()
-  }, [loadStats])
+    loadRanking()
+    loadTeamMembers()
+  }, [loadStats]) // eslint-disable-line
 
   useEffect(() => {
     if (tab === 1) loadLeads()
@@ -258,6 +335,10 @@ export default function Dashboard() {
 
   const changeLeadEstado = async (id, estado) => {
     try { await api.updateLead(id, { estado }); loadLeads() } catch {}
+  }
+
+  const assignLead = async (id, vendedorId) => {
+    try { await api.updateLead(id, { vendedor: vendedorId || null }); loadLeads() } catch {}
   }
 
   const deleteLead = async (id) => {
@@ -350,10 +431,15 @@ export default function Dashboard() {
         <div className="flex gap-0 max-w-5xl mx-auto px-4">
           {displayTabs.map((t, i) => (
             <button key={i} onClick={() => setTab(i)}
-              className={`flex-shrink-0 px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold border-b-2 transition-all ${
+              className={`flex-shrink-0 px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold border-b-2 transition-all relative ${
                 tab === i ? 'border-primary text-primary' : 'border-transparent text-gray-400 hover:text-gray-600'
               }`}>
               {t}
+              {i === 1 && (stats?.leads?.nuevos || 0) > 0 && (
+                <span className="absolute top-2 right-0.5 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center px-1">
+                  {stats.leads.nuevos > 9 ? '9+' : stats.leads.nuevos}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -414,22 +500,28 @@ export default function Dashboard() {
                   <StatCard titulo="Conversión" valor={`${stats.leads?.tasaConversion || 0}%`} icono="🎯" sub="leads → ventas" color="primary" />
                 </div>
 
-                {/* Progress bar meta */}
+                {/* Progress bar meta — más prominente */}
                 {stats.ventas?.meta > 0 && (
-                  <div className="bg-white rounded-3xl p-6 border border-gray-100 mb-6">
-                    <div className="flex justify-between mb-3">
-                      <span className="font-bold text-primary text-sm">Meta mensual</span>
-                      <span className="text-secondary font-black text-sm">{stats.ventas.progreso}%</span>
+                  <div className="bg-gradient-to-r from-[#0a1628] to-[#1B3A6B] rounded-3xl p-6 mb-6 text-white">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <p className="text-white/50 text-xs uppercase tracking-widest mb-0.5">Meta del mes</p>
+                        <p className="font-black text-2xl">RD$ {(stats.ventas.totalMes || 0).toLocaleString()}</p>
+                        <p className="text-white/40 text-xs mt-0.5">de RD$ {stats.ventas.meta.toLocaleString()} objetivo</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-black text-4xl text-secondary">{stats.ventas.progreso}%</p>
+                        {stats.ventas.progreso < 100 && (
+                          <p className="text-white/40 text-xs mt-0.5">Faltan RD$ {Math.max(0, stats.ventas.meta - (stats.ventas.totalMes || 0)).toLocaleString()}</p>
+                        )}
+                        {stats.ventas.progreso >= 100 && <p className="text-emerald-400 text-xs font-bold mt-0.5">✅ ¡Meta cumplida!</p>}
+                      </div>
                     </div>
-                    <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
+                    <div className="w-full bg-white/15 rounded-full h-3 overflow-hidden">
                       <div
-                        className="h-4 bg-gradient-to-r from-secondary to-teal-400 rounded-full transition-all duration-700"
+                        className={`h-3 rounded-full transition-all duration-700 ${stats.ventas.progreso >= 100 ? 'bg-emerald-400' : 'bg-gradient-to-r from-secondary to-teal-400'}`}
                         style={{ width: `${Math.min(stats.ventas.progreso, 100)}%` }}
                       />
-                    </div>
-                    <div className="flex justify-between mt-2">
-                      <span className="text-gray-400 text-xs">RD$ 0</span>
-                      <span className="text-gray-400 text-xs">Meta: RD$ {stats.ventas.meta.toLocaleString()}</span>
                     </div>
                   </div>
                 )}
@@ -457,7 +549,7 @@ export default function Dashboard() {
 
                 {/* Últimos leads */}
                 {stats.ultimos?.leads?.length > 0 && (
-                  <div className="bg-white rounded-3xl p-6 border border-gray-100">
+                  <div className="bg-white rounded-3xl p-6 border border-gray-100 mb-6">
                     <h3 className="font-black text-primary mb-4">Últimos leads</h3>
                     <div className="divide-y divide-gray-50">
                       {stats.ultimos.leads.map(l => (
@@ -469,6 +561,35 @@ export default function Dashboard() {
                           <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${BADGE_LEAD[l.estado] || ''}`}>{l.estado}</span>
                         </div>
                       ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Ranking del equipo */}
+                {ranking.length > 0 && (
+                  <div className="bg-white rounded-3xl p-6 border border-gray-100">
+                    <h3 className="font-black text-primary mb-4">🏆 Ranking del equipo — este mes</h3>
+                    <div className="space-y-3">
+                      {ranking.map((r, i) => {
+                        const medals = ['🥇', '🥈', '🥉']
+                        const w = ranking[0].total > 0 ? (r.total / ranking[0].total) * 100 : 0
+                        return (
+                          <div key={i} className="flex items-center gap-3">
+                            <span className="text-lg w-6 flex-shrink-0 text-center">{medals[i] || `${i + 1}.`}</span>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex justify-between items-center mb-1">
+                                <p className="font-semibold text-gray-800 text-sm truncate">{r.nombre}</p>
+                                <p className="font-black text-secondary text-sm flex-shrink-0 ml-2">RD$ {r.total.toLocaleString()}</p>
+                              </div>
+                              <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                <div className={`h-2 rounded-full ${i === 0 ? 'bg-amber-400' : i === 1 ? 'bg-gray-400' : i === 2 ? 'bg-amber-700' : 'bg-primary/40'}`}
+                                  style={{ width: `${w}%` }} />
+                              </div>
+                              <p className="text-gray-400 text-xs mt-0.5">{r.ventas} {r.ventas === 1 ? 'venta' : 'ventas'}</p>
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 )}
@@ -487,8 +608,18 @@ export default function Dashboard() {
         {tab === 1 && (
           <Section>
             <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
-              <h2 className="text-2xl font-black text-primary">Gestión de Leads</h2>
-              <div className="flex items-center gap-2">
+              <div>
+                <h2 className="text-2xl font-black text-primary">Gestión de Leads</h2>
+                {leads.length > 0 && (
+                  <p className="text-gray-400 text-xs mt-0.5">{leads.filter(l => l.estado === 'nuevo').length} nuevos · {leads.length} total</p>
+                )}
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                {leads.length > 0 && (
+                  <button onClick={exportLeadsCSV} className="border border-gray-200 text-gray-500 hover:bg-gray-50 text-xs font-semibold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all">
+                    ⬇️ Exportar CSV
+                  </button>
+                )}
                 {/* Toggle lista/kanban */}
                 <div className="bg-gray-100 rounded-xl p-1 flex gap-1">
                   <button
@@ -596,18 +727,21 @@ export default function Dashboard() {
             ) : (
               /* ── TABLA LISTA ── */
               <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden">
-                <div className="hidden sm:grid grid-cols-5 px-6 py-3 bg-gray-50 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                  <span>Cliente</span><span>Producto</span><span>Origen</span><span>Estado</span><span></span>
+                <div className={`hidden sm:grid px-6 py-3 bg-gray-50 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 ${user?.rol === 'admin' ? 'grid-cols-6' : 'grid-cols-5'}`}>
+                  <span>Cliente</span><span>Producto</span><span>Origen</span><span>Estado</span>
+                  {user?.rol === 'admin' && <span>Asignado a</span>}
+                  <span></span>
                 </div>
                 <div className="divide-y divide-gray-50">
                   {leads.map(l => (
-                    <div key={l._id} className="grid grid-cols-1 sm:grid-cols-5 gap-2 sm:gap-0 px-6 py-4 items-center hover:bg-gray-50">
+                    <div key={l._id} className={`grid grid-cols-1 gap-2 px-6 py-4 items-center hover:bg-gray-50 ${user?.rol === 'admin' ? 'sm:grid-cols-6 sm:gap-0' : 'sm:grid-cols-5 sm:gap-0'}`}>
                       <div>
                         <p className="font-semibold text-gray-800 text-sm">{l.nombre}</p>
                         {l.telefono && (
                           <a href={`https://wa.me/${l.telefono.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer"
                             className="text-green-600 text-xs hover:underline">{l.telefono}</a>
                         )}
+                        {l.nota && <p className="text-gray-400 text-xs mt-0.5 truncate max-w-[180px]" title={l.nota}>📝 {l.nota}</p>}
                       </div>
                       <p className="text-gray-500 text-xs">{l.productoInteres || '—'}</p>
                       <span className="text-gray-400 text-xs capitalize">{l.origen}</span>
@@ -615,6 +749,17 @@ export default function Dashboard() {
                         className={`text-xs font-bold px-2 py-1.5 rounded-xl border-0 cursor-pointer focus:ring-2 focus:ring-primary/20 ${BADGE_LEAD[l.estado] || 'bg-gray-100'}`}>
                         {ESTADO_LEAD.map(s => <option key={s} value={s}>{s}</option>)}
                       </select>
+                      {user?.rol === 'admin' && (
+                        <select
+                          value={l.vendedor?._id || l.vendedor || ''}
+                          onChange={e => assignLead(l._id, e.target.value)}
+                          className="text-xs border border-gray-200 rounded-xl px-2 py-1.5 focus:outline-none focus:border-primary"
+                          aria-label="Asignar a vendedor"
+                        >
+                          <option value="">Sin asignar</option>
+                          {teamMembers.map(m => <option key={m._id} value={m._id}>{m.nombre}</option>)}
+                        </select>
+                      )}
                       <button onClick={() => deleteLead(l._id)} aria-label="Eliminar lead"
                         className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors justify-self-end">
                         Eliminar
@@ -632,10 +777,17 @@ export default function Dashboard() {
           <Section>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-black text-primary">Registro de Ventas</h2>
-              <button onClick={() => setSaleFormOpen(true)}
-                className="bg-secondary hover:bg-teal-500 text-white text-sm font-bold px-5 py-2.5 rounded-2xl flex items-center gap-2 transition-all hover:scale-105">
-                <span aria-hidden="true">+</span> Nueva venta
-              </button>
+              <div className="flex items-center gap-2">
+                {sales.length > 0 && (
+                  <button onClick={exportSalesCSV} className="border border-gray-200 text-gray-500 hover:bg-gray-50 text-xs font-semibold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all">
+                    ⬇️ Exportar CSV
+                  </button>
+                )}
+                <button onClick={() => setSaleFormOpen(true)}
+                  className="bg-secondary hover:bg-teal-500 text-white text-sm font-bold px-5 py-2.5 rounded-2xl flex items-center gap-2 transition-all hover:scale-105">
+                  <span aria-hidden="true">+</span> Nueva venta
+                </button>
+              </div>
             </div>
 
             {/* Sale form */}
@@ -731,29 +883,43 @@ export default function Dashboard() {
           <Section>
             <div className="mb-6">
               <h2 className="text-2xl font-black text-primary mb-1">Plantillas WhatsApp</h2>
-              <p className="text-gray-500 text-sm">Copia el mensaje con un clic y envíalo a tus clientes potenciales.</p>
+              <p className="text-gray-500 text-sm">Mensajes organizados por etapa del proceso de venta. Copia con un clic.</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {WA_TEMPLATES.map((t, i) => (
-                <div key={i} className="bg-white rounded-3xl border border-gray-100 p-6 hover:border-secondary/30 hover:shadow-lg transition-all duration-300">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-black text-primary text-sm">{t.producto}</h3>
-                    <span className="text-xl" aria-hidden="true">💬</span>
+            <div className="space-y-8">
+              {WA_TEMPLATES_BY_STAGE.map((stage, si) => {
+                const baseIdx = WA_TEMPLATES_BY_STAGE.slice(0, si).reduce((s, g) => s + g.plantillas.length, 0)
+                return (
+                  <div key={si}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <h3 className="font-black text-gray-800 text-base">{stage.etapa}</h3>
+                      <span className="text-gray-400 text-xs">{stage.desc}</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {stage.plantillas.map((t, i) => {
+                        const idx = baseIdx + i
+                        return (
+                          <div key={i} className="bg-white rounded-3xl border border-gray-100 p-5 hover:border-secondary/30 hover:shadow-lg transition-all duration-300">
+                            <div className="flex justify-between items-start mb-3">
+                              <h4 className="font-black text-primary text-sm">{t.producto}</h4>
+                              <span className="text-xl" aria-hidden="true">💬</span>
+                            </div>
+                            <p className="text-gray-500 text-sm leading-relaxed mb-4 bg-gray-50 rounded-2xl p-3 whitespace-pre-line line-clamp-4">{t.msg}</p>
+                            <button
+                              onClick={() => handleCopy(t.msg, idx)}
+                              className={`w-full py-2.5 rounded-2xl text-sm font-bold transition-all ${
+                                copied === idx ? 'bg-green-700 text-white' : 'bg-primary/5 hover:bg-primary text-primary hover:text-white'
+                              }`}
+                              aria-label={`Copiar plantilla: ${t.producto}`}
+                            >
+                              {copied === idx ? '✓ Copiado!' : '📋 Copiar mensaje'}
+                            </button>
+                          </div>
+                        )
+                      })}
+                    </div>
                   </div>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-4 bg-gray-50 rounded-2xl p-3">{t.msg}</p>
-                  <button
-                    onClick={() => handleCopy(t.msg, i)}
-                    className={`w-full py-2.5 rounded-2xl text-sm font-bold transition-all ${
-                      copied === i
-                        ? 'bg-green-700 text-white'
-                        : 'bg-primary/5 hover:bg-primary text-primary hover:text-white'
-                    }`}
-                    aria-label={`Copiar plantilla: ${t.producto}`}
-                  >
-                    {copied === i ? '✓ Copiado!' : '📋 Copiar mensaje'}
-                  </button>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </Section>
         )}

@@ -72,6 +72,22 @@ router.post('/public', async (req, res) => {
   }
 })
 
+// ── GET /api/leads/cupos — Cupos disponibles este mes para /empieza (público) ─
+router.get('/cupos', async (req, res) => {
+  try {
+    const MAX_CUPOS = 15
+    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+    const count = await Lead.countDocuments({
+      origen: 'amway-landing',
+      createdAt: { $gte: inicioMes },
+    })
+    const disponibles = Math.max(1, MAX_CUPOS - count)
+    res.json({ disponibles })
+  } catch {
+    res.status(200).json({ disponibles: 4 })
+  }
+})
+
 // Todos los demás endpoints requieren autenticación
 router.use(protect)
 
@@ -118,13 +134,14 @@ router.patch('/:id', async (req, res) => {
     if (req.user.rol !== 'admin' && lead.vendedor.toString() !== req.user._id.toString()) {
       return res.status(403).json({ error: 'Sin permiso.' })
     }
-    const { estado, nota, nombre, telefono, productoInteres, origen } = req.body
+    const { estado, nota, nombre, telefono, productoInteres, origen, vendedor } = req.body
     if (estado) lead.estado = estado
     if (nota !== undefined) lead.nota = nota
     if (nombre) lead.nombre = nombre
     if (telefono !== undefined) lead.telefono = telefono
     if (productoInteres !== undefined) lead.productoInteres = productoInteres
     if (origen !== undefined) lead.origen = origen
+    if (vendedor !== undefined && req.user.rol === 'admin') lead.vendedor = vendedor || null
     await lead.save()
     res.json({ lead })
   } catch (err) {
