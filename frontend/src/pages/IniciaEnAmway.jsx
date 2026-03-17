@@ -275,7 +275,7 @@ function LeadForm() {
         placeholder="Tu nombre completo *"
         value={nombre}
         onChange={e => setNombre(e.target.value)}
-        className="w-full bg-white/8 border border-white/15 text-white placeholder-white/30 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60 transition-colors"
+        className="w-full bg-white/10 border border-white/15 text-white placeholder-white/30 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60 transition-colors"
         maxLength={60}
       />
       <input
@@ -283,7 +283,7 @@ function LeadForm() {
         placeholder="Tu número de WhatsApp (opcional)"
         value={telefono}
         onChange={e => setTelefono(e.target.value)}
-        className="w-full bg-white/8 border border-white/15 text-white placeholder-white/30 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60 transition-colors"
+        className="w-full bg-white/10 border border-white/15 text-white placeholder-white/30 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60 transition-colors"
         maxLength={20}
       />
       {error && <p className="text-red-400 text-xs px-1">{error}</p>}
