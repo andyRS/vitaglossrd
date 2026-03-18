@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { usePrecios } from '../context/PreciosContext'
+import { slugify } from '../utils/slugify'
 
 export default function ProductoCard({ producto }) {
   const stockBajo = producto.stockUnidades && producto.stockUnidades <= 5
@@ -23,7 +24,7 @@ export default function ProductoCard({ producto }) {
 
   return (
     <Link
-      to={`/producto/${producto.id}`}
+      to={`/producto/${slugify(producto.nombre)}`}
       className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group border border-gray-100 hover:border-secondary hover:-translate-y-1"
       style={{ textDecoration: 'none', color: 'inherit' }}
     >

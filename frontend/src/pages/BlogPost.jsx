@@ -5,6 +5,7 @@ import { useSEO } from '../hooks/useSEO'
 import { getPostBySlug, getPostsRelacionados } from '../data/posts'
 import { buildTOC } from '../utils/toc'
 import { productos } from '../data/productos'
+import { slugify } from '../utils/slugify'
 
 const SITE_URL = 'https://www.vitaglossrd.com'
 
@@ -488,7 +489,7 @@ export default function BlogPost() {
                     Pedirlo
                   </a>
                   <Link
-                    to={`/producto/${productoDestacado.id}`}
+                    to={`/producto/${slugify(productoDestacado.nombre)}`}
                     className="text-center text-primary text-xs font-semibold hover:underline"
                   >
                     Ver detalle →

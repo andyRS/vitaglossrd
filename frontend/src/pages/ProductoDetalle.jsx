@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { m, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
+import { slugify } from '../utils/slugify'
 import ProductoCard from '../components/ProductoCard'
 import { useSEO } from '../hooks/useSEO'
 import { useCart } from '../context/CartContext'
@@ -245,9 +246,11 @@ function TabsInfoSection({ producto }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function ProductoDetalle() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const { getPrecio } = usePrecios()
-  const productoBase = productos.find(p => p.id === parseInt(id))
+  // Busca por slug; fallback a id numérico para URLs antiguas (/producto/1)
+  const productoBase = productos.find(p => slugify(p.nombre) === slug)
+    ?? productos.find(p => String(p.id) === slug)
   const producto = productoBase ? { ...productoBase, ...getPrecio(productoBase.id) } : undefined
   const [imgActiva, setImgActiva] = useState(0)
   const [agregado, setAgregado] = useState(false)
@@ -287,7 +290,7 @@ export default function ProductoDetalle() {
   useSEO({
     title: producto?.nombre ?? 'Producto',
     description: producto?.descripcion ?? 'Producto Amway original en VitaGloss RD. Envío a todo el país.',
-    canonical: producto ? `${SITE}/producto/${producto.id}` : undefined,
+    canonical: producto ? `${SITE}/producto/${slugify(producto.nombre)}` : undefined,
     ogImage: producto ? `${SITE}${producto.imagen}` : undefined,
     jsonLd: producto ? {
       '@context': 'https://schema.org/',
@@ -303,7 +306,7 @@ export default function ProductoDetalle() {
       mpn: producto.articulo,
       offers: {
         '@type': 'Offer',
-        url: `${SITE}/producto/${producto.id}`,
+        url: `${SITE}/producto/${slugify(producto.nombre)}`,
         priceCurrency: 'DOP',
         price: String(producto.precio),
         priceValidUntil: '2027-12-31',
