@@ -73,7 +73,7 @@ export const combos = [
     badgeColor: 'bg-yellow-500',
     productos: [
       { nombre: 'Double X Nutrilite™ 10 días', cantidad: '60 comprimidos', img: '/double-x-suministro-10-dias.webp', precio: PRECIOS[7].precio },
-      { nombre: 'Vitamina B Doble Acción', cantidad: '60 comprimidos', img: '/nutrilite-vitamina-b.jpg', precio: PRECIOS[16].precio },
+      { nombre: 'Vitamina B Doble Acción', cantidad: '60 comprimidos', img: '/Nutrilite™-Vitamina-B-de-acción-doble.webp', precio: PRECIOS[16].precio },
       { nombre: 'Omega Nutrilite™', cantidad: '30 cápsulas', img: '/omega-nutrilite.webp', precio: PRECIOS[18].precio },
     ],
     precioNormal: PRECIOS[7].precio + PRECIOS[16].precio + PRECIOS[18].precio,
@@ -99,9 +99,9 @@ export const combos = [
     badge: '💪 Control de Peso',
     badgeColor: 'bg-pink-500',
     productos: [
-      { nombre: 'Slimmetry Nutrilite™', cantidad: '60 tabletas', img: '/nutrilite-slimmetry.jpg', precio: PRECIOS[13].precio },
-      { nombre: 'Proteína Vegetal Nutrilite™', cantidad: '450g en polvo', img: '/nutrilite-proteina-vegetal.jpg', precio: PRECIOS[20].precio },
-      { nombre: 'Fibra en Polvo Nutrilite™', cantidad: 'En polvo', img: '/nutrilite-fibra-polvo.jpg', precio: PRECIOS[12].precio },
+      { nombre: 'Slimmetry Nutrilite™', cantidad: '60 tabletas', img: '/Nutrilite Suplemento nutricional Slimmetry Ideal para bajar de peso.webp', precio: PRECIOS[13].precio },
+      { nombre: 'Proteína Vegetal Nutrilite™', cantidad: '450g en polvo', img: '/protenia-vegetal-transparente.webp', precio: PRECIOS[20].precio },
+      { nombre: 'Fibra en Polvo Nutrilite™', cantidad: 'En polvo', img: '/Nutrilite Fibra en polvo-transparente.webp', precio: PRECIOS[12].precio },
     ],
     precioNormal: PRECIOS[13].precio + PRECIOS[20].precio + PRECIOS[12].precio,
     precioCombo: COMBO_PRECIOS['kit-figura-saludable'].precioCombo,
@@ -126,8 +126,8 @@ export const combos = [
     badge: '✨ Belleza Interior',
     badgeColor: 'bg-purple-500',
     productos: [
-      { nombre: 'Pelo Piel y Uñas Nutrilite™', cantidad: '60 comprimidos', img: '/nutrilite-pelo-piel-unas.jpg', precio: PRECIOS[19].precio },
-      { nombre: 'Vitamina E Masticable', cantidad: '270 tabletas', img: '/nutrilite-vitamina-e.jpg', precio: PRECIOS[14].precio },
+      { nombre: 'Pelo Piel y Uñas Nutrilite™', cantidad: '60 comprimidos', img: '/Pelo_-Piel-y-Uñas-Nutrilite.webp', precio: PRECIOS[19].precio },
+      { nombre: 'Vitamina E Masticable', cantidad: '270 tabletas', img: '/nutrilite-vitamina-e.webp', precio: PRECIOS[14].precio },
       { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.webp', precio: PRECIOS[4].precio },
     ],
     precioNormal: PRECIOS[19].precio + PRECIOS[14].precio + PRECIOS[4].precio,
@@ -153,7 +153,7 @@ export const combos = [
     badge: '🦴 Movilidad Activa',
     badgeColor: 'bg-cyan-600',
     productos: [
-      { nombre: 'Cal Mag D Nutrilite™', cantidad: '90 comprimidos', img: '/nutrilite-cal-mag-d.jpg', precio: PRECIOS[10].precio },
+      { nombre: 'Cal Mag D Nutrilite™', cantidad: '90 comprimidos', img: '/Nutrilite-Cal-Mag-D-transparente.webp', precio: PRECIOS[10].precio },
       { nombre: 'Glucosamina Nutrilite™', cantidad: '30 días', img: '/nutrilite-glucosamina.webp', precio: PRECIOS[15].precio },
       { nombre: 'Vitamina D Nutrilite™', cantidad: '90 comprimidos', img: '/Vitamina-D-transparente.webp', precio: PRECIOS[17].precio },
     ],
@@ -182,7 +182,7 @@ export const combos = [
     productos: [
       { nombre: 'Pasta Dental Glister™', cantidad: '1 unidad (200g)', img: '/124106SP-690px-01.webp', precio: PRECIOS[1].precio },
       { nombre: 'Vitamina C Nutrilite™', cantidad: '60 comprimidos', img: '/109741CO-690px-01.webp', precio: PRECIOS[4].precio },
-      { nombre: 'Multivitamínico Niños', cantidad: '60 tabletas masticables', img: '/multivitaminico-ninos-nutrilite.jpg', precio: PRECIOS[8].precio },
+      { nombre: 'Multivitamínico Niños', cantidad: '60 tabletas masticables', img: '/multivitaminico-ninos-nutrilite.webp', precio: PRECIOS[8].precio },
     ],
     precioNormal: PRECIOS[1].precio + PRECIOS[4].precio + PRECIOS[8].precio,
     precioCombo: COMBO_PRECIOS['kit-bienestar-familiar'].precioCombo,
