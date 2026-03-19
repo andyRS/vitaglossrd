@@ -44,6 +44,8 @@ const Unete          = lazy(() => import('./pages/Unete'))
 const LandingPeloPiel = lazy(() => import('./pages/LandingPeloPiel'))
 const Academia       = lazy(() => import('./pages/Academia'))
 const IniciaEnAmway  = lazy(() => import('./pages/IniciaEnAmway'))
+const Checkout       = lazy(() => import('./pages/Checkout'))
+const OrdenConfirmada = lazy(() => import('./pages/OrdenConfirmada'))
 
 // Fallback mínimo mientras se carga un chunk
 function PageSpinner() {
@@ -100,6 +102,8 @@ function Layout() {
           <Route path="/unete" element={<Unete />} />
           <Route path="/pelo-piel-unas" element={<LandingPeloPiel />} />
           <Route path="/empieza" element={<IniciaEnAmway />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orden-confirmada" element={<OrdenConfirmada />} />
           <Route
             path="/dashboard"
             element={

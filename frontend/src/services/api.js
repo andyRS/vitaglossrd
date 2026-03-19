@@ -74,4 +74,14 @@ export const api = {
   // Precios
   getPrecios: () => request('GET', '/precios'),
   updatePrecios: (body) => request('PUT', '/precios', body, true),
+
+  // Checkout — pagos en línea
+  // PayPal: crear orden → obtener orderID de PayPal
+  paypalCreate: (body) => request('POST', '/checkout/paypal/create', body),
+  // PayPal: capturar pago + crear orden en DB
+  paypalCapture: (paypalOrderId, body) => request('POST', `/checkout/paypal/capture/${paypalOrderId}`, body),
+  // Pagadito: connect + exec_trans → devuelve URL de pago
+  pagaditoCreate: (body) => request('POST', '/checkout/pagadito/create', body),
+  // Pagadito: verify + get_status → confirma pago y crea orden en DB
+  pagaditoVerify: (body) => request('POST', '/checkout/pagadito/verify', body),
 }

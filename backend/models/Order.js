@@ -10,8 +10,15 @@ const orderItemSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema({
   // Datos del cliente
   nombre:            { type: String, default: 'Cliente web' },
+  apellidos:         { type: String, default: '' },
+  email:             { type: String, default: '' },
   whatsapp:          { type: String, default: '' },
+
+  // Dirección de entrega
   direccionEntrega:  { type: String, default: '' },
+  provincia:         { type: String, default: '' },
+  sector:            { type: String, default: '' },
+  referencia:        { type: String, default: '' },
 
   // Productos
   items:  { type: [orderItemSchema], required: true },
@@ -31,6 +38,14 @@ const orderSchema = new mongoose.Schema({
     default: 'pendiente',
   },
 
+  // Método de pago
+  metodoPago: {
+    type: String,
+    enum: ['whatsapp', '2checkout', 'paypal'],
+    default: 'whatsapp',
+  },
+  pagoRef: { type: String, default: '' }, // ID de transacción de la pasarela
+
   notas: { type: String, default: '' },
 
   // Número de factura secuencial
@@ -38,7 +53,7 @@ const orderSchema = new mongoose.Schema({
 
   // Atribución
   refCode: { type: String, default: '' },
-  source:  { type: String, default: 'web_carrito' }, // 'web_carrito' | 'manual' | 'formulario'
+  source:  { type: String, default: 'web_carrito' }, // 'web_carrito' | 'web_pago' | 'manual'
 
   // n8n tracking
   n8nNotified: { type: Boolean, default: false },
