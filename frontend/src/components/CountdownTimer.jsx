@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 
 // Calcula el próximo domingo a medianoche
 function getNextSunday() {
@@ -59,7 +59,7 @@ export default function CountdownTimer({ label = 'Oferta válida por:', afterMsg
       <p className="text-white/50 text-xs font-semibold uppercase tracking-widest">{label}</p>
       <div className="flex items-center gap-2">
         {units.map((u, i) => (
-          <div key={i} className="flex items-center gap-2">
+          <Fragment key={i}>
             <div className="bg-white/15 border border-white/20 rounded-xl px-3 py-2 text-center min-w-[48px] backdrop-blur-sm">
               <p className="text-white font-black text-xl leading-none tabular-nums" aria-live="off">{u.val}</p>
               <p className="text-white/40 text-[10px] mt-0.5">{u.label}</p>
@@ -67,7 +67,7 @@ export default function CountdownTimer({ label = 'Oferta válida por:', afterMsg
             {i < units.length - 1 && (
               <span className="text-white/40 font-bold text-lg" aria-hidden="true">:</span>
             )}
-          </div>
+          </Fragment>
         ))}
       </div>
       {afterMsg && (

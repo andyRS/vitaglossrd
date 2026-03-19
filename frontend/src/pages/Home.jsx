@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { m, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
@@ -343,6 +343,9 @@ export default function Home() {
   })
   const [slideActivo, setSlideActivo] = useState(0)
   const [autoplay, setAutoplay] = useState(true)
+  // firstRender: evita que framer-motion aplique opacity:0 al LCP antes de que JS corra
+  const firstRender = useRef(true)
+  useEffect(() => { firstRender.current = false }, [])
 
   useEffect(() => {
     if (!autoplay) return
@@ -457,7 +460,7 @@ export default function Home() {
             <AnimatePresence mode="wait" initial={false}>
               <m.div
                 key={slide.id + '-img'}
-                initial={{ opacity: 0, scale: 0.85, x: 40 }}
+                initial={firstRender.current ? false : { opacity: 0, scale: 0.85, x: 40 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.85, x: -40 }}
                 transition={{ duration: 0.5 }}
