@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { combos } from '../data/combos'
 
 
-const categorias = ['Todos', 'Bucal', 'Inmunidad', 'Energía', 'Figura', 'Belleza', 'Articulaciones', 'Familia']
+const categorias = ['Todos', 'Bucal', 'Inmunidad', 'Energía', 'Figura', 'Belleza', 'Articulaciones', 'Familia', 'Deportes', 'Hombre', 'Mujer', 'Antioxidante', 'Bienestar']
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -15,6 +15,7 @@ export default function Combos() {
   const [categoriaActiva, setCategoriaActiva] = useState('Todos')
   const combosFiltrados = categoriaActiva === 'Todos' ? combos : combos.filter(c => c.categoria === categoriaActiva)
   const maxAhorro = Math.max(...combos.map(c => c.ahorro))
+  const totalAhorro = combos.reduce((sum, c) => sum + c.ahorro, 0)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -54,18 +55,23 @@ export default function Combos() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex justify-center gap-8 mt-8"
+            className="flex justify-center gap-6 sm:gap-10 mt-8 flex-wrap"
           >
             <div className="text-center">
               <p className="text-2xl font-black">{combos.length}</p>
               <p className="text-white/70 text-xs uppercase tracking-wide">Kits disponibles</p>
             </div>
-            <div className="w-px bg-white/20" />
+            <div className="w-px bg-white/20 hidden sm:block" />
+            <div className="text-center">
+              <p className="text-2xl font-black">Hasta 16%</p>
+              <p className="text-white/70 text-xs uppercase tracking-wide">De descuento</p>
+            </div>
+            <div className="w-px bg-white/20 hidden sm:block" />
             <div className="text-center">
               <p className="text-2xl font-black">RD${maxAhorro.toLocaleString()}</p>
               <p className="text-white/70 text-xs uppercase tracking-wide">Ahorro máximo</p>
             </div>
-            <div className="w-px bg-white/20" />
+            <div className="w-px bg-white/20 hidden sm:block" />
             <div className="text-center">
               <p className="text-2xl font-black">100%</p>
               <p className="text-white/70 text-xs uppercase tracking-wide">Productos Amway</p>
@@ -75,8 +81,8 @@ export default function Combos() {
       </div>
 
       {/* Banner de ahorro */}
-      <div className="bg-secondary text-white text-center py-3 text-sm font-semibold tracking-wide">
-        💰 Ahorra hasta <strong>RD${maxAhorro.toLocaleString()}</strong> comprando en kit · Envío a todo el país
+      <div className="bg-secondary text-white text-center py-2.5 text-sm font-semibold tracking-wide">
+        🔥 Combos con hasta <strong>16% de descuento</strong> · Ahorra hasta <strong>RD${maxAhorro.toLocaleString()}</strong> · Envío a todo el país
       </div>
 
       {/* Filtros por categoría */}
@@ -114,8 +120,14 @@ export default function Combos() {
               {/* Header del combo */}
               <div className={`bg-gradient-to-r ${combo.color} p-6 text-white relative overflow-hidden`}>
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                {/* Porcentaje de descuento */}
+                {(() => { const pct = Math.round(((combo.precioNormal - combo.precioCombo) / combo.precioNormal) * 100); return pct >= 14 ? (
+                  <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-black px-2.5 py-1 rounded-full shadow-lg">-{pct}% OFF</div>
+                ) : (
+                  <div className="absolute top-4 right-4 bg-white/25 text-white text-xs font-bold px-2.5 py-1 rounded-full">-{pct}% OFF</div>
+                ) })()}
                 <div className="relative">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
                     <span className={`inline-block ${combo.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full`}>
                       {combo.badge}
                     </span>

@@ -53,11 +53,21 @@ export const PRECIOS = {
 // Para actualizar: cambia solo precioCombo.
 
 export const COMBO_PRECIOS = {
-  'kit-glister-completo':      { precioCombo: 2590 },  // productos: 1+3+2 = 2,888 normal
-  'kit-inmunidad-total':       { precioCombo: 3770 },  // productos: 4+17+11 = 4,259 normal
-  'kit-energia-vitalidad':     { precioCombo: 4720 },  // productos: 7+16+18 = 5,300 normal
-  'kit-figura-saludable':      { precioCombo: 7420 },  // productos: 13+20+12 = 8,210 normal
-  'kit-belleza-total':         { precioCombo: 5340 },  // productos: 19+14+4 = 5,939 normal
-  'kit-huesos-articulaciones': { precioCombo: 4750 },  // productos: 10+15+17 = 5,300 normal
-  'kit-bienestar-familiar':    { precioCombo: 2750 },  // productos: 1+4+8 = 3,098 normal
+  // ── Combos existentes (descuentos mejorados) ──────────────
+  'kit-glister-completo':      { precioCombo: 2490 },  // productos: 1+3+2 = 2,888 normal  → ahorro 398 (13.8%)
+  'kit-inmunidad-total':       { precioCombo: 3590 },  // productos: 4+17+11 = 4,259 normal → ahorro 669 (15.7%)
+  'kit-energia-vitalidad':     { precioCombo: 4490 },  // productos: 7+16+18 = 5,300 normal → ahorro 810 (15.3%)
+  'kit-figura-saludable':      { precioCombo: 6990 },  // productos: 13+20+12 = 8,210 normal → ahorro 1,220 (14.9%)
+  'kit-belleza-total':         { precioCombo: 4990 },  // productos: 19+14+4 = 5,939 normal → ahorro 949 (16%)
+  'kit-huesos-articulaciones': { precioCombo: 4490 },  // productos: 10+15+17 = 5,300 normal → ahorro 810 (15.3%)
+  'kit-bienestar-familiar':    { precioCombo: 2590 },  // productos: 1+4+8 = 3,098 normal   → ahorro 508 (16.4%)
+  // ── Nuevos combos ─────────────────────────────────────────
+  'kit-xs-energia-extrema':    { precioCombo: 6190 },  // productos: 30+16+31 = 7,340 normal → ahorro 1,150 (15.7%)
+  'kit-control-peso-pro':      { precioCombo: 6390 },  // productos: 13+23+24 = 7,565 normal → ahorro 1,175 (15.5%)
+  'kit-antioxidante-total':    { precioCombo: 5750 },  // productos: 4+14+25 = 6,789 normal  → ahorro 1,039 (15.3%)
+  'kit-salud-masculina':       { precioCombo: 5790 },  // productos: 29+11+18 = 6,850 normal → ahorro 1,060 (15.5%)
+  'kit-proteina-rendimiento':  { precioCombo: 6990 },  // productos: 20+23+16 = 8,192 normal → ahorro 1,202 (14.7%)
+  'kit-maternidad-bienestar':  { precioCombo: 3490 },  // productos: 9+17+10 = 4,180 normal  → ahorro 690 (16.5%)
+  'kit-relajacion-sueno':      { precioCombo: 4790 },  // productos: 27+16+18 = 5,690 normal → ahorro 900 (15.8%)
+  'kit-digestivo-vitalidad':   { precioCombo: 5390 },  // productos: 12+5+26 = 6,457 normal  → ahorro 1,067 (16.5%)
 }
