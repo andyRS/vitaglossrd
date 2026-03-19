@@ -7,6 +7,8 @@ export default defineConfig({
     react(),
   ],
   build: {
+    // ES2020+ — elimina ~12 KiB de polyfills legacy (Safari 14+, Chrome 87+, FF 78+)
+    target: ['es2020', 'chrome87', 'firefox78', 'safari14'],
     // No sourcemaps en producción — los archivos .map no los descarga ningún usuario
     sourcemap: false,
     rollupOptions: {
