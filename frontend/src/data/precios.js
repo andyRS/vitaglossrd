@@ -21,7 +21,7 @@ export const PRECIOS = {
    5: { precio: 3052.35,precioOriginal:  4695 }, // Concentrado Frutas y Verduras
    6: { precio:   4040, precioOriginal:  6215 }, // Double X Reemplazo 31 días
    7: { precio:   1960, precioOriginal:  3015 }, // Double X Suministro 10 días
-   8: { precio:   1400, precioOriginal:  1692 }, // Multivitamínico Niños
+   8: { precio:   1400, precioOriginal:  2154 }, // Multivitamínico Niños
    9: { precio:   1350, precioOriginal:  2077 }, // Ácido Fólico Nutrilite
   10: { precio:   1270, precioOriginal:  1954 }, // Cal Mag D Nutrilite
   11: { precio:   1600, precioOriginal:  2462 }, // Defensa Inmunológica Zinc
