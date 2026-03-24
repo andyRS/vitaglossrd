@@ -31,6 +31,15 @@ function copyText(text) {
   document.execCommand('copy'); document.body.removeChild(ta)
 }
 
+const AMWAY_KEY = 'vg_amway_v1'
+function loadAmwayProgress() {
+  try { return new Set(JSON.parse(localStorage.getItem(AMWAY_KEY)) || []) }
+  catch { return new Set() }
+}
+function saveAmwayProgress(s) {
+  localStorage.setItem(AMWAY_KEY, JSON.stringify([...s]))
+}
+
 const ALL_LECCIONES = MODULOS.flatMap(m => m.lecciones.map(l => ({ ...l, modulo: m })))
 const TOTAL = ALL_LECCIONES.length
 
@@ -69,14 +78,18 @@ function RecursoModal({ item, onClose }) {
 }
 
 // ─── Sidebar Module Tree ──────────────────────────────────────────────────────
-function Sidebar({ completadas, leccionActiva, onSelect, onClose, visible }) {
+function Sidebar({ completadas, amwayCompletadas, onToggleAmway, leccionActiva, onSelect, onClose, visible }) {
   const [abiertos, setAbiertos] = useState(() => new Set([MODULOS[0]?.id]))
+  const [amwayOpen, setAmwayOpen] = useState(true)
 
   const toggleModulo = (id) => setAbiertos(prev => {
     const next = new Set(prev)
     next.has(id) ? next.delete(id) : next.add(id)
     return next
   })
+
+  const amwayDone = amwayCompletadas.size
+  const amwayTotal = CURSOS_AMWAY.length
 
   return (
     <>
@@ -93,7 +106,7 @@ function Sidebar({ completadas, leccionActiva, onSelect, onClose, visible }) {
           <button onClick={onClose} className="lg:hidden w-8 h-8 rounded-full bg-white/10 text-white/60 hover:text-white flex items-center justify-center text-sm">✕</button>
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar — team modules only */}
         <div className="px-5 py-3 border-b border-white/10 flex-shrink-0">
           <div className="flex justify-between text-[11px] text-white/40 mb-1.5">
             <span>{completadas.size}/{TOTAL} lecciones</span>
@@ -109,6 +122,91 @@ function Sidebar({ completadas, leccionActiva, onSelect, onClose, visible }) {
 
         {/* Module list */}
         <nav className="flex-1 overflow-y-auto py-3 space-y-1 px-2">
+
+          {/* ── PASO 1: Amway Education ── */}
+          <div className="mb-1">
+            <button
+              onClick={() => setAmwayOpen(o => !o)}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors text-left group"
+            >
+              <span className="text-base flex-shrink-0">📚</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-amber-300/90 group-hover:text-amber-200 font-black text-[11px] uppercase tracking-wider leading-tight">Paso 1 · Amway Education</p>
+                <p className="text-white/30 text-[10px] mt-0.5">{amwayDone}/{amwayTotal} completados</p>
+              </div>
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                {amwayDone === amwayTotal && <span className="w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center text-white text-[9px]">✓</span>}
+                <span className={`text-white/30 text-[10px] transition-transform duration-200 ${amwayOpen ? 'rotate-180' : ''}`}>▼</span>
+              </div>
+            </button>
+
+            <AnimatePresence initial={false}>
+              {amwayOpen && (
+                <m.div
+                  initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }} className="overflow-hidden pl-2"
+                >
+                  {CURSOS_AMWAY.map((curso) => {
+                    const done = amwayCompletadas.has(curso.id)
+                    return (
+                      <div
+                        key={curso.id}
+                        className={`flex items-center gap-2 px-2 py-2 rounded-xl mb-0.5 transition-all ${
+                          done ? 'bg-amber-500/5' : 'hover:bg-white/5'
+                        }`}
+                      >
+                        {/* Done circle */}
+                        <div className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-black border transition-all ${
+                          done ? 'bg-amber-500 border-amber-500 text-white' : 'border-white/20 text-white/30'
+                        }`}>
+                          {done ? '✓' : curso.emoji}
+                        </div>
+
+                        {/* Title */}
+                        <p className={`flex-1 min-w-0 text-[11px] leading-snug font-medium truncate transition-colors ${
+                          done ? 'text-white/40 line-through' : 'text-white/60'
+                        }`}>
+                          {curso.titulo}
+                        </p>
+
+                        {/* Open link */}
+                        <a
+                          href={curso.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-shrink-0 w-6 h-6 rounded-lg bg-white/8 hover:bg-amber-500/20 hover:text-amber-300 flex items-center justify-center text-white/30 transition-all"
+                          title="Abrir en Amway Education"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+
+                        {/* Complete toggle */}
+                        <button
+                          onClick={() => onToggleAmway(curso.id)}
+                          className={`flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black transition-all ${
+                            done
+                              ? 'bg-amber-500 text-white hover:bg-amber-600'
+                              : 'bg-white/8 text-white/20 hover:bg-emerald-500/20 hover:text-emerald-400 border border-white/10'
+                          }`}
+                          title={done ? 'Marcar como pendiente' : 'Marcar como completado'}
+                        >
+                          {done ? '✓' : '○'}
+                        </button>
+                      </div>
+                    )
+                  })}
+                </m.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Divider */}
+          <div className="mx-3 my-2 border-t border-white/8" />
+          <p className="px-3 pb-1 text-[10px] uppercase tracking-widest text-white/25 font-semibold">Paso 2 · Estrategia del Equipo</p>
+
           {MODULOS.map((modulo, mIdx) => {
             const completadasModulo = modulo.lecciones.filter(l => completadas.has(l.id)).length
             const completo = completadasModulo === modulo.lecciones.length
@@ -602,6 +700,7 @@ export default function Academia() {
   const { user, logout } = useAuth()
 
   const [completadas, setCompletadas] = useState(loadProgress)
+  const [amwayCompletadas, setAmwayCompletadas] = useState(loadAmwayProgress)
   const [leccionActiva, setLeccionActiva] = useState(null)
   const [moduloActivo, setModuloActivo] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -611,6 +710,15 @@ export default function Academia() {
       const next = new Set(prev)
       next.has(id) ? next.delete(id) : next.add(id)
       saveProgress(next)
+      return next
+    })
+  }, [])
+
+  const toggleAmway = useCallback((id) => {
+    setAmwayCompletadas(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      saveAmwayProgress(next)
       return next
     })
   }, [])
@@ -679,6 +787,8 @@ export default function Academia() {
       <div className="flex flex-1 min-h-0">
         <Sidebar
           completadas={completadas}
+          amwayCompletadas={amwayCompletadas}
+          onToggleAmway={toggleAmway}
           leccionActiva={leccionActiva}
           onSelect={seleccionarLeccion}
           onClose={() => setSidebarOpen(false)}
