@@ -18,7 +18,7 @@ export const CURSOS_AMWAY = [
     colorLight: 'bg-amber-50',
     colorBorder: 'border-amber-200',
     colorText: 'text-amber-700',
-    url: 'https://academy.amway.com/dashboard',
+    url: 'https://ana.click.amway.com/9OPcSl1S',
   },
   {
     id: 'aw-2',
@@ -32,7 +32,7 @@ export const CURSOS_AMWAY = [
     colorLight: 'bg-blue-50',
     colorBorder: 'border-blue-200',
     colorText: 'text-blue-700',
-    url: 'https://academy.amway.com/dashboard',
+    url: 'https://ana.click.amway.com/9OPcSl1S',
   },
   {
     id: 'aw-3',
@@ -46,7 +46,7 @@ export const CURSOS_AMWAY = [
     colorLight: 'bg-emerald-50',
     colorBorder: 'border-emerald-200',
     colorText: 'text-emerald-700',
-    url: 'https://academy.amway.com/dashboard',
+    url: 'https://ana.click.amway.com/9OPcSl1S',
   },
   {
     id: 'aw-4',
@@ -60,7 +60,7 @@ export const CURSOS_AMWAY = [
     colorLight: 'bg-violet-50',
     colorBorder: 'border-violet-200',
     colorText: 'text-violet-700',
-    url: 'https://academy.amway.com/dashboard',
+    url: 'https://ana.click.amway.com/9OPcSl1S',
   },
   {
     id: 'aw-5',
@@ -74,7 +74,7 @@ export const CURSOS_AMWAY = [
     colorLight: 'bg-rose-50',
     colorBorder: 'border-rose-200',
     colorText: 'text-rose-700',
-    url: 'https://academy.amway.com/dashboard',
+    url: 'https://ana.click.amway.com/9OPcSl1S',
   },
   {
     id: 'aw-6',
@@ -88,7 +88,7 @@ export const CURSOS_AMWAY = [
     colorLight: 'bg-cyan-50',
     colorBorder: 'border-cyan-200',
     colorText: 'text-cyan-700',
-    url: 'https://academy.amway.com/dashboard',
+    url: 'https://ana.click.amway.com/9OPcSl1S',
   },
 ]
 
