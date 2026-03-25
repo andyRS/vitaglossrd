@@ -204,6 +204,36 @@ async function soapCall(action, params) {
   return parsed
 }
 
+// exec_trans via raw fetch — soap npm entity-encodes &quot; inside text nodes,
+// Pagadito's server doesn't decode them → PG2002. Build the envelope manually
+// so the JSON string is sent with literal " characters (valid XML text node).
+async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
+  const mode = process.env.PAGADITO_MODE === 'live' ? 'live' : 'sandbox'
+  const endpoint = mode === 'live'
+    ? 'https://comercios.pagadito.com/wspg/charges.php'
+    : 'https://sandbox.pagadito.com/comercios/wspg/charges.php'
+
+  const detailsJson = JSON.stringify(details)
+  const body = `<?xml version="1.0" encoding="utf-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="urn:https://comercios.pagadito.com/wspg/charges"><soapenv:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsJson}</details><currency>${currency}</currency><custom_param></custom_param><format_return>json</format_return></tns:exec_trans></soapenv:Body></soapenv:Envelope>`
+
+  console.log('[Pagadito] exec_trans rawRequest:', body)
+
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/xml; charset=utf-8', 'SOAPAction': '' },
+    body,
+  })
+
+  const xmlText = await res.text()
+  console.log('[Pagadito] exec_trans rawResponse:', xmlText.slice(0, 2000))
+
+  const match = xmlText.match(/<return[^>]*>([\s\S]*?)<\/return>/)
+  if (!match) throw new Error('Respuesta SOAP inesperada de Pagadito')
+  const parsed = JSON.parse(match[1])
+  console.log('[Pagadito] exec_trans result:', parsed)
+  return parsed
+}
+
 // ── POST /api/checkout/pagadito/create ───────────────────────────────────────
 // 1) connect → token
 // 2) exec_trans → payment URL
@@ -258,14 +288,12 @@ router.post('/pagadito/create', async (req, res) => {
 
     const amount = details.reduce((s, d) => s + (Number(d.quantity) * parseFloat(d.price)), 0).toFixed(2)
 
-    const transData = await soapCall('exec_trans', {
-      token:         sessionToken,
-      ern:           ern,
-      amount:        amount,
-      details:       JSON.stringify(details),
-      currency:      'DOP',
-      custom_param:  '',
-      format_return: 'json',
+    const transData = await execTransRaw({
+      token:    sessionToken,
+      ern,
+      amount,
+      details,
+      currency: 'DOP',
     })
 
     if (transData.code !== 'PG1002') {
