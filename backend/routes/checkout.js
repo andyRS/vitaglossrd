@@ -280,7 +280,7 @@ router.post('/pagadito/create', async (req, res) => {
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      price:       parseFloat(Number(i.precio).toFixed(2)),
+      price:       Number(i.precio).toFixed(2),
       url_product: `${SITE}/catalogo`,
     }))
 
@@ -288,7 +288,7 @@ router.post('/pagadito/create', async (req, res) => {
       details.push({
         quantity:    1,
         description: 'Envío a domicilio',
-        price:       costoEnvio,
+        price:       Number(costoEnvio).toFixed(2),
         url_product: `${SITE}/catalogo`,
       })
     }
