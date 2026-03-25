@@ -255,6 +255,53 @@ export default function SobreNosotros() {
           </div>
         </section>
 
+        {/* Acerca del Autor */}
+        <section className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 sm:p-12">
+          <div className="text-center mb-8">
+            <span className="text-secondary font-semibold text-sm uppercase tracking-widest">Quién escribe el blog</span>
+            <h2 className="text-3xl font-extrabold text-primary mt-2">Acerca del autor</h2>
+          </div>
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            <div className="flex-shrink-0 text-center">
+              <div className="w-28 h-28 bg-gradient-to-br from-primary to-blue-700 rounded-full flex items-center justify-center mx-auto mb-3">
+                <span className="text-white text-5xl font-extrabold">A</span>
+              </div>
+              <p className="font-bold text-gray-800">Andy Rosado</p>
+              <p className="text-gray-500 text-sm">Distribuidor Amway Certificado</p>
+              <p className="text-gray-400 text-xs mt-1">Santo Domingo, RD · desde 2021</p>
+            </div>
+            <div className="flex-1 space-y-4 text-gray-600 leading-relaxed">
+              <p>
+                Soy Andy Rosado, distribuidor independiente certificado de Amway en República Dominicana
+                desde 2021 y autor de todos los artículos del blog de VitaGloss RD. Mi interés en la
+                nutrición y la salud bucal surgió de buscar soluciones reales para mi propia familia
+                en un mercado donde abundan los productos de dudosa calidad.
+              </p>
+              <p>
+                A lo largo de estos años he completado el programa de certificación en Nutrición
+                Básica de Nutrilite™, formación continua en suplementación y nutrición deportiva a
+                través de los programas de Amway Global, y me mantengo actualizado revisando
+                regularmente publicaciones en PubMed, NIH, el <em>Journal of Clinical Periodontology</em>
+                y otros journals especializados en nutrición y odontología.
+              </p>
+              <p>
+                He asesorado personalmente a más de 200 clientes en República Dominicana y conozco
+                de primera mano los desafíos nutricionales específicos del contexto caribeño:
+                el impacto del calor en los requerimientos de vitaminas, la relación entre la dieta
+                criolla y las deficiencias de micronutrientes, y por qué los estudios internacionales
+                no siempre aplican directamente a nuestra población.
+              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-2">
+                <p className="text-sm text-amber-800">
+                  <strong>Nota importante:</strong> Soy distribuidor de productos Amway, no médico ni
+                  nutricionista titulado. Los artículos del blog son informativos y educativos. Para
+                  decisiones de salud individuales, siempre recomiendo consultar a un profesional de la salud.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* CTA final */}
         <section className="bg-gradient-to-r from-primary to-blue-700 rounded-3xl p-10 text-white text-center">
           <h2 className="text-3xl font-extrabold mb-3">¿Listo para empezar?</h2>

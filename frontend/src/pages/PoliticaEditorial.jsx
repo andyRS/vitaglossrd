@@ -56,16 +56,35 @@ export default function PoliticaEditorial() {
             <h2 className="text-xl font-bold text-primary mb-3">2. Autoría y credenciales</h2>
             <p>
               Los artículos son escritos por <strong>Andy Rosado</strong>, distribuidor independiente
-              certificado de Amway con más de 3 años de experiencia en el sector de la salud y
-              la nutrición en República Dominicana. Andy investiga cada tema con base en publicaciones
-              científicas, datos oficiales de fabricantes y experiencia directa con los productos.
+              certificado de Amway en República Dominicana desde 2021. Andy tiene formación continua
+              en nutrición deportiva y suplementación a través de los programas de educación de Amway
+              Global, y ha completado el programa de certificación en Nutrición Básica de Nutrilite™.
+              Complementa su formación con lectura regular de publicaciones científicas en PubMed,
+              NIH y journals de odontología como el <em>Journal of Clinical Periodontology</em>.
+            </p>
+            <p className="mt-3">
+              Como distribuidor activo, Andy utiliza personalmente todos los productos que revisa,
+              los ha probado con cientos de clientes en República Dominicana desde 2021, y tiene
+              acceso a la documentación técnica interna y estudios clínicos de Amway/Nutrilite.
+              Toda afirmación sobre eficacia se verifica contra la literatura científica disponible
+              antes de publicarse.
             </p>
             <p className="mt-3">
               Los artículos relacionados con salud (categorías Nutrición, Suplementos, Salud bucal y
               Bienestar) son considerados contenido YMYL (Your Money or Your Life) bajo los lineamientos
-              de Google Search Quality Rater Guidelines. Por eso nos esforzamos en citar fuentes verídicas
-              y en no exagerar los beneficios de ningún producto.
+              de Google Search Quality Rater Guidelines. Por eso incluimos en cada artículo un
+              aviso médico explícito y citamos las fuentes científicas en las que basamos nuestras
+              afirmaciones. Para temas de alta complejidad clínica, consultamos con profesionales
+              de la salud antes de publicar.
             </p>
+            <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-sm text-blue-800">
+                <strong>Nota sobre contenido nutricional y dental:</strong> Los artículos de este
+                blog no sustituyen la consulta con un médico, nutricionista o dentista titulado.
+                La información es de carácter educativo. Siempre consulta a un profesional de la
+                salud antes de iniciar cualquier suplementación o cambiar tu rutina de salud bucal.
+              </p>
+            </div>
           </section>
 
           <section>
