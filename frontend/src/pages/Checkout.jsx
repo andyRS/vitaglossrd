@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { api } from '../services/api'
 
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
+
 const ENVIO = 150
 
 const PROVINCIAS = [
@@ -19,6 +21,7 @@ const PROVINCIAS = [
 const METODOS = [
   { id: 'transferencia', icon: '🏦', titulo: 'Transferencia / Depósito', desc: 'Paga por transferencia bancaria o depósito' },
   { id: 'contraentrega', icon: '💵', titulo: 'Pago contra entrega',       desc: 'Pagas en efectivo al recibir tu pedido' },
+  { id: 'pagadito',      icon: '💳', titulo: 'Tarjeta de crédito/débito', desc: 'Pago seguro con Pagadito — Visa, Mastercard' },
 ]
 
 function Field({ label, required, error, children }) {
@@ -106,11 +109,47 @@ export default function Checkout() {
     setEnviando(true)
     const refCode = sessionStorage.getItem('vg_ref') || ''
     const dir = `${form.calle}, ${form.sector}, ${form.provincia}${form.referencia ? ` — ${form.referencia}` : ''}`
+    const orderItems = items.map(i => ({ nombre: i.nombre, articulo: i.articulo || '', cantidad: i.cantidad, precio: i.precio }))
+
+    // ── Pagadito: redirigir a pasarela de pago ────────────────────────────
+    if (metodo === 'pagadito') {
+      try {
+        // Guardar datos del pedido en sessionStorage para recuperar en orden-confirmada
+        sessionStorage.setItem('vg_pending_order', JSON.stringify({
+          ...form, refCode, items: orderItems, subtotal, totalFinal,
+        }))
+        const ern = `VG-${Date.now()}`
+        const res = await fetch(`${API_BASE}/checkout/pagadito/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: orderItems,
+            total: subtotal, // el backend suma el envío
+            ern,
+          }),
+        })
+        const data = await res.json()
+        if (!data.ok || !data.paymentUrl) {
+          alert(data.error || 'Error al iniciar el pago. Intenta de nuevo.')
+          setEnviando(false)
+          return
+        }
+        clearCart()
+        window.location.href = data.paymentUrl
+        return
+      } catch {
+        alert('No se pudo conectar con Pagadito. Intenta con otro método de pago.')
+        setEnviando(false)
+        return
+      }
+    }
+
+    // ── Transferencia / Contra entrega: flujo WhatsApp ────────────────────
     api.createOrder({
       nombre: `${form.nombre} ${form.apellidos}`.trim(),
       whatsapp: form.whatsapp, email: form.email, direccionEntrega: dir,
       metodoPago: metodo,
-      items: items.map(i => ({ nombre: i.nombre, articulo: i.articulo || '', cantidad: i.cantidad, precio: i.precio })),
+      items: orderItems,
       total: totalFinal, refCode,
     }).catch(() => {})
     window.open(`https://wa.me/18492763532?text=${encodeURIComponent(buildMsg())}`, '_blank')
@@ -174,7 +213,7 @@ export default function Checkout() {
               <span className="w-6 h-6 bg-gray-800 text-white rounded-full text-xs flex items-center justify-center font-bold">3</span>
               Método de pago
             </h2>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {METODOS.map(m => (
                 <button key={m.id} type="button" onClick={() => setMetodo(m.id)}
                   className={`relative flex flex-col items-center gap-2 py-4 px-3 rounded-2xl border-2 transition-all ${metodo === m.id ? 'border-gray-800 bg-gray-50' : 'border-gray-200 hover:border-gray-300 bg-white'}`}
@@ -190,7 +229,12 @@ export default function Checkout() {
                 </button>
               ))}
             </div>
-            <p className="mt-4 text-xs text-gray-400 text-center">💳 Pago con tarjeta y PayPal — <span className="font-semibold">próximamente disponibles</span></p>
+            {metodo === 'pagadito' && (
+              <div className="mt-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-blue-700 text-xs flex items-center gap-2">
+                <span className="text-lg">🔒</span>
+                <span>Serás redirigido a la pasarela segura de <strong>Pagadito</strong> para completar tu pago con tarjeta.</span>
+              </div>
+            )}
             {Object.keys(errors).length > 0 && (
               <div className="mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600 text-xs">
                 ⚠️ Completa todos los campos obligatorios antes de continuar
@@ -225,8 +269,13 @@ export default function Checkout() {
             <div className="mt-5 pt-4 border-t border-gray-100 space-y-1.5">
               {['✅ Productos 100% originales Amway','🔒 Pedido confirmado por WhatsApp','🚚 Envío a todo el país (1–3 días)','💬 Te contactamos para coordinar'].map(g => <p key={g} className="text-[11px] text-gray-500">{g}</p>)}
             </div>
-            <button type="submit" disabled={enviando} className="mt-6 w-full bg-[#25D366] hover:bg-[#1ebe5d] disabled:bg-gray-300 text-white font-bold py-4 rounded-2xl transition-colors flex items-center justify-center gap-2 text-base shadow-lg shadow-green-200">
-              {enviando ? 'Procesando…' : (
+            <button type="submit" disabled={enviando} className={`mt-6 w-full font-bold py-4 rounded-2xl transition-colors flex items-center justify-center gap-2 text-base shadow-lg disabled:bg-gray-300 ${metodo === 'pagadito' ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200' : 'bg-[#25D366] hover:bg-[#1ebe5d] text-white shadow-green-200'}`}>
+              {enviando ? 'Procesando…' : metodo === 'pagadito' ? (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                  Pagar con tarjeta — RD${totalFinal.toLocaleString()}
+                </>
+              ) : (
                 <>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
