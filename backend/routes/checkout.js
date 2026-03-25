@@ -313,14 +313,26 @@ router.post('/pagadito/create', async (req, res) => {
 
     const amount = details.reduce((s, d) => s + (Number(d.quantity) * parseFloat(d.price)), 0).toFixed(2)
 
-    // execTransRaw construye el envelope manualmente para que las " del JSON
-    // no sean entity-encoded a &quot; por node-soap → evita PG2002.
-    const transData = await execTransRaw({
-      token:    sessionToken,
+    // Construir el JSON de details manualmente para garantizar que price sea
+    // float decimal (e.g. 820.00 no 820). JSON.stringify convierte 820.0 → "820",
+    // lo que falla la validación is_float() en el servidor PHP de Pagadito.
+    // Se pasa como string a node-soap que lo enviará con entity-encoding correcto
+    // (&quot;) igual que PHP SoapClient — misma estructura que el connect() que funciona.
+    const detailsStr = '[' + details.map(d =>
+      `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":${Number(d.price).toFixed(2)},"url_product":${JSON.stringify(d.url_product)}}`
+    ).join(',') + ']'
+
+    console.log('[Pagadito] detailsStr:', detailsStr)
+    console.log('[Pagadito] amount:', amount)
+
+    const transData = await soapCall('exec_trans', {
+      token:         sessionToken,
       ern,
       amount,
-      details,
-      currency: 'DOP',
+      details:       detailsStr,
+      currency:      'DOP',
+      custom_param:  '',
+      format_return: 'json',
     })
 
     if (transData.code !== 'PG1002') {
