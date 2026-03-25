@@ -262,24 +262,24 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // Los detalles son un array de items; Pagadito requiere quantity y price como strings
+    // Los detalles: quantity e price como números (formato oficial Pagadito)
     const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
     const details = items.map(i => ({
-      quantity:    String(i.cantidad),
+      quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      price:       i.precio.toFixed(2), // precio UNITARIO como string
+      price:       parseFloat(i.precio.toFixed(2)),
       url_product: `${SITE}/catalogo`,
     }))
 
     // Agregar envío como línea separada
     details.push({
-      quantity:    '1',
+      quantity:    1,
       description: 'Envío a domicilio',
-      price:       '150.00',
+      price:       150.00,
       url_product: `${SITE}/catalogo`,
     })
 
-    const amount = details.reduce((s, d) => s + (Number(d.quantity) * Number(d.price)), 0).toFixed(2)
+    const amount = details.reduce((s, d) => s + (d.quantity * d.price), 0).toFixed(2)
 
     const transData = await soapCall('exec_trans', {
       uid:          PAGADITO_UID,
