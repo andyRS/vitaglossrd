@@ -223,17 +223,16 @@ async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
     : 'https://sandbox.pagadito.com/comercios/wspg/charges.php'
 
   // Build detailsJson manually so price appears as a JSON numeric literal with
-  // decimal point (e.g. 1169.00) — NOT as a quoted string ("1169.00") and NOT
-  // as a bare integer (1169). PHP's json_decode decodes 1169.00 as float, which
-  // passes Pagadito's is_float() validation. JSON.stringify can't produce this
-  // because JS has no distinction between 1169 and 1169.0.
+  // decimal point (e.g. 1169.00). Wrap in CDATA so literal " characters inside
+  // the JSON don't break the XML parser on Pagadito's PHP server.
   const detailsJson = '[' + details.map(d =>
     `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":${Number(d.price).toFixed(2)},"url_product":${JSON.stringify(d.url_product)}}`
   ).join(',') + ']'
+  const detailsNode = `<![CDATA[${detailsJson}]]>`
   // Use same namespace prefix ("soap:") as the npm soap library uses for connect(),
   // because Pagadito's server likely parses envelopes with string/regex matching
   // and expects <soap:Envelope>/<soap:Body>, not <soapenv:Envelope>/<soapenv:Body>.
-  const body = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:https://comercios.pagadito.com/wspg/charges"><soap:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsJson}</details><currency>${currency}</currency><custom_param></custom_param><format_return>json</format_return></tns:exec_trans></soap:Body></soap:Envelope>`
+  const body = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:https://comercios.pagadito.com/wspg/charges"><soap:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsNode}</details><currency>${currency}</currency><custom_param></custom_param><format_return>json</format_return></tns:exec_trans></soap:Body></soap:Envelope>`
 
   console.log('[Pagadito] exec_trans rawRequest:', body)
 
