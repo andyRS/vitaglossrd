@@ -190,15 +190,12 @@ async function getPgClient() {
 async function soapCall(action, params) {
   const client = await getPgClient()
 
-  // details debe ser un JSON string (Pagadito lo recibe como string en el SOAP)
-  const callParams = { ...params }
-  if (Array.isArray(callParams.details)) {
-    callParams.details = JSON.stringify(callParams.details)
-  }
+  console.log(`[Pagadito] ${action} params:`, JSON.stringify(params))
 
-  console.log(`[Pagadito] ${action} params:`, JSON.stringify(callParams))
-
-  const [result] = await client[`${action}Async`](callParams)
+  // Para exec_trans: details se pasa como array nativo (no pre-serializado)
+  // soap npm lo serializa como SOAP array según el WSDL
+  const [result, , , rawRequest] = await client[`${action}Async`](params)
+  console.log(`[Pagadito] ${action} rawRequest:`, rawRequest?.slice(0, 3000))
 
   // soap npm devuelve { '$value': '...json...', attributes: {...} } o string directo
   const ret = result?.return
