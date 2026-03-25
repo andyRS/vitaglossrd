@@ -192,8 +192,6 @@ async function soapCall(action, params) {
 
   console.log(`[Pagadito] ${action} params:`, JSON.stringify(params))
 
-  // Para exec_trans: details se pasa como array nativo (no pre-serializado)
-  // soap npm lo serializa como SOAP array según el WSDL
   const [result, , , rawRequest] = await client[`${action}Async`](params)
   console.log(`[Pagadito] ${action} rawRequest:`, rawRequest?.slice(0, 3000))
 
@@ -264,7 +262,7 @@ router.post('/pagadito/create', async (req, res) => {
       token:         sessionToken,
       ern:           ern,
       amount:        amount,
-      details:       details,
+      details:       JSON.stringify(details),
       currency:      'DOP',
       custom_param:  '',
       format_return: 'json',
