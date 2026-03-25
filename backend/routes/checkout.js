@@ -274,11 +274,14 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // Líneas de detalle — price como float JS (número, no string) según SDK PHP de Pagadito
+    // Líneas de detalle — estructura exacta del SDK PHP de Pagadito:
+    // quantity (int), description (string), price (float), url_product (string, requerido)
+    const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
       price:       parseFloat(Number(i.precio).toFixed(2)),
+      url_product: `${SITE}/catalogo`,
     }))
 
     if (costoEnvio > 0) {
@@ -286,6 +289,7 @@ router.post('/pagadito/create', async (req, res) => {
         quantity:    1,
         description: 'Envío a domicilio',
         price:       costoEnvio,
+        url_product: `${SITE}/catalogo`,
       })
     }
 
