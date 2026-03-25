@@ -177,14 +177,24 @@ function pagaditoUrl() {
 }
 
 // Helper: construir y enviar llamada SOAP a Pagadito
+function serializeParam(key, value) {
+  if (Array.isArray(value)) {
+    // Pagadito espera los detalles como XML anidado, no JSON
+    const inner = value.map(item => {
+      const fields = Object.entries(item)
+        .map(([k, v]) => `<${k}><![CDATA[${String(v)}]]></${k}>`)
+        .join('')
+      return `<detail>${fields}</detail>`
+    }).join('')
+    return `<${key}>${inner}</${key}>`
+  }
+  const val = typeof value === 'object' ? JSON.stringify(value) : String(value)
+  return `<${key}><![CDATA[${val}]]></${key}>`
+}
+
 async function soapCall(action, params) {
-  // Construir XML de los parámetros (con CDATA para valores complejos)
   const paramsXml = Object.entries(params)
-    .map(([k, v]) => {
-      const val = typeof v === 'object' ? JSON.stringify(v) : String(v)
-      // Usar CDATA para evitar que caracteres especiales rompan el XML
-      return `<${k}><![CDATA[${val}]]></${k}>`
-    })
+    .map(([k, v]) => serializeParam(k, v))
     .join('\n      ')
 
   const envelope = `<?xml version="1.0" encoding="UTF-8"?>
@@ -258,32 +268,28 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // PASO 2: Registrar la transacción
-    // Los detalles son un array de items; la suma de quantity*price DEBE == amount
+    // Los detalles son un array de items; amount = sum(quantity * price)
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      price:       parseFloat((i.precio * i.cantidad).toFixed(2)),
+      price:       parseFloat(i.precio.toFixed(2)), // precio UNITARIO
       url_product: `${process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'}/catalogo`,
     }))
 
-    // Verificar que la suma coincide con total (requerido por Pagadito)
-    const sumaDetails = details.reduce((s, d) => s + d.price, 0)
-    const totalEnvio  = parseFloat(total) + 150 // RD$150 de envío incluido
-    // Ajustar el último item si hay diferencia por redondeo
-    if (Math.abs(sumaDetails - totalEnvio) > 0.01) {
-      details.push({
-        quantity:    1,
-        description: 'Envío a domicilio',
-        price:       150,
-        url_product: `${process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'}/catalogo`,
-      })
-    }
+    // Agregar envío como línea separada
+    details.push({
+      quantity:    1,
+      description: 'Envío a domicilio',
+      price:       150,
+      url_product: `${process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'}/catalogo`,
+    })
+
+    const amount = details.reduce((s, d) => s + (d.quantity * d.price), 0).toFixed(2)
 
     const transData = await soapCall('exec_trans', {
       token:         sessionToken,
       ern:           ern,
-      amount:        details.reduce((s, d) => s + d.price, 0).toFixed(2),
+      amount:        amount,
       details:       details,
       currency:      'DOP',
       format_return: 'json',
