@@ -190,10 +190,19 @@ async function getPgClient() {
 async function soapCall(action, params) {
   const client = await getPgClient()
 
+  if (action === 'exec_trans') {
+    // Diagnostic: log available SOAP methods to confirm exec_trans exists
+    const methods = Object.keys(client).filter(k => typeof client[k] === 'function' && !k.startsWith('_'))
+    console.log('[Pagadito] client methods:', methods.join(', '))
+  }
+
   console.log(`[Pagadito] ${action} params:`, JSON.stringify(params))
 
-  const [result, , , rawRequest] = await client[`${action}Async`](params)
-  console.log(`[Pagadito] ${action} rawRequest:`, rawRequest?.slice(0, 3000))
+  const [result] = await client[`${action}Async`](params)
+
+  // node-soap stores the raw outgoing XML in client.lastRequest (more reliable than 4th array element)
+  console.log(`[Pagadito] ${action} lastRequest:`, client.lastRequest?.slice(0, 5000))
+  console.log(`[Pagadito] ${action} lastRequestHeaders:`, JSON.stringify(client.lastRequestHeaders))
 
   // soap npm devuelve { '$value': '...json...', attributes: {...} } o string directo
   const ret = result?.return
