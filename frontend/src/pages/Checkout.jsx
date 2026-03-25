@@ -118,7 +118,7 @@ export default function Checkout() {
         sessionStorage.setItem('vg_checkout_data', JSON.stringify({
           ...form, refCode, items: orderItems, total: totalFinal,
         }))
-        const ern = `VG-${Date.now()}`
+        const ern = `VG${Date.now()}`
         const res = await fetch(`${API_BASE}/checkout/pagadito/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
