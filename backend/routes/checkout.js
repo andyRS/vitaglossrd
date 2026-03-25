@@ -177,10 +177,13 @@ function pagaditoUrl() {
 }
 
 // Helper: construir y enviar llamada SOAP a Pagadito
+// Usa el mismo formato que PHP's SoapClient genera (encodingStyle + xsi:type)
 function serializeParam(key, value) {
-  // details se pasa como JSON string (formato que acepta el SOAP de Pagadito)
   const val = typeof value === 'object' ? JSON.stringify(value) : String(value)
-  return `<${key}><![CDATA[${val}]]></${key}>`
+  const escaped = val
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  return `<${key} xsi:type="xsd:string">${escaped}</${key}>`
 }
 
 async function soapCall(action, params) {
@@ -189,18 +192,21 @@ async function soapCall(action, params) {
     .join('\n      ')
 
   const envelope = `<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope
-  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-  xmlns:urn="urn:ws">
-  <soapenv:Header/>
-  <soapenv:Body>
-    <urn:${action}>
+<SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:ns1="urn:ws"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <SOAP-ENV:Body>
+    <ns1:${action}>
       ${paramsXml}
-    </urn:${action}>
-  </soapenv:Body>
-</soapenv:Envelope>`
+    </ns1:${action}>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>`
 
-  console.log(`[Pagadito] ${action} envelope:`, envelope)
+  console.log(`[Pagadito] ${action} params:`, JSON.stringify(params))
 
   const res = await fetch(pagaditoUrl(), {
     method: 'POST',
@@ -243,10 +249,14 @@ router.post('/pagadito/create', async (req, res) => {
       return res.status(503).json({ error: 'Pagadito no configurado. Agrega PAGADITO_UID y PAGADITO_WSK al .env' })
     }
 
-    const { items, total, ern } = req.body
+    const { items, total, ern, provincia } = req.body
     if (!items?.length || !total || !ern) {
       return res.status(400).json({ error: 'Datos incompletos para crear transacción' })
     }
+
+    // Envío gratis en SD y DN; RD$280 en el interior
+    const GRATIS = ['Santo Domingo', 'Distrito Nacional']
+    const costoEnvio = GRATIS.includes(provincia) ? 0 : 280
 
     // PASO 1: Conectar y obtener token de sesión
     const connectData = await soapCall('connect', {
@@ -262,7 +272,7 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // Los detalles: quantity e price como números (formato oficial Pagadito)
+    // Líneas de detalle
     const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
     const details = items.map(i => ({
       quantity:    i.cantidad,
@@ -271,13 +281,14 @@ router.post('/pagadito/create', async (req, res) => {
       url_product: `${SITE}/catalogo`,
     }))
 
-    // Agregar envío como línea separada
-    details.push({
-      quantity:    1,
-      description: 'Envío a domicilio',
-      price:       150.00,
-      url_product: `${SITE}/catalogo`,
-    })
+    if (costoEnvio > 0) {
+      details.push({
+        quantity:    1,
+        description: 'Envío a domicilio',
+        price:       costoEnvio,
+        url_product: `${SITE}/catalogo`,
+      })
+    }
 
     const amount = details.reduce((s, d) => s + (d.quantity * d.price), 0).toFixed(2)
 
@@ -288,7 +299,6 @@ router.post('/pagadito/create', async (req, res) => {
       details:      details,
       currency:     'DOP',
       custom_param: '',
-      format_return: 'json',
     })
 
     if (transData.code !== 'PG1002') {

@@ -5,7 +5,8 @@ import { api } from '../services/api'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
-const ENVIO = 150
+const ENVIO_GRATIS  = ['Santo Domingo', 'Distrito Nacional']
+const ENVIO_INTERIOR = 280
 
 const PROVINCIAS = [
   'Azua','Bahoruco','Barahona','Dajabón','Distrito Nacional',
@@ -70,7 +71,8 @@ export default function Checkout() {
   const [enviando, setEnviando] = useState(false)
 
   const subtotal   = cartTotal
-  const totalFinal = subtotal + ENVIO
+  const costoEnvio  = ENVIO_GRATIS.includes(form.provincia) ? 0 : (form.provincia ? ENVIO_INTERIOR : ENVIO_INTERIOR)
+  const totalFinal  = subtotal + costoEnvio
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }))
 
   function validar() {
@@ -89,13 +91,15 @@ export default function Checkout() {
   const buildMsg = () => {
     const lineas = items.map(i => `• *${i.nombre}* x${i.cantidad} — RD$${(i.precio * i.cantidad).toLocaleString()}`)
     const ml = METODOS.find(m => m.id === metodo)?.titulo || metodo
+    const envioMsg = costoEnvio === 0 ? 'GRATIS' : `RD$${costoEnvio.toLocaleString()}`
     return [
       '🛍️ *Nuevo pedido — VitaGloss RD*', '',
       `👤 *Cliente:* ${form.nombre} ${form.apellidos}`,
       `📧 *Email:* ${form.email}`, `📱 *WhatsApp:* ${form.whatsapp}`, '',
       '📦 *Productos:*', ...lineas, '',
       `💰 *Subtotal:* RD$${subtotal.toLocaleString()}`,
-      `🚚 *Envío:* RD$${ENVIO.toLocaleString()}`,
+      `🚚 *Envío:* ${envioMsg}`,
+      `🏙️ *Provincia:* ${form.provincia}`,
       `💳 *Total: RD$${totalFinal.toLocaleString()}*`, '',
       '📍 *Dirección:*', form.calle, `${form.sector}, ${form.provincia}`,
       form.referencia ? `Ref: ${form.referencia}` : '', '',
@@ -124,8 +128,9 @@ export default function Checkout() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             items: orderItems,
-            total: subtotal, // el backend suma el envío
+            total: subtotal,
             ern,
+            provincia: form.provincia,
           }),
         })
         const data = await res.json()
@@ -230,9 +235,9 @@ export default function Checkout() {
               ))}
             </div>
             {metodo === 'pagadito' && (
-              <div className="mt-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-blue-700 text-xs flex items-center gap-2">
-                <span className="text-lg">🔒</span>
-                <span>Serás redirigido a la pasarela segura de <strong>Pagadito</strong> para completar tu pago con tarjeta.</span>
+              <div className="mt-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-blue-700 text-xs space-y-1">
+                <p className="flex items-center gap-2"><span className="text-lg">🔒</span><span>Serás redirigido a la pasarela segura de <strong>Pagadito</strong> para completar tu pago con tarjeta.</span></p>
+                <p className="text-blue-500 pl-7">⚠️ Pagadito puede cobrar un cargo por procesamiento de tarjeta, visible en su pantalla de pago.</p>
               </div>
             )}
             {Object.keys(errors).length > 0 && (
@@ -263,7 +268,15 @@ export default function Checkout() {
             </div>
             <div className="border-t border-gray-100 pt-4 space-y-2">
               <div className="flex justify-between text-sm text-gray-500"><span>Subtotal</span><span>RD${subtotal.toLocaleString()}</span></div>
-              <div className="flex justify-between text-sm text-gray-500"><span>Envío a domicilio</span><span>RD${ENVIO.toLocaleString()}</span></div>
+              <div className="flex justify-between text-sm text-gray-500">
+                <span>Envío a domicilio</span>
+                <span className={costoEnvio === 0 ? 'text-green-600 font-semibold' : ''}>
+                  {costoEnvio === 0 ? 'GRATIS 🎉' : `RD$${costoEnvio.toLocaleString()}`}
+                </span>
+              </div>
+              {!form.provincia && (
+                <p className="text-[10px] text-gray-400">Selecciona tu provincia para ver el costo de envío</p>
+              )}
               <div className="flex justify-between font-black text-gray-900 text-lg pt-2 border-t border-gray-100"><span>Total</span><span>RD${totalFinal.toLocaleString()}</span></div>
             </div>
             <div className="mt-5 pt-4 border-t border-gray-100 space-y-1.5">
