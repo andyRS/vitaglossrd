@@ -229,7 +229,13 @@ async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
 
   const match = xmlText.match(/<return[^>]*>([\s\S]*?)<\/return>/)
   if (!match) throw new Error('Respuesta SOAP inesperada de Pagadito')
-  const parsed = JSON.parse(match[1])
+  // Pagadito entity-encodes the JSON in its response — decode before parsing
+  const jsonStr = match[1]
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+  const parsed = JSON.parse(jsonStr)
   console.log('[Pagadito] exec_trans result:', parsed)
   return parsed
 }
@@ -268,21 +274,18 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // Líneas de detalle — price como string con 2 decimales (ej: "1099.00")
-    const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
+    // Líneas de detalle — price como float JS (número, no string) según SDK PHP de Pagadito
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      price:       Number(i.precio).toFixed(2),
-      url_product: `${SITE}/catalogo`,
+      price:       parseFloat(Number(i.precio).toFixed(2)),
     }))
 
     if (costoEnvio > 0) {
       details.push({
         quantity:    1,
         description: 'Envío a domicilio',
-        price:       String(costoEnvio) + '.00',
-        url_product: `${SITE}/catalogo`,
+        price:       costoEnvio,
       })
     }
 
