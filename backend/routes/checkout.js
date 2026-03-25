@@ -213,7 +213,14 @@ async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
     ? 'https://comercios.pagadito.com/wspg/charges.php'
     : 'https://sandbox.pagadito.com/comercios/wspg/charges.php'
 
-  const detailsJson = JSON.stringify(details)
+  // Build detailsJson manually so price appears as a JSON numeric literal with
+  // decimal point (e.g. 1169.00) — NOT as a quoted string ("1169.00") and NOT
+  // as a bare integer (1169). PHP's json_decode decodes 1169.00 as float, which
+  // passes Pagadito's is_float() validation. JSON.stringify can't produce this
+  // because JS has no distinction between 1169 and 1169.0.
+  const detailsJson = '[' + details.map(d =>
+    `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":${Number(d.price).toFixed(2)},"url_product":${JSON.stringify(d.url_product)}}`
+  ).join(',') + ']'
   const body = `<?xml version="1.0" encoding="utf-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="urn:https://comercios.pagadito.com/wspg/charges"><soapenv:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsJson}</details><currency>${currency}</currency><custom_param></custom_param><format_return>json</format_return></tns:exec_trans></soapenv:Body></soapenv:Envelope>`
 
   console.log('[Pagadito] exec_trans rawRequest:', body)
@@ -280,7 +287,7 @@ router.post('/pagadito/create', async (req, res) => {
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      price:       Number(i.precio).toFixed(2),
+      price:       parseFloat(Number(i.precio).toFixed(2)),
       url_product: `${SITE}/catalogo`,
     }))
 
