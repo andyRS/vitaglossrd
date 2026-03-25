@@ -170,72 +170,40 @@ router.post('/paypal/capture/:paypalOrderId', async (req, res) => {
 //    5. connect() + get_status(token_trans) → confirma estado "COMPLETED"
 // ══════════════════════════════════════════════════════════════════════════════
 
-function pagaditoUrl() {
-  return process.env.PAGADITO_MODE === 'live'
-    ? 'https://comercios.pagadito.com/wspg/charges.php'
-    : 'https://sandbox.pagadito.com/comercios/wspg/charges.php'
+// ── Pagadito SOAP via npm 'soap' (WSDL-based, no manual XML) ─────────────────
+const soapLib = require('soap')
+
+const PAGADITO_WSDL = {
+  live:    'https://comercios.pagadito.com/wspg/charges.php?wsdl',
+  sandbox: 'https://sandbox.pagadito.com/comercios/wspg/charges.php?wsdl',
 }
 
-// Helper: construir y enviar llamada SOAP a Pagadito
-// Usa el mismo formato que PHP's SoapClient genera (encodingStyle + xsi:type)
-function serializeParam(key, value) {
-  const val = typeof value === 'object' ? JSON.stringify(value) : String(value)
-  const escaped = val
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-  return `<${key} xsi:type="xsd:string">${escaped}</${key}>`
+let _pgClient = null
+
+async function getPgClient() {
+  if (_pgClient) return _pgClient
+  const mode = process.env.PAGADITO_MODE === 'live' ? 'live' : 'sandbox'
+  _pgClient = await soapLib.createClientAsync(PAGADITO_WSDL[mode])
+  return _pgClient
 }
 
 async function soapCall(action, params) {
-  const paramsXml = Object.entries(params)
-    .map(([k, v]) => serializeParam(k, v))
-    .join('\n      ')
+  const client = await getPgClient()
 
-  const envelope = `<?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope
-  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
-  xmlns:ns1="urn:ws"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
-  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-  <SOAP-ENV:Body>
-    <ns1:${action}>
-      ${paramsXml}
-    </ns1:${action}>
-  </SOAP-ENV:Body>
-</SOAP-ENV:Envelope>`
-
-  console.log(`[Pagadito] ${action} params:`, JSON.stringify(params))
-
-  const res = await fetch(pagaditoUrl(), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/xml; charset=utf-8',
-      'SOAPAction':   `urn:ws#${action}`,
-    },
-    body: envelope,
-    signal: AbortSignal.timeout(15000),
-  })
-
-  const xml = await res.text()
-  console.log(`[Pagadito] ${action} response:`, xml.slice(0, 1000))
-
-  // Extraer el contenido del tag <return> del XML de respuesta
-  const match = xml.match(/<return[^>]*>([\s\S]*?)<\/return>/)
-  if (!match) {
-    console.error('Pagadito SOAP respuesta inesperada:', xml.slice(0, 500))
-    throw new Error('Respuesta inesperada de Pagadito')
+  // details debe ser un JSON string (Pagadito lo recibe como string en el SOAP)
+  const callParams = { ...params }
+  if (Array.isArray(callParams.details)) {
+    callParams.details = JSON.stringify(callParams.details)
   }
 
-  // Decodificar entidades XML y parsear JSON
-  const raw  = match[1]
-    .replace(/&amp;/g, '&').replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'")
-    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-    .trim()
+  console.log(`[Pagadito] ${action} params:`, JSON.stringify(callParams))
 
-  return JSON.parse(raw)
+  const [result, , , rawReq] = await client[`${action}Async`](callParams)
+  console.log(`[Pagadito] ${action} rawRequest:`, rawReq?.slice(0, 1200))
+
+  const raw = result?.return
+  if (raw == null) throw new Error('Respuesta inesperada de Pagadito')
+  return typeof raw === 'string' ? JSON.parse(raw) : raw
 }
 
 // ── POST /api/checkout/pagadito/create ───────────────────────────────────────
@@ -272,12 +240,12 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // Líneas de detalle
+    // Líneas de detalle — price como string con 2 decimales (ej: "1099.00")
     const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      price:       parseFloat(i.precio.toFixed(2)),
+      price:       Number(i.precio).toFixed(2),
       url_product: `${SITE}/catalogo`,
     }))
 
@@ -285,20 +253,21 @@ router.post('/pagadito/create', async (req, res) => {
       details.push({
         quantity:    1,
         description: 'Envío a domicilio',
-        price:       costoEnvio,
+        price:       String(costoEnvio) + '.00',
         url_product: `${SITE}/catalogo`,
       })
     }
 
-    const amount = details.reduce((s, d) => s + (d.quantity * d.price), 0).toFixed(2)
+    const amount = details.reduce((s, d) => s + (Number(d.quantity) * parseFloat(d.price)), 0).toFixed(2)
 
     const transData = await soapCall('exec_trans', {
-      token:        sessionToken,
-      ern:          ern,
-      amount:       amount,
-      details:      details,
-      currency:     'DOP',
-      custom_param: '',
+      token:         sessionToken,
+      ern:           ern,
+      amount:        amount,
+      details:       details,
+      currency:      'DOP',
+      custom_param:  '',
+      format_return: 'json',
     })
 
     if (transData.code !== 'PG1002') {
