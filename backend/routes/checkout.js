@@ -198,12 +198,15 @@ async function soapCall(action, params) {
 
   console.log(`[Pagadito] ${action} params:`, JSON.stringify(callParams))
 
-  const [result, , , rawReq] = await client[`${action}Async`](callParams)
-  console.log(`[Pagadito] ${action} rawRequest:`, rawReq?.slice(0, 1200))
+  const [result] = await client[`${action}Async`](callParams)
 
-  const raw = result?.return
-  if (raw == null) throw new Error('Respuesta inesperada de Pagadito')
-  return typeof raw === 'string' ? JSON.parse(raw) : raw
+  // soap npm devuelve { '$value': '...json...', attributes: {...} } o string directo
+  const ret = result?.return
+  if (ret == null) throw new Error('Respuesta inesperada de Pagadito')
+  const jsonStr = typeof ret === 'string' ? ret : (ret['$value'] ?? ret)
+  const parsed = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr
+  console.log(`[Pagadito] ${action} result:`, parsed)
+  return parsed
 }
 
 // ── POST /api/checkout/pagadito/create ───────────────────────────────────────
