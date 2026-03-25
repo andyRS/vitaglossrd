@@ -314,17 +314,14 @@ router.post('/pagadito/create', async (req, res) => {
 
     const amount = details.reduce((s, d) => s + (Number(d.quantity) * parseFloat(d.price)), 0).toFixed(2)
 
-    // Usar la misma librería SOAP que connect() — es quien ya funciona y maneja
-    // correctamente el WSDL, SOAPAction, y tipado de parámetros.
-    // details se pasa como JSON string tal como hace el SDK PHP oficial de Pagadito.
-    const transData = await soapCall('exec_trans', {
-      token:         sessionToken,
+    // execTransRaw construye el envelope manualmente para que las " del JSON
+    // no sean entity-encoded a &quot; por node-soap → evita PG2002.
+    const transData = await execTransRaw({
+      token:    sessionToken,
       ern,
       amount,
-      details:       JSON.stringify(details),
-      currency:      'DOP',
-      custom_param:  '',
-      format_return: 'json',
+      details,
+      currency: 'DOP',
     })
 
     if (transData.code !== 'PG1002') {
