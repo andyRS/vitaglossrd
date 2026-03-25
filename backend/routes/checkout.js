@@ -221,7 +221,10 @@ async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
   const detailsJson = '[' + details.map(d =>
     `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":${Number(d.price).toFixed(2)},"url_product":${JSON.stringify(d.url_product)}}`
   ).join(',') + ']'
-  const body = `<?xml version="1.0" encoding="utf-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="urn:https://comercios.pagadito.com/wspg/charges"><soapenv:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsJson}</details><currency>${currency}</currency><custom_param></custom_param><format_return>json</format_return></tns:exec_trans></soapenv:Body></soapenv:Envelope>`
+  // Use same namespace prefix ("soap:") as the npm soap library uses for connect(),
+  // because Pagadito's server likely parses envelopes with string/regex matching
+  // and expects <soap:Envelope>/<soap:Body>, not <soapenv:Envelope>/<soapenv:Body>.
+  const body = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:https://comercios.pagadito.com/wspg/charges"><soap:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsJson}</details><currency>${currency}</currency><custom_param></custom_param><format_return>json</format_return></tns:exec_trans></soap:Body></soap:Envelope>`
 
   console.log('[Pagadito] exec_trans rawRequest:', body)
 
