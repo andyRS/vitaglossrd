@@ -282,8 +282,6 @@ router.post('/pagadito/create', async (req, res) => {
     const amount = details.reduce((s, d) => s + (d.quantity * d.price), 0).toFixed(2)
 
     const transData = await soapCall('exec_trans', {
-      uid:          PAGADITO_UID,
-      wsk:          PAGADITO_WSK,
       token:        sessionToken,
       ern:          ern,
       amount:       amount,
@@ -334,8 +332,6 @@ router.post('/pagadito/verify', async (req, res) => {
 
     // Verificar estado de la transacción
     const statusData = await soapCall('get_status', {
-      uid:          PAGADITO_UID,
-      wsk:          PAGADITO_WSK,
       token:        connectData.value,
       token_trans:  tokenTrans,
       format_return: 'json',
