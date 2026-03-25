@@ -18,6 +18,9 @@ const preciosRoutes  = require('./routes/precios')
 const app = express()
 const PORT = process.env.PORT || 4000
 
+// ── Trust proxy (Railway / Render / Heroku usan X-Forwarded-For) ───────────
+app.set('trust proxy', 1)
+
 // ── CORS ───────────────────────────────────────────────────────────────────
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',

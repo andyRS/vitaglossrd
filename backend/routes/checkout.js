@@ -178,16 +178,7 @@ function pagaditoUrl() {
 
 // Helper: construir y enviar llamada SOAP a Pagadito
 function serializeParam(key, value) {
-  if (Array.isArray(value)) {
-    // Pagadito espera los detalles como XML anidado, no JSON
-    const inner = value.map(item => {
-      const fields = Object.entries(item)
-        .map(([k, v]) => `<${k}><![CDATA[${String(v)}]]></${k}>`)
-        .join('')
-      return `<detail>${fields}</detail>`
-    }).join('')
-    return `<${key}>${inner}</${key}>`
-  }
+  // details se pasa como JSON string (formato que acepta el SOAP de Pagadito)
   const val = typeof value === 'object' ? JSON.stringify(value) : String(value)
   return `<${key}><![CDATA[${val}]]></${key}>`
 }
@@ -209,6 +200,8 @@ async function soapCall(action, params) {
   </soapenv:Body>
 </soapenv:Envelope>`
 
+  console.log(`[Pagadito] ${action} envelope:`, envelope)
+
   const res = await fetch(pagaditoUrl(), {
     method: 'POST',
     headers: {
@@ -220,6 +213,7 @@ async function soapCall(action, params) {
   })
 
   const xml = await res.text()
+  console.log(`[Pagadito] ${action} response:`, xml.slice(0, 1000))
 
   // Extraer el contenido del tag <return> del XML de respuesta
   const match = xml.match(/<return[^>]*>([\s\S]*?)<\/return>/)
@@ -268,23 +262,24 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // Los detalles son un array de items; amount = sum(quantity * price)
+    // Los detalles son un array de items; Pagadito requiere quantity y price como strings
+    const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
     const details = items.map(i => ({
-      quantity:    i.cantidad,
+      quantity:    String(i.cantidad),
       description: i.nombre.slice(0, 100),
-      price:       parseFloat(i.precio.toFixed(2)), // precio UNITARIO
-      url_product: `${process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'}/catalogo`,
+      price:       i.precio.toFixed(2), // precio UNITARIO como string
+      url_product: `${SITE}/catalogo`,
     }))
 
     // Agregar envío como línea separada
     details.push({
-      quantity:    1,
+      quantity:    '1',
       description: 'Envío a domicilio',
-      price:       150,
-      url_product: `${process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'}/catalogo`,
+      price:       '150.00',
+      url_product: `${SITE}/catalogo`,
     })
 
-    const amount = details.reduce((s, d) => s + (d.quantity * d.price), 0).toFixed(2)
+    const amount = details.reduce((s, d) => s + (Number(d.quantity) * Number(d.price)), 0).toFixed(2)
 
     const transData = await soapCall('exec_trans', {
       token:         sessionToken,
