@@ -349,8 +349,11 @@ router.post('/pagadito/create', async (req, res) => {
     // Convertimos los precios DOP → USD para enviarlos a Pagadito.
     // El cliente sigue viendo y pagando en DOP desde el frontend;
     // Pagadito recibirá el equivalente en USD.
-    const RATE = parseFloat(process.env.USD_TO_DOP_RATE || '58')
-    const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
+    // url_product: debe coincidir con el dominio registrado en el panel de Pagadito.
+    // El panel muestra https://www.vitaglossrd.com (con www). FRONTEND_URL puede no
+    // tener www → forzar www para evitar rechazo por validación de dominio en Pagadito.
+    const rawSite = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
+    const SITE = rawSite.replace(/^https?:\/\/(?!www\.)/, m => m + 'www.')
 
     const details = items.map(i => ({
       quantity:    i.cantidad,
@@ -385,7 +388,6 @@ router.post('/pagadito/create', async (req, res) => {
       amount:        amountUSD,
       details:       detailsStr,
       currency:      'USD',
-      custom_param:  '',
       format_return: 'json',
     })
 
