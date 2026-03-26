@@ -221,29 +221,39 @@ const WaIcon = ({ cls = 'w-5 h-5' }) => (
 )
 
 // ─── Lead Form ────────────────────────────────────────────────────────────────
-const CIUDADES_RD = [
-  'Santo Domingo',
-  'Santo Domingo Este',
-  'Santo Domingo Norte',
-  'Santo Domingo Oeste',
-  'Santiago',
-  'La Romana',
-  'San Pedro de Macorís',
-  'San Cristóbal',
-  'Puerto Plata',
-  'La Vega',
-  'San Francisco de Macorís',
-  'Higüey',
-  'Moca',
-  'Bonao',
+const PROVINCIAS_RD = [
+  'Distrito Nacional',
   'Azua',
+  'Bahoruco',
   'Barahona',
-  'Boca Chica',
+  'Dajabón',
+  'Duarte',
+  'Elías Piña',
+  'El Seibo',
+  'Espaillat',
   'Hato Mayor',
-  'Nagua',
-  'Cotuí',
+  'Hermanas Mirabal',
+  'Independencia',
+  'La Altagracia',
+  'La Romana',
+  'La Vega',
+  'María Trinidad Sánchez',
+  'Monseñor Nouel',
+  'Monte Cristi',
   'Monte Plata',
-  'Otra ciudad',
+  'Pedernales',
+  'Peravia',
+  'Puerto Plata',
+  'Samaná',
+  'San Cristóbal',
+  'San José de Ocoa',
+  'San Juan',
+  'San Pedro de Macorís',
+  'Sánchez Ramírez',
+  'Santiago',
+  'Santiago Rodríguez',
+  'Santo Domingo',
+  'Valverde',
   'Fuera de República Dominicana',
 ]
 
@@ -321,8 +331,8 @@ function LeadForm() {
         className="w-full bg-white/10 border border-white/15 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60 transition-colors appearance-none cursor-pointer"
         style={{ color: ciudad ? '#fff' : 'rgba(255,255,255,0.3)' }}
       >
-        <option value="" disabled style={{ color: '#1a1a2e', background: '#1a1a2e' }}>¿Desde qué ciudad me contactas? *</option>
-        {CIUDADES_RD.map(c => (
+        <option value="" disabled style={{ color: '#1a1a2e', background: '#1a1a2e' }}>¿Desde qué provincia eres? *</option>
+        {PROVINCIAS_RD.map(c => (
           <option key={c} value={c} style={{ color: '#fff', background: '#1a1a2e' }}>{c}</option>
         ))}
       </select>
