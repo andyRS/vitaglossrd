@@ -294,17 +294,22 @@ router.get('/pagadito/diagnostic', async (req, res) => {
       results.exec_trans_USD_ern9999 = transUSD
     } catch (e) { results.exec_trans_USD_ern9999 = { error: e.message } }
 
-    // 4) exec_trans con ERN numérico corto + currency DOP
+    // 4) authorization — método alternativo para cuentas Pagalink
+    // El método exec_trans requiere activación especial; authorization puede
+    // estar disponible para cuentas con servicio Pagalink activado.
     try {
-      const conn2 = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
+      const conn3 = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
       const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
-      const detailsDOP = `[{"quantity":1,"description":"Test","price":"1.00","url_product":"${SITE}/catalogo"}]`
-      const transDOP = await soapCall('exec_trans', {
-        token: conn2.value, ern: '9998', amount: '1.00', details: detailsDOP,
-        currency: 'DOP', custom_param: '', format_return: 'json',
+      const detailsAuth = `[{"quantity":1,"description":"Test","price":"1.00","url_product":"${SITE}/catalogo"}]`
+      const client = await getPgClient()
+      const [authResult] = await client.authorizationAsync({
+        token: conn3.value, ern: '9997', amount: '1.00', details: detailsAuth,
+        currency: 'USD', custom_param: '', format_return: 'json',
       })
-      results.exec_trans_DOP_ern9998 = transDOP
-    } catch (e) { results.exec_trans_DOP_ern9998 = { error: e.message } }
+      const authRet = authResult?.return
+      const authStr = typeof authRet === 'string' ? authRet : (authRet?.['$value'] ?? JSON.stringify(authRet))
+      results.authorization_USD = typeof authStr === 'string' && authStr.startsWith('{') ? JSON.parse(authStr) : authStr
+    } catch (e) { results.authorization_USD = { error: e.message } }
 
   } catch (e) { results.fatal = e.message }
 
