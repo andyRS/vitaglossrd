@@ -40,6 +40,12 @@ const leadSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  // Ciudad de residencia del lead (segmentación geográfica)
+  ciudad: {
+    type: String,
+    default: '',
+    trim: true,
+  },
   // Atribución de referido (código del vendedor que redirigó al cliente)
   refCode: {
     type: String,

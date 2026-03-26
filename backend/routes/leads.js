@@ -49,7 +49,7 @@ function msgWebinar(nombre) {
 // No requiere autenticación. vendedor queda null (lead sin asignar).
 router.post('/public', async (req, res) => {
   try {
-    const { nombre, telefono, productoInteres, nota, origen, refCode } = req.body
+    const { nombre, telefono, productoInteres, nota, origen, refCode, ciudad } = req.body
     if (!nombre) return res.status(400).json({ error: 'El nombre es requerido' })
     const lead = await Lead.create({
       nombre:          nombre.trim().substring(0, 60),
@@ -58,6 +58,7 @@ router.post('/public', async (req, res) => {
       nota:            nota || '',
       origen:          origen || 'web',
       refCode:         refCode || '',
+      ciudad:          (ciudad || '').trim().substring(0, 80),
     })
 
     // Enviar mensaje de confirmación si es registro de webinar y tiene teléfono

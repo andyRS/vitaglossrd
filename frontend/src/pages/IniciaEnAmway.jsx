@@ -221,9 +221,36 @@ const WaIcon = ({ cls = 'w-5 h-5' }) => (
 )
 
 // ─── Lead Form ────────────────────────────────────────────────────────────────
+const CIUDADES_RD = [
+  'Santo Domingo',
+  'Santo Domingo Este',
+  'Santo Domingo Norte',
+  'Santo Domingo Oeste',
+  'Santiago',
+  'La Romana',
+  'San Pedro de Macorís',
+  'San Cristóbal',
+  'Puerto Plata',
+  'La Vega',
+  'San Francisco de Macorís',
+  'Higüey',
+  'Moca',
+  'Bonao',
+  'Azua',
+  'Barahona',
+  'Boca Chica',
+  'Hato Mayor',
+  'Nagua',
+  'Cotuí',
+  'Monte Plata',
+  'Otra ciudad',
+  'Fuera de República Dominicana',
+]
+
 function LeadForm() {
   const [nombre, setNombre] = useState('')
   const [telefono, setTelefono] = useState('')
+  const [ciudad, setCiudad] = useState('')
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState('')
@@ -231,12 +258,14 @@ function LeadForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!nombre.trim()) return setError('Por favor escribe tu nombre.')
+    if (!ciudad) return setError('Por favor selecciona tu ciudad.')
     setLoading(true)
     setError('')
     try {
       await api.createPublicLead({
         nombre: nombre.trim(),
         telefono: telefono.trim(),
+        ciudad,
         productoInteres: 'Registro Amway',
         origen: 'amway-landing',
       })
@@ -286,6 +315,17 @@ function LeadForm() {
         className="w-full bg-white/10 border border-white/15 text-white placeholder-white/30 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60 transition-colors"
         maxLength={20}
       />
+      <select
+        value={ciudad}
+        onChange={e => setCiudad(e.target.value)}
+        className="w-full bg-white/10 border border-white/15 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60 transition-colors appearance-none cursor-pointer"
+        style={{ color: ciudad ? '#fff' : 'rgba(255,255,255,0.3)' }}
+      >
+        <option value="" disabled style={{ color: '#1a1a2e', background: '#1a1a2e' }}>¿Desde qué ciudad me contactas? *</option>
+        {CIUDADES_RD.map(c => (
+          <option key={c} value={c} style={{ color: '#fff', background: '#1a1a2e' }}>{c}</option>
+        ))}
+      </select>
       {error && <p className="text-red-400 text-xs px-1">{error}</p>}
       <button
         type="submit"
