@@ -318,8 +318,11 @@ router.post('/pagadito/create', async (req, res) => {
     // lo que falla la validación is_float() en el servidor PHP de Pagadito.
     // Se pasa como string a node-soap que lo enviará con entity-encoding correcto
     // (&quot;) igual que PHP SoapClient — misma estructura que el connect() que funciona.
+    // El PHP SDK de Pagadito usa number_format() → string, por eso json_encode
+    // produce "price":"820.00" (string JSON), NO "price":820.00 (número JSON).
+    // Pagadito valida el tipo: si recibe un número falla con PG2002.
     const detailsStr = '[' + details.map(d =>
-      `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":${Number(d.price).toFixed(2)},"url_product":${JSON.stringify(d.url_product)}}`
+      `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":"${Number(d.price).toFixed(2)}","url_product":${JSON.stringify(d.url_product)}}`
     ).join(',') + ']'
 
     console.log('[Pagadito] detailsStr:', detailsStr)
