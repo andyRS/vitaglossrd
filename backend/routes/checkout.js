@@ -447,7 +447,11 @@ router.post('/pagadito/verify', async (req, res) => {
       return res.status(400).json({ error: `No se pudo verificar el pago: ${statusData.message}` })
     }
 
-    const estado = statusData.value?.status
+    const estado      = statusData.value?.status
+    // pgApproval: número de comprobante de 8 caracteres que exige Pagadito
+    // en la pantalla de confirmación y en el email al comprador.
+    const pgApproval  = statusData.value?.code_transaction || tokenTrans.slice(0, 8).toUpperCase()
+
     if (estado !== 'COMPLETED') {
       return res.status(400).json({ error: `El pago no fue completado. Estado: ${estado}` })
     }
@@ -455,7 +459,7 @@ router.post('/pagadito/verify', async (req, res) => {
     // Verificar que no se creó ya la orden con este token (idempotencia)
     const existe = await Order.findOne({ pagoRef: tokenTrans })
     if (existe) {
-      return res.json({ ok: true, orderId: existe._id, invoiceNumber: existe.invoiceNumber, yaExistia: true })
+      return res.json({ ok: true, orderId: existe._id, invoiceNumber: existe.invoiceNumber, pgApproval, yaExistia: true })
     }
 
     // Crear la orden en DB
@@ -474,7 +478,57 @@ router.post('/pagadito/verify', async (req, res) => {
       refCode:    refCode || '',
     })
 
-    res.json({ ok: true, orderId: order._id, invoiceNumber: order.invoiceNumber })
+    // Enviar email de confirmación al comprador (requerido por Pagadito para certificación).
+    // Se hace de forma async para no bloquear la respuesta al cliente.
+    if (email) {
+      const nodemailer = (() => { try { return require('nodemailer') } catch { return null } })()
+      if (nodemailer && process.env.SMTP_HOST) {
+        const transporter = nodemailer.createTransport({
+          host:   process.env.SMTP_HOST,
+          port:   Number(process.env.SMTP_PORT || 587),
+          secure: process.env.SMTP_SECURE === 'true',
+          auth:   { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+        })
+        const itemsList = (items || []).map(i =>
+          `<tr><td style="padding:4px 8px">${i.nombre}</td><td style="padding:4px 8px;text-align:center">${i.cantidad}</td><td style="padding:4px 8px;text-align:right">RD$${Number(i.precio).toLocaleString()}</td></tr>`
+        ).join('')
+        transporter.sendMail({
+          from:    `"VitaGloss RD" <${process.env.SMTP_USER}>`,
+          to:      email,
+          subject: `✅ Confirmación de pedido #${order.invoiceNumber} — VitaGloss RD`,
+          html: `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+  <div style="background:#1a3c5e;padding:24px;text-align:center">
+    <h1 style="color:#fff;margin:0;font-size:22px">¡Pago confirmado!</h1>
+    <p style="color:#a8c4e0;margin:8px 0 0">Gracias por tu compra en VitaGloss RD</p>
+  </div>
+  <div style="padding:24px">
+    <p>Hola <strong>${nombre}</strong>,</p>
+    <p>Tu pago fue procesado exitosamente. Aquí están los detalles de tu pedido:</p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0">
+      <tr style="background:#f3f4f6"><th style="padding:8px;text-align:left">Producto</th><th style="padding:8px">Cant.</th><th style="padding:8px;text-align:right">Precio</th></tr>
+      ${itemsList}
+    </table>
+    <div style="background:#f9fafb;border-radius:8px;padding:16px;margin:16px 0">
+      <p style="margin:4px 0"><strong>N.° de orden:</strong> #${order.invoiceNumber}</p>
+      <p style="margin:4px 0"><strong>N.° de aprobación Pagadito:</strong> ${pgApproval}</p>
+      <p style="margin:4px 0"><strong>Total pagado:</strong> RD$${Number(total).toLocaleString()}</p>
+      <p style="margin:4px 0"><strong>Método de pago:</strong> Pagadito (Tarjeta)</p>
+    </div>
+    <p>Tu pedido llegará en <strong>1 a 3 días hábiles</strong>. Te contactaremos por WhatsApp para coordinar la entrega.</p>
+    <p style="color:#6b7280;font-size:12px">Si tienes preguntas escríbenos a <a href="https://wa.me/18492763532">WhatsApp</a> o a info@vitaglossrd.com</p>
+  </div>
+  <div style="background:#f3f4f6;padding:16px;text-align:center;font-size:12px;color:#9ca3af">
+    VitaGloss RD · Santo Domingo, República Dominicana · <a href="https://www.vitaglossrd.com">vitaglossrd.com</a>
+  </div>
+</div>`,
+        }).catch(e => console.error('Email error:', e.message))
+      } else {
+        console.warn('[Email] SMTP no configurado — no se envió email de confirmación')
+      }
+    }
+
+    res.json({ ok: true, orderId: order._id, invoiceNumber: order.invoiceNumber, pgApproval })
   } catch (err) {
     console.error('Pagadito verify error:', err)
     res.status(500).json({ error: 'Error al verificar el pago con Pagadito' })

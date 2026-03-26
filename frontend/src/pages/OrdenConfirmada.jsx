@@ -120,7 +120,7 @@ function ErrorCard({ mensaje, onRetry, retrying }) {
 }
 
 // ─── Tarjeta de éxito ─────────────────────────────────────────────────────────
-function SuccessCard({ invoiceNumber, metodo }) {
+function SuccessCard({ invoiceNumber, metodo, pgApproval }) {
   const WALink = `https://wa.me/18492763532?text=${encodeURIComponent(
     `Hola VitaGloss RD! 👋 Acabo de realizar un pago en línea.\nN.° de orden: #${invoiceNumber}\nPagado con: ${METODO_LABEL[metodo] || metodo}\n¿Pueden confirmarme el estado de mi pedido? ¡Gracias!`
   )}`
@@ -145,6 +145,14 @@ function SuccessCard({ invoiceNumber, metodo }) {
           <div className="bg-gray-50 rounded-2xl px-5 py-4 flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">N.° de orden</span>
             <span className="font-black text-primary text-lg">#{invoiceNumber}</span>
+          </div>
+        )}
+
+        {/* Número de aprobación Pagadito — requerido por certificación Pagadito */}
+        {pgApproval && (
+          <div className="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 flex items-center justify-between">
+            <span className="text-xs font-semibold text-green-700 uppercase tracking-wider">N.° aprobación Pagadito</span>
+            <span className="font-black text-green-700 text-base tracking-widest">{pgApproval}</span>
           </div>
         )}
 
@@ -209,9 +217,10 @@ export default function OrdenConfirmada() {
   const isPagadito = !!tokenTrans && !orderId
 
   // Estado
-  const [status, setStatus]   = useState(isPagadito ? 'loading' : 'success')
-  const [invoice, setInvoice] = useState(invoiceNumber)
-  const [error, setError]     = useState('')
+  const [status, setStatus]     = useState(isPagadito ? 'loading' : 'success')
+  const [invoice, setInvoice]   = useState(invoiceNumber)
+  const [pgApproval, setPgApproval] = useState('')
+  const [error, setError]       = useState('')
   const [retrying, setRetrying] = useState(false)
   const didVerify = useRef(false)
 
@@ -238,6 +247,7 @@ export default function OrdenConfirmada() {
       sessionStorage.removeItem('vg_checkout_data')
 
       setInvoice(String(result.invoiceNumber))
+      if (result.pgApproval) setPgApproval(result.pgApproval)
       setStatus('success')
     } catch (err) {
       setError(err.message || 'Error al verificar el pago con Pagadito.')
@@ -272,7 +282,7 @@ export default function OrdenConfirmada() {
       )}
 
       {status === 'success' && (
-        <SuccessCard invoiceNumber={invoice} metodo={metodo} />
+        <SuccessCard invoiceNumber={invoice} metodo={metodo} pgApproval={pgApproval} />
       )}
 
       {/* Logo */}
