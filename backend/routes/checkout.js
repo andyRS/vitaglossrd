@@ -345,13 +345,17 @@ router.post('/pagadito/create', async (req, res) => {
 
     const sessionToken = connectData.value
 
-    // Líneas de detalle — estructura exacta del SDK PHP de Pagadito:
-    // quantity (int), description (string), price (float), url_product (string, requerido)
+    // Pagadito es una pasarela centroamericana — la cuenta está en USD.
+    // Convertimos los precios DOP → USD para enviarlos a Pagadito.
+    // El cliente sigue viendo y pagando en DOP desde el frontend;
+    // Pagadito recibirá el equivalente en USD.
+    const RATE = parseFloat(process.env.USD_TO_DOP_RATE || '58')
     const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
+
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      price:       parseFloat(Number(i.precio).toFixed(2)),
+      priceUSD:    parseFloat((Number(i.precio) / RATE).toFixed(2)),
       url_product: `${SITE}/catalogo`,
     }))
 
@@ -359,34 +363,28 @@ router.post('/pagadito/create', async (req, res) => {
       details.push({
         quantity:    1,
         description: 'Envío a domicilio',
-        price:       Number(costoEnvio).toFixed(2),
+        priceUSD:    parseFloat((costoEnvio / RATE).toFixed(2)),
         url_product: `${SITE}/catalogo`,
       })
     }
 
-    const amount = details.reduce((s, d) => s + (Number(d.quantity) * parseFloat(d.price)), 0).toFixed(2)
+    const amountUSD = details.reduce((s, d) => s + (d.quantity * d.priceUSD), 0).toFixed(2)
 
-    // Construir el JSON de details manualmente para garantizar que price sea
-    // float decimal (e.g. 820.00 no 820). JSON.stringify convierte 820.0 → "820",
-    // lo que falla la validación is_float() en el servidor PHP de Pagadito.
-    // Se pasa como string a node-soap que lo enviará con entity-encoding correcto
-    // (&quot;) igual que PHP SoapClient — misma estructura que el connect() que funciona.
-    // El PHP SDK de Pagadito usa number_format() → string, por eso json_encode
-    // produce "price":"820.00" (string JSON), NO "price":820.00 (número JSON).
-    // Pagadito valida el tipo: si recibe un número falla con PG2002.
+    // Pagadito espera price como STRING JSON ("1.00"), no número (1.00)
     const detailsStr = '[' + details.map(d =>
-      `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":"${Number(d.price).toFixed(2)}","url_product":${JSON.stringify(d.url_product)}}`
+      `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(d.description)},"price":"${d.priceUSD.toFixed(2)}","url_product":${JSON.stringify(d.url_product)}}`
     ).join(',') + ']'
 
-    console.log('[Pagadito] detailsStr:', detailsStr)
-    console.log('[Pagadito] amount:', amount)
+    console.log('[Pagadito] RATE DOP→USD:', RATE)
+    console.log('[Pagadito] detailsStr (USD):', detailsStr)
+    console.log('[Pagadito] amountUSD:', amountUSD)
 
     const transData = await soapCall('exec_trans', {
       token:         sessionToken,
       ern,
-      amount,
+      amount:        amountUSD,
       details:       detailsStr,
-      currency:      'DOP',
+      currency:      'USD',
       custom_param:  '',
       format_return: 'json',
     })
