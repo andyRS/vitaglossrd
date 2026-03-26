@@ -258,6 +258,59 @@ async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
   return parsed
 }
 
+// ── GET /api/checkout/pagadito/diagnostic ──────────────────────────────────────
+// Endpoint temporal de diagnóstico: prueba connect + get_exchange_rate + exec_trans
+// con valores mínimos fijos para identificar qué campo causa PG2002.
+// Acceder vía: GET /api/checkout/pagadito/diagnostic
+router.get('/pagadito/diagnostic', async (req, res) => {
+  const { PAGADITO_UID, PAGADITO_WSK } = process.env
+  if (!PAGADITO_UID) return res.status(503).json({ error: 'No configurado' })
+
+  const results = {}
+  try {
+    // 1) connect
+    const conn = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
+    results.connect = conn
+    if (conn.code !== 'PG1001') return res.json(results)
+
+    const token = conn.value
+
+    // 2) get_exchange_rate — ver si DOP está habilitado en esta cuenta
+    try {
+      const client = await getPgClient()
+      const [exr] = await client.get_exchange_rateAsync({ token, currency: 'DOP', format_return: 'json' })
+      const exrStr = typeof exr?.return === 'string' ? exr.return : JSON.stringify(exr)
+      results.get_exchange_rate_DOP = exrStr.startsWith('{') ? JSON.parse(exrStr) : exrStr
+    } catch (e) { results.get_exchange_rate_DOP = { error: e.message } }
+
+    // 3) exec_trans con ERN numérico corto + currency USD
+    try {
+      const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
+      const detailsUSD = `[{"quantity":1,"description":"Test","price":"1.00","url_product":"${SITE}/catalogo"}]`
+      const transUSD = await soapCall('exec_trans', {
+        token, ern: '9999', amount: '1.00', details: detailsUSD,
+        currency: 'USD', custom_param: '', format_return: 'json',
+      })
+      results.exec_trans_USD_ern9999 = transUSD
+    } catch (e) { results.exec_trans_USD_ern9999 = { error: e.message } }
+
+    // 4) exec_trans con ERN numérico corto + currency DOP
+    try {
+      const conn2 = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
+      const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
+      const detailsDOP = `[{"quantity":1,"description":"Test","price":"1.00","url_product":"${SITE}/catalogo"}]`
+      const transDOP = await soapCall('exec_trans', {
+        token: conn2.value, ern: '9998', amount: '1.00', details: detailsDOP,
+        currency: 'DOP', custom_param: '', format_return: 'json',
+      })
+      results.exec_trans_DOP_ern9998 = transDOP
+    } catch (e) { results.exec_trans_DOP_ern9998 = { error: e.message } }
+
+  } catch (e) { results.fatal = e.message }
+
+  res.json(results)
+})
+
 // ── POST /api/checkout/pagadito/create ───────────────────────────────────────
 // 1) connect → token
 // 2) exec_trans → payment URL

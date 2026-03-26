@@ -122,7 +122,9 @@ export default function Checkout() {
         sessionStorage.setItem('vg_checkout_data', JSON.stringify({
           ...form, refCode, items: orderItems, total: totalFinal,
         }))
-        const ern = `VG${Date.now()}`
+        // ERN: numérico puro, 9 dígitos máx → cabe en int 32-bit de PHP (max 2147483647)
+        // Date.now() en 2026 = 13 dígitos; tomamos los últimos 9 para evitar overflow
+        const ern = String(Date.now() % 1000000000)
         const res = await fetch(`${API_BASE}/checkout/pagadito/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
