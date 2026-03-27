@@ -427,6 +427,8 @@ router.post('/pagadito/create', async (req, res) => {
     // url_product: debe coincidir con el dominio registrado en el panel de Pagadito.
     // El panel muestra https://www.vitaglossrd.com (con www). FRONTEND_URL puede no
     // tener www → forzar www para evitar rechazo por validación de dominio en Pagadito.
+    const RATE = parseFloat(process.env.USD_TO_DOP_RATE || '58')
+
     const rawSite = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
     const SITE = rawSite.replace(/^https?:\/\/(?!www\.)/, m => m + 'www.')
 
