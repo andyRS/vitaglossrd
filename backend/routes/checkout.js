@@ -420,22 +420,20 @@ router.post('/pagadito/create', async (req, res) => {
     }
     const sessionToken = connectData.value
 
-    // Pagadito es una pasarela centroamericana — la cuenta está en USD.
-    // Convertimos los precios DOP → USD para enviarlos a Pagadito.
-    // El cliente sigue viendo y pagando en DOP desde el frontend;
-    // Pagadito recibirá el equivalente en USD.
-    // url_product: debe coincidir con el dominio registrado en el panel de Pagadito.
-    // El panel muestra https://www.vitaglossrd.com (con www). FRONTEND_URL puede no
-    // tener www → forzar www para evitar rechazo por validación de dominio en Pagadito.
-    const RATE = parseFloat(process.env.USD_TO_DOP_RATE || '58')
-
+    // Enviamos currency:'DOP' → Pagadito acepta pesos dominicanos directamente.
+    // No se necesita conversión en backend ni la variable USD_TO_DOP_RATE.
+    // url_product debe coincidir con el dominio registrado en el panel de Pagadito
+    // (con www). FRONTEND_URL puede no tener www → forzar www.
     const rawSite = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
     const SITE = rawSite.replace(/^https?:\/\/(?!www\.)/, m => m + 'www.')
 
+    // Enviamos los precios directamente en DOP usando currency:'DOP'.
+    // Pagadito hace la conversión a USD internamente con su tasa vigente.
+    // Esto elimina la necesidad de USD_TO_DOP_RATE en Railway.
     const details = items.map(i => ({
       quantity:    i.cantidad,
       description: i.nombre.slice(0, 100),
-      priceUSD:    parseFloat((Number(i.precio) / RATE).toFixed(2)),
+      price:       Number(i.precio),
       url_product: `${SITE}/catalogo`,
     }))
 
@@ -443,16 +441,15 @@ router.post('/pagadito/create', async (req, res) => {
       details.push({
         quantity:    1,
         description: 'Envío a domicilio',
-        priceUSD:    parseFloat((costoEnvio / RATE).toFixed(2)),
+        price:       costoEnvio,
         url_product: `${SITE}/catalogo`,
       })
     }
 
-    const amountUSD = details.reduce((s, d) => s + (d.quantity * d.priceUSD), 0).toFixed(2)
+    const amountDOP = details.reduce((s, d) => s + (d.quantity * d.price), 0).toFixed(2)
 
-    console.log('[Pagadito] RATE DOP→USD:', RATE)
-    console.log('[Pagadito] amountUSD:', amountUSD)
-    console.log('[Pagadito] details (USD):', JSON.stringify(details))
+    console.log('[Pagadito] amountDOP:', amountDOP)
+    console.log('[Pagadito] details (DOP):', JSON.stringify(details))
 
     // execTransRaw: SOAP manual con encodingStyle + xsi:type, sin CDATA.
     // Evita el bug de node-soap que encode " como &quot; en text nodes → PG2002.
@@ -460,9 +457,9 @@ router.post('/pagadito/create', async (req, res) => {
     const transData = await execTransRaw({
       token:    sessionToken,
       ern,
-      amount:   amountUSD,
-      details:  details.map(d => ({ quantity: d.quantity, description: d.description, price: d.priceUSD, url_product: d.url_product })),
-      currency: 'USD',
+      amount:   amountDOP,
+      details,
+      currency: 'DOP',
     })
 
     if (transData.code !== 'PG1002') {
