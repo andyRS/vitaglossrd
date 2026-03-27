@@ -475,6 +475,195 @@ router.post('/pagadito/create', async (req, res) => {
   }
 })
 
+// ══════════════════════════════════════════════════════════════════════════════
+//  PAGADITO — CERTIFICACIÓN TÉCNICA V1 (TECNICA-V1)
+//
+//  Casos requeridos por Pagadito para aprobar la integración:
+//    Caso 1 — Compra 1 artículo, pago exitoso
+//    Caso 2 — Compra múltiples artículos, pago exitoso
+//    Caso 3 — Transacción cancelada por el usuario en la pasarela
+//    Caso 4 — Verificar estado COMPLETED vía get_status post-pago
+//
+//  Uso:
+//    GET  /api/checkout/pagadito/cert          → lista los 4 casos
+//    POST /api/checkout/pagadito/cert/:caso    → inicia el caso (1-3), devuelve paymentUrl
+//    POST /api/checkout/pagadito/cert/verify   → confirma Caso4: verifica token devuelto por Pagadito
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Montos exactos requeridos por el Formulario de Certificación Técnica TECNICA-V1 de Pagadito
+// Fila 1: $18.44 USD | Fila 2: $23.79 USD | Fila 3: $99.91 USD (cancelar) | Fila 4: $104.12 USD (get_status)
+const CERT_CASOS = {
+  1: {
+    label:    'Caso 1 — 1 artículo, pago exitoso ($18.44)',
+    items:    [
+      { quantity: 1, description: 'VitaGloss Pack Hidratacion Profunda', price: 18.44, url_product: 'https://www.vitaglossrd.com/catalogo' },
+    ],
+    amount:   '18.44',
+    currency: 'USD',
+    instruccion: '✅ Completa el pago en Pagadito sandbox. Tarjeta VISA 4111111111111111 / 12/2030 / CVV 123',
+  },
+  2: {
+    label:    'Caso 2 — Múltiples artículos, pago exitoso ($23.79)',
+    items:    [
+      { quantity: 1, description: 'VitaGloss Shampoo Reparador',       price: 12.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'VitaGloss Acondicionador Brillo',   price:  7.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'VitaGloss Serum Reparacion Capilar', price:  4.79, url_product: 'https://www.vitaglossrd.com/catalogo' },
+    ],
+    amount:   '23.79',   // 12.00 + 7.00 + 4.79 = 23.79
+    currency: 'USD',
+    instruccion: '✅ Completa el pago en Pagadito sandbox. Tarjeta VISA 4111111111111111 / 12/2030 / CVV 123',
+  },
+  3: {
+    label:    'Caso 3 — Transacción cancelada ($99.91)',
+    items:    [
+      { quantity: 1, description: 'VitaGloss Kit Completo Capilar', price: 99.91, url_product: 'https://www.vitaglossrd.com/catalogo' },
+    ],
+    amount:   '99.91',
+    currency: 'USD',
+    instruccion: '⚠️ Abre la URL de pago, inicia sesión en Pagadito sandbox y haz clic en CANCELAR. NO completar el pago.',
+  },
+  4: {
+    label:    'Caso 4 — get_status post-pago ($104.12)',
+    items:    [
+      { quantity: 1, description: 'VitaGloss Pack Premium Restauracion', price: 55.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'VitaGloss Mascarilla Profunda',        price: 30.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'VitaGloss Aceite Capilar Argan',       price: 19.12, url_product: 'https://www.vitaglossrd.com/catalogo' },
+    ],
+    amount:   '104.12',  // 55.00 + 30.00 + 19.12 = 104.12
+    currency: 'USD',
+    instruccion: '✅ Completa el pago. Luego llama POST /cert/verify con el token que devolvió Pagadito en la URL de retorno.',
+  },
+}
+
+// GET /api/checkout/pagadito/cert
+router.get('/pagadito/cert', (req, res) => {
+  res.json({
+    descripcion: 'Certificación Técnica Pagadito TECNICA-V1',
+    tarjeta_prueba: {
+      tipo:       'VISA',
+      numero:     '4111111111111111',
+      vencimiento: '12/2030',
+      cvv:        '123',
+    },
+    pasos: [
+      '1. POST /api/checkout/pagadito/cert/1 → pagar $18.44 (1 artículo)',
+      '2. POST /api/checkout/pagadito/cert/2 → pagar $23.79 (3 artículos)',
+      '3. POST /api/checkout/pagadito/cert/3 → iniciar $99.91 y CANCELAR en Pagadito',
+      '4. POST /api/checkout/pagadito/cert/4 → pagar $104.12 (3 artículos)',
+      '5. POST /api/checkout/pagadito/cert/verify {tokenTrans} → confirmar Caso 4 vía get_status',
+    ],
+    nota: 'Registrar en Excel: ERN, Monto, Hora, Fecha y Número de Aprobación PG para cada caso completado.',
+    casos: Object.entries(CERT_CASOS).map(([k, v]) => ({
+      caso: Number(k), label: v.label, amount: `$${v.amount} ${v.currency}`, instruccion: v.instruccion,
+    })),
+  })
+})
+
+// POST /api/checkout/pagadito/cert/:caso  (caso = 1 | 2 | 3 | 4)
+router.post('/pagadito/cert/:caso', async (req, res) => {
+  const casoNum = Number(req.params.caso)
+  const caso = CERT_CASOS[casoNum]
+  if (!caso) return res.status(400).json({ error: 'Caso inválido. Usa 1, 2, 3 o 4.' })
+
+  const { PAGADITO_UID, PAGADITO_WSK } = process.env
+  if (!PAGADITO_UID || !PAGADITO_WSK) {
+    return res.status(503).json({ error: 'Pagadito no configurado. Agrega PAGADITO_UID y PAGADITO_WSK' })
+  }
+
+  try {
+    // connect
+    const conn = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
+    if (conn.code !== 'PG1001') return res.status(400).json({ error: `connect: ${conn.code} ${conn.message}` })
+
+    const ern = String(Date.now() % 1000000000)
+    const now = new Date()
+
+    // exec_trans (raw SOAP para evitar bug de node-soap con &quot;)
+    const trans = await execTransRaw({
+      token:    conn.value,
+      ern,
+      amount:   caso.amount,
+      details:  caso.items,
+      currency: caso.currency,
+    })
+
+    if (trans.code !== 'PG1002') {
+      return res.status(400).json({ error: `exec_trans: ${trans.code} ${trans.message}` })
+    }
+
+    console.log(`[Cert TECNICA-V1] Caso ${casoNum} OK — ERN: ${ern} — URL: ${trans.value}`)
+
+    res.json({
+      ok:          true,
+      caso:        casoNum,
+      label:       caso.label,
+      instruccion: caso.instruccion,
+      // Datos para llenar el formulario Excel de certificación:
+      excel: {
+        numero:   casoNum,
+        ERN:      ern,
+        monto:    `$${caso.amount} ${caso.currency}`,
+        fecha:    now.toISOString().split('T')[0],
+        hora:     now.toTimeString().split(' ')[0],
+        aprobacion_PG: casoNum === 3
+          ? '— (cancelar, no habrá aprobación)'
+          : '⏳ Completar pago → llamar /cert/verify para obtener el número',
+      },
+      paymentUrl: trans.value,
+    })
+  } catch (err) {
+    console.error(`[Cert TECNICA-V1] Caso ${casoNum} error:`, err)
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// POST /api/checkout/pagadito/cert/verify  — Casos 1, 2 y 4: obtener Número de Aprobación PG
+// Body: { tokenTrans: "...", caso: 1|2|4 }
+// El tokenTrans llega en la URL de retorno de Pagadito: ?token=xxx&ern=xxx
+router.post('/pagadito/cert/verify', async (req, res) => {
+  const { tokenTrans, caso } = req.body
+  if (!tokenTrans) return res.status(400).json({ error: 'Falta tokenTrans (el ?token= de la URL de retorno de Pagadito)' })
+
+  const { PAGADITO_UID, PAGADITO_WSK } = process.env
+  if (!PAGADITO_UID) return res.status(503).json({ error: 'Pagadito no configurado' })
+
+  try {
+    const conn = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
+    if (conn.code !== 'PG1001') return res.status(400).json({ error: `connect: ${conn.code} ${conn.message}` })
+
+    const status = await soapCall('get_status', {
+      token:         conn.value,
+      token_trans:   tokenTrans,
+      format_return: 'json',
+    })
+
+    console.log('[Cert TECNICA-V1] get_status →', status)
+
+    // code_transaction es el Número de Aprobación PG (8 caracteres)
+    const aprobacionPG = status.value?.code_transaction
+      || (tokenTrans.slice(0, 8).toUpperCase())
+
+    const now = new Date()
+
+    res.json({
+      ok:    status.code === 'PG1003',
+      caso:  caso || '?',
+      label: `Caso ${caso || '?'} — get_status`,
+      excel: {
+        numero:        caso || '?',
+        aprobacion_PG: aprobacionPG,
+        estado:        status.value?.status,
+        fecha:         now.toISOString().split('T')[0],
+        hora:          now.toTimeString().split(' ')[0],
+      },
+      raw: status,
+    })
+  } catch (err) {
+    console.error('[Cert TECNICA-V1] verify error:', err)
+    res.status(500).json({ error: err.message })
+  }
+})
+
 // ── POST /api/checkout/pagadito/verify ───────────────────────────────────────
 // Verifica el pago cuando Pagadito redirige de vuelta al sitio
 // El frontend envía: token (de la URL de retorno) + datos del cliente
