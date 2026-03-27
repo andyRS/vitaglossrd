@@ -232,13 +232,13 @@ async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
   // Use same namespace prefix ("soap:") as the npm soap library uses for connect(),
   // because Pagadito's server likely parses envelopes with string/regex matching
   // and expects <soap:Envelope>/<soap:Body>, not <soapenv:Envelope>/<soapenv:Body>.
-  const body = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:https://comercios.pagadito.com/wspg/charges"><soap:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsNode}</details><currency>${currency}</currency><custom_param></custom_param><format_return>json</format_return></tns:exec_trans></soap:Body></soap:Envelope>`
+  const body = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:wspg"><soap:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsNode}</details><currency>${currency}</currency><format_return>json</format_return></tns:exec_trans></soap:Body></soap:Envelope>`
 
   console.log('[Pagadito] exec_trans rawRequest:', body)
 
   const res = await fetch(endpoint, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/xml; charset=utf-8', 'SOAPAction': '' },
+    headers: { 'Content-Type': 'text/xml; charset=utf-8', 'SOAPAction': 'urn:ws#exec_trans' },
     body,
   })
 
@@ -283,16 +283,19 @@ router.get('/pagadito/diagnostic', async (req, res) => {
       results.get_exchange_rate_DOP = exrStr.startsWith('{') ? JSON.parse(exrStr) : exrStr
     } catch (e) { results.get_exchange_rate_DOP = { error: e.message } }
 
-    // 3) exec_trans con ERN numérico corto + currency USD
+    // 3) exec_trans via execTransRaw (evita &quot; encoding de node-soap)
     try {
+      const conn2 = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
       const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
-      const detailsUSD = `[{"quantity":1,"description":"Test","price":"1.00","url_product":"${SITE}/catalogo"}]`
-      const transUSD = await soapCall('exec_trans', {
-        token, ern: '9999', amount: '1.00', details: detailsUSD,
-        currency: 'USD', custom_param: '', format_return: 'json',
+      const transRaw = await execTransRaw({
+        token: conn2.value,
+        ern: String(Date.now() % 1000000000),
+        amount: '1.00',
+        details: [{ quantity: 1, description: 'Test VitaGloss', price: 1.00, url_product: `${SITE}/catalogo` }],
+        currency: 'USD',
       })
-      results.exec_trans_USD_ern9999 = transUSD
-    } catch (e) { results.exec_trans_USD_ern9999 = { error: e.message } }
+      results.exec_trans_RAW = transRaw
+    } catch (e) { results.exec_trans_RAW = { error: e.message } }
 
     // 4) authorization — método alternativo para cuentas Pagalink
     // El método exec_trans requiere activación especial; authorization puede
@@ -378,22 +381,19 @@ router.post('/pagadito/create', async (req, res) => {
 
     const amountUSD = details.reduce((s, d) => s + (d.quantity * d.priceUSD), 0).toFixed(2)
 
-    // Pagadito espera price como STRING JSON ("1.00"), no número (1.00)
-    const detailsStr = '[' + details.map(d =>
-      `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(d.description)},"price":"${d.priceUSD.toFixed(2)}","url_product":${JSON.stringify(d.url_product)}}`
-    ).join(',') + ']'
-
     console.log('[Pagadito] RATE DOP→USD:', RATE)
-    console.log('[Pagadito] detailsStr (USD):', detailsStr)
     console.log('[Pagadito] amountUSD:', amountUSD)
+    console.log('[Pagadito] details (USD):', JSON.stringify(details))
 
-    const transData = await soapCall('exec_trans', {
-      token:         sessionToken,
+    // Usar execTransRaw (HTTP + CDATA) en lugar de node-soap para exec_trans.
+    // node-soap codifica las " del JSON como &quot; dentro del texto XML,
+    // lo que corrompe el JSON que Pagadito intenta decodificar → PG2002.
+    const transData = await execTransRaw({
+      token:    sessionToken,
       ern,
-      amount:        amountUSD,
-      details:       detailsStr,
-      currency:      'USD',
-      format_return: 'json',
+      amount:   amountUSD,
+      details:  details.map(d => ({ quantity: d.quantity, description: d.description, price: d.priceUSD, url_product: d.url_product })),
+      currency: 'USD',
     })
 
     if (transData.code !== 'PG1002') {
