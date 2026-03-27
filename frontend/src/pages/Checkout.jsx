@@ -5,7 +5,7 @@ import { api } from '../services/api'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
-const ENVIO_GRATIS  = ['Santo Domingo', 'Distrito Nacional']
+const ENVIO_GRATIS  = ['Santo Domingo', 'Santo Domingo Este', 'Santo Domingo Oeste', 'Distrito Nacional']
 const ENVIO_INTERIOR = 280
 
 const PROVINCIAS = [
@@ -16,8 +16,43 @@ const PROVINCIAS = [
   'Monte Plata','Pedernales','Peravia','Puerto Plata','Samaná',
   'Sánchez Ramírez','San Cristóbal','San José de Ocoa','San Juan',
   'San Pedro de Macorís','Santiago','Santiago Rodríguez',
-  'Santo Domingo','Valverde',
+  'Santo Domingo','Santo Domingo Este','Santo Domingo Oeste','Valverde',
 ]
+
+const MUNICIPIOS_POR_PROVINCIA = {
+  'Distrito Nacional': ['Santo Domingo de Guzmán'],
+  'Santo Domingo': ['Santo Domingo Este','Santo Domingo Norte','Santo Domingo Oeste','Boca Chica','Pedro Brand','Los Alcarrizos','San Antonio de Guerra'],
+  'Santiago': ['Santiago de los Caballeros','Bisonó','Jánico','Licey al Medio','San José de las Matas','Tamboril','Villa González','Puñal'],
+  'La Vega': ['Concepción de La Vega','Constanza','Jarabacoa','Moca (Espaillat)'],
+  'San Pedro de Macorís': ['San Pedro de Macorís','Guayacanes','Quisqueya','San José de los Llanos'],
+  'La Romana': ['La Romana','Casa de Campo','Guaymate','Villa Hermosa'],
+  'La Altagracia': ['Higüey','San Rafael del Yuma'],
+  'Puerto Plata': ['Puerto Plata','Altamira','Guananico','Imbert','Los Hidalgos','Luperón','Sosúa','Villa Isabela','Villa Montellano'],
+  'San Cristóbal': ['San Cristóbal','Bajos de Haina','Cambita Garabitos','Los Cacaos','Sabana Grande de Palenque','San Gregorio de Nigua','Yaguate','Villa Altagracia'],
+  'Espaillat': ['Moca','Cayetano Germosén','Gaspar Hernández','Jamao al Norte'],
+  'Duarte': ['San Francisco de Macorís','Arenoso','Castillo','Eugenio María de Hostos','Las Guáranas','Pimentel','Villa Riva'],
+  'Azua': ['Azua de Compostela','Estebanía','Guayabal','Las Charcas','Las Yayas de Viajama','Padre Las Casas','Peralta','Pueblo Viejo','Sabana Yegua','Tábara Arriba'],
+  'Barahona': ['Barahona','Cabral','El Peñón','Enriquillo','Fundación','Jaquimeyes','La Ciénaga','Las Salinas','Paraíso','Polo','Vicente Noble'],
+  'Peravia': ['Baní','Nizao'],
+  'San Juan': ['San Juan de la Maguana','Bohechío','El Cercado','Juan de Herrera','Las Matas de Farfán','Vallejuelo'],
+  'María Trinidad Sánchez': ['Nagua','Cabrera','El Factor','Río San Juan'],
+  'Monseñor Nouel': ['Bonao','Jayaco','Maimón','Piedra Blanca'],
+  'Monte Plata': ['Monte Plata','Bayaguana','Peralvillo','Sabana Grande de Boyá','Yamasá'],
+  'Hato Mayor': ['Hato Mayor del Rey','El Valle','Sabana de la Mar'],
+  'El Seibo': ['El Seibo','Miches'],
+  'Samaná': ['Samaná','Las Terrenas','Sánchez'],
+  'Sánchez Ramírez': ['Cotuí','Cevicos','Fantino','La Mata'],
+  'Monte Cristi': ['Monte Cristi','Castañuelas','Guayubín','Las Matas de Santa Cruz','Pepillo Salcedo','Villa Vásquez'],
+  'Valverde': ['Mao','Esperanza','Laguna Salada'],
+  'Santiago Rodríguez': ['Sabaneta','Los Almácigos','Monción'],
+  'Dajabón': ['Dajabón','El Pino','Loma de Cabrera','Partido','Restauración'],
+  'Elías Piña': ['Comendador','Bánica','El Llano','Hondo Valle','Juan Santiago','Pedro Santana'],
+  'Independencia': ['Jimaní','Cristóbal','Duvergé','La Descubierta','Mella','Postrer Río'],
+  'Bahoruco': ['Neiba','Galván','Los Ríos','Tamayo','Villa Jaragua'],
+  'Pedernales': ['Pedernales','Oviedo'],
+  'Hermanas Mirabal': ['Salcedo','Tenares','Villa Tapia'],
+  'San José de Ocoa': ['San José de Ocoa','Sabana Larga','Rancho Arriba'],
+}
 
 const METODOS = [
   { id: 'transferencia', icon: '🏦', titulo: 'Transferencia / Depósito', desc: 'Paga por transferencia bancaria o depósito' },
@@ -65,7 +100,7 @@ export default function Checkout() {
     if (items.length === 0) navigate('/catalogo', { replace: true })
   }, [items, navigate])
 
-  const [form, setForm] = useState({ nombre: '', apellidos: '', email: '', whatsapp: '', calle: '', sector: '', provincia: '', referencia: '' })
+  const [form, setForm] = useState({ nombre: '', apellidos: '', email: '', whatsapp: '', calle: '', sector: '', municipio: '', provincia: '', referencia: '' })
   const [errors, setErrors]     = useState({})
   const [metodo, setMetodo]     = useState('transferencia')
   const [enviando, setEnviando] = useState(false)
@@ -83,6 +118,7 @@ export default function Checkout() {
     if (!form.whatsapp.trim())  e.whatsapp  = 'Campo requerido'
     if (!form.calle.trim())     e.calle     = 'Campo requerido'
     if (!form.sector.trim())    e.sector    = 'Campo requerido'
+    if (!form.municipio.trim()) e.municipio = 'Campo requerido'
     if (!form.provincia)        e.provincia = 'Selecciona una provincia'
     setErrors(e)
     return Object.keys(e).length === 0
@@ -101,7 +137,7 @@ export default function Checkout() {
       `🚚 *Envío:* ${envioMsg}`,
       `🏙️ *Provincia:* ${form.provincia}`,
       `💳 *Total: RD$${totalFinal.toLocaleString()}*`, '',
-      '📍 *Dirección:*', form.calle, `${form.sector}, ${form.provincia}`,
+      '📍 *Dirección:*', form.calle, `${form.sector}, ${form.municipio}, ${form.provincia}`,
       form.referencia ? `Ref: ${form.referencia}` : '', '',
       `💳 *Método de pago:* ${ml}`, '', '¡Gracias por tu pedido! 🙏',
     ].filter(Boolean).join('\n')
@@ -112,7 +148,7 @@ export default function Checkout() {
     if (!validar()) { window.scrollTo({ top: 0, behavior: 'smooth' }); return }
     setEnviando(true)
     const refCode = sessionStorage.getItem('vg_ref') || ''
-    const dir = `${form.calle}, ${form.sector}, ${form.provincia}${form.referencia ? ` — ${form.referencia}` : ''}`
+    const dir = `${form.calle}, ${form.sector}, ${form.municipio}, ${form.provincia}${form.referencia ? ` — ${form.referencia}` : ''}`
     const orderItems = items.map(i => ({ nombre: i.nombre, articulo: i.articulo || '', cantidad: i.cantidad, precio: i.precio }))
 
     // ── Pagadito: redirigir a pasarela de pago ────────────────────────────
@@ -203,15 +239,25 @@ export default function Checkout() {
             <div className="space-y-3">
               <Field label="Calle y número" required error={errors.calle}><Input placeholder="Calle Duarte #45" value={form.calle} onChange={set('calle')} error={errors.calle} /></Field>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <Field label="Sector / Barrio" required error={errors.sector}><Input placeholder="Los Prados" value={form.sector} onChange={set('sector')} error={errors.sector} /></Field>
                 <Field label="Provincia" required error={errors.provincia}>
-                  <Select value={form.provincia} onChange={set('provincia')} error={errors.provincia}>
-                    <option value="">Selecciona…</option>
+                  <Select value={form.provincia} onChange={e => { set('provincia')(e); setForm(f => ({ ...f, municipio: '' })) }} error={errors.provincia}>
+                    <option value="">Selecciona tu provincia…</option>
                     {PROVINCIAS.map(p => <option key={p} value={p}>{p}</option>)}
                   </Select>
                 </Field>
+                <Field label="Municipio / Ciudad" required error={errors.municipio}>
+                  {form.provincia && MUNICIPIOS_POR_PROVINCIA[form.provincia] ? (
+                    <Select value={form.municipio} onChange={set('municipio')} error={errors.municipio}>
+                      <option value="">Selecciona municipio…</option>
+                      {(MUNICIPIOS_POR_PROVINCIA[form.provincia] || []).map(m => <option key={m} value={m}>{m}</option>)}
+                    </Select>
+                  ) : (
+                    <Input placeholder="Ej: Santo Domingo Norte" value={form.municipio} onChange={set('municipio')} error={errors.municipio} />
+                  )}
+                </Field>
               </div>
-              <Field label="Referencias (opcional)"><Input placeholder="Ej: Casa azul, portón negro…" value={form.referencia} onChange={set('referencia')} /></Field>
+              <Field label="Sector / Barrio" required error={errors.sector}><Input placeholder="Los Prados" value={form.sector} onChange={set('sector')} error={errors.sector} /></Field>
+              <Field label="Referencias (opcional)"><Input placeholder="Ej: Casa azul, portón negro, cerca del parque…" value={form.referencia} onChange={set('referencia')} /></Field>
             </div>
           </section>
 
