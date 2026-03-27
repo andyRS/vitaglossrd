@@ -213,7 +213,56 @@ async function soapCall(action, params) {
   return parsed
 }
 
-// exec_trans via raw HTTP POST.
+// ── APIPG: HTTP POST puro (sin SOAP) ────────────────────────────────────────
+// APIPG usa /apipg/charges.php con application/x-www-form-urlencoded.
+// No hay XML, no hay codificación de ", no hay PG2002 por encoding issues.
+// Flujo: POST connect(uid,wsk) → token → POST exec_trans(token,ern,...) → URL pago
+async function execTransAPIPG({ uid, wsk, ern, amount, details, currency = 'USD' }) {
+  const mode = process.env.PAGADITO_MODE === 'live' ? 'live' : 'sandbox'
+  const baseUrl = mode === 'live'
+    ? 'https://comercios.pagadito.com/apipg/charges.php'
+    : 'https://sandbox.pagadito.com/comercios/apipg/charges.php'
+
+  // Paso 1: connect
+  const connBody = new URLSearchParams({ uid, wsk, format_return: 'json' })
+  console.log('[APIPG] connect →', baseUrl, connBody.toString())
+  const connRes  = await fetch(baseUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: connBody.toString(),
+  })
+  const connText = await connRes.text()
+  console.log('[APIPG] connect response:', connText.slice(0, 500))
+  const connData = JSON.parse(connText)
+  if (connData.code !== 'PG1001') throw new Error(`APIPG connect: ${connData.code} ${connData.message}`)
+
+  // Paso 2: exec_trans
+  const detailsList = details.map(d => ({
+    quantity:    parseInt(d.quantity),
+    description: String(d.description).slice(0, 100),
+    price:       parseFloat(Number(d.price).toFixed(2)),
+    url_product: d.url_product,
+  }))
+  const transBody = new URLSearchParams({
+    token:         connData.value,
+    ern:           String(ern),
+    amount:        String(amount),
+    details:       JSON.stringify(detailsList),
+    currency,
+    format_return: 'json',
+  })
+  console.log('[APIPG] exec_trans →', transBody.toString().slice(0, 800))
+  const transRes  = await fetch(baseUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: transBody.toString(),
+  })
+  const transText = await transRes.text()
+  console.log('[APIPG] exec_trans response:', transText.slice(0, 500))
+  return JSON.parse(transText)
+}
+
+// exec_trans via raw HTTP POST (SOAP manual — fallback).
 // node-soap encodes " as &quot; in text nodes for rpc/encoded calls; some PHP SOAP
 // servers decode them fine but Pagadito's does not → PG2002.
 // Fix: put the JSON directly in the XML text node (no CDATA, no entity-encoding for ").
@@ -305,10 +354,25 @@ router.get('/pagadito/diagnostic', async (req, res) => {
       results.get_exchange_rate_DOP = exrStr.startsWith('{') ? JSON.parse(exrStr) : exrStr
     } catch (e) { results.get_exchange_rate_DOP = { error: e.message } }
 
-    // 3) exec_trans via execTransRaw (evita &quot; encoding de node-soap)
+    // 3) exec_trans via APIPG (HTTP POST puro, sin SOAP — primera opción)
+    try {
+      const SITE = (process.env.FRONTEND_URL || 'https://www.vitaglossrd.com')
+        .replace(/^https?:\/\/(?!www\.)/, m => m + 'www.')
+      const apipgResult = await execTransAPIPG({
+        uid: PAGADITO_UID, wsk: PAGADITO_WSK,
+        ern: String(Date.now() % 1000000000),
+        amount: '1.00',
+        details: [{ quantity: 1, description: 'Test VitaGloss', price: 1.00, url_product: `${SITE}/catalogo` }],
+        currency: 'USD',
+      })
+      results.exec_trans_APIPG = apipgResult
+    } catch (e) { results.exec_trans_APIPG = { error: e.message } }
+
+    // 4) exec_trans via SOAP raw (fallback)
     try {
       const conn2 = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
-      const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
+      const SITE = (process.env.FRONTEND_URL || 'https://www.vitaglossrd.com')
+        .replace(/^https?:\/\/(?!www\.)/, m => m + 'www.')
       const transRaw = await execTransRaw({
         token: conn2.value,
         ern: String(Date.now() % 1000000000),
@@ -316,25 +380,8 @@ router.get('/pagadito/diagnostic', async (req, res) => {
         details: [{ quantity: 1, description: 'Test VitaGloss', price: 1.00, url_product: `${SITE}/catalogo` }],
         currency: 'USD',
       })
-      results.exec_trans_RAW = transRaw
-    } catch (e) { results.exec_trans_RAW = { error: e.message } }
-
-    // 4) authorization — método alternativo para cuentas Pagalink
-    // El método exec_trans requiere activación especial; authorization puede
-    // estar disponible para cuentas con servicio Pagalink activado.
-    try {
-      const conn3 = await soapCall('connect', { uid: PAGADITO_UID, wsk: PAGADITO_WSK, format_return: 'json' })
-      const SITE = process.env.FRONTEND_URL || 'https://www.vitaglossrd.com'
-      const detailsAuth = `[{"quantity":1,"description":"Test","price":"1.00","url_product":"${SITE}/catalogo"}]`
-      const client = await getPgClient()
-      const [authResult] = await client.authorizationAsync({
-        token: conn3.value, ern: '9997', amount: '1.00', details: detailsAuth,
-        currency: 'USD', custom_param: '', format_return: 'json',
-      })
-      const authRet = authResult?.return
-      const authStr = typeof authRet === 'string' ? authRet : (authRet?.['$value'] ?? JSON.stringify(authRet))
-      results.authorization_USD = typeof authStr === 'string' && authStr.startsWith('{') ? JSON.parse(authStr) : authStr
-    } catch (e) { results.authorization_USD = { error: e.message } }
+      results.exec_trans_SOAP_RAW = transRaw
+    } catch (e) { results.exec_trans_SOAP_RAW = { error: e.message } }
 
   } catch (e) { results.fatal = e.message }
 
@@ -361,19 +408,7 @@ router.post('/pagadito/create', async (req, res) => {
     const GRATIS = ['Santo Domingo', 'Distrito Nacional']
     const costoEnvio = GRATIS.includes(provincia) ? 0 : 280
 
-    // PASO 1: Conectar y obtener token de sesión
-    const connectData = await soapCall('connect', {
-      uid:           PAGADITO_UID,
-      wsk:           PAGADITO_WSK,
-      format_return: 'json',
-    })
-
-    if (connectData.code !== 'PG1001') {
-      console.error('Pagadito connect error:', connectData)
-      return res.status(400).json({ error: `Error de conexión con Pagadito: ${connectData.message}` })
-    }
-
-    const sessionToken = connectData.value
+    // APIPG hace connect internamente — no necesitamos llamarlo por separado.
 
     // Pagadito es una pasarela centroamericana — la cuenta está en USD.
     // Convertimos los precios DOP → USD para enviarlos a Pagadito.
@@ -407,11 +442,11 @@ router.post('/pagadito/create', async (req, res) => {
     console.log('[Pagadito] amountUSD:', amountUSD)
     console.log('[Pagadito] details (USD):', JSON.stringify(details))
 
-    // Usar execTransRaw (HTTP + CDATA) en lugar de node-soap para exec_trans.
-    // node-soap codifica las " del JSON como &quot; dentro del texto XML,
-    // lo que corrompe el JSON que Pagadito intenta decodificar → PG2002.
-    const transData = await execTransRaw({
-      token:    sessionToken,
+    // APIPG: HTTP POST puro (sin SOAP). Internamente hace connect + exec_trans.
+    // No tiene el problema de encoding de " en XML → evita PG2002.
+    const transData = await execTransAPIPG({
+      uid:      PAGADITO_UID,
+      wsk:      PAGADITO_WSK,
       ern,
       amount:   amountUSD,
       details:  details.map(d => ({ quantity: d.quantity, description: d.description, price: d.priceUSD, url_product: d.url_product })),
