@@ -104,6 +104,7 @@ export default function Checkout() {
   const [errors, setErrors]     = useState({})
   const [metodo, setMetodo]     = useState('transferencia')
   const [enviando, setEnviando] = useState(false)
+  const [pgRedirect, setPgRedirect] = useState(false)
 
   const subtotal   = cartTotal
   const costoEnvio  = ENVIO_GRATIS.includes(form.provincia) ? 0 : (form.provincia ? ENVIO_INTERIOR : ENVIO_INTERIOR)
@@ -153,6 +154,7 @@ export default function Checkout() {
 
     // ── Pagadito: redirigir a pasarela de pago ────────────────────────────
     if (metodo === 'pagadito') {
+      setPgRedirect(true)
       try {
         // Guardar datos del pedido en sessionStorage para recuperar en orden-confirmada
         sessionStorage.setItem('vg_checkout_data', JSON.stringify({
@@ -173,6 +175,7 @@ export default function Checkout() {
         })
         const data = await res.json()
         if (!data.ok || !data.paymentUrl) {
+          setPgRedirect(false)
           alert(data.error || 'Error al iniciar el pago. Intenta de nuevo.')
           setEnviando(false)
           return
@@ -181,6 +184,7 @@ export default function Checkout() {
         window.location.href = data.paymentUrl
         return
       } catch {
+        setPgRedirect(false)
         alert('No se pudo conectar con Pagadito. Intenta con otro método de pago.')
         setEnviando(false)
         return
@@ -204,6 +208,34 @@ export default function Checkout() {
   if (items.length === 0) return null
 
   return (
+    <>
+    {pgRedirect && (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-6 px-8 text-center">
+          {/* Spinner animado */}
+          <div className="relative w-20 h-20">
+            <div className="absolute inset-0 rounded-full border-4 border-blue-100" />
+            <div className="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xl font-bold text-gray-800">Redirigiendo a Pagadito</p>
+            <p className="text-sm text-gray-500">Estamos conectando con la pasarela de pago segura.<br/>Serás redirigido en unos segundos…</p>
+          </div>
+          <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-xl px-4 py-2.5">
+            <svg className="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span className="text-xs text-blue-700 font-medium">Conexión segura SSL</span>
+          </div>
+          <p className="text-[11px] text-gray-400">Por favor no cierres esta ventana</p>
+        </div>
+      </div>
+    )}
     <form onSubmit={handleSubmit} noValidate className="min-h-screen bg-gray-50">
       <div className="bg-white border-b border-gray-100 px-4 py-4">
         <div className="max-w-5xl mx-auto flex items-center gap-3">
@@ -350,5 +382,6 @@ export default function Checkout() {
         </div>
       </div>
     </form>
+    </>
   )
 }
