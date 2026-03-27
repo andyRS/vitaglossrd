@@ -213,26 +213,49 @@ async function soapCall(action, params) {
   return parsed
 }
 
-// exec_trans via raw fetch — soap npm entity-encodes &quot; inside text nodes,
-// Pagadito's server doesn't decode them → PG2002. Build the envelope manually
-// so the JSON string is sent with literal " characters (valid XML text node).
-async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
+// exec_trans via raw HTTP POST.
+// node-soap encodes " as &quot; in text nodes for rpc/encoded calls; some PHP SOAP
+// servers decode them fine but Pagadito's does not → PG2002.
+// Fix: put the JSON directly in the XML text node (no CDATA, no entity-encoding for ").
+// " is valid unescaped inside XML text content — only &, <, > need escaping there.
+// Also mirrors the exact rpc/encoded envelope format node-soap uses for connect():
+// soap:encodingStyle on Envelope + xsi:type on each parameter.
+async function execTransRaw({ token, ern, amount, details, currency = 'USD' }) {
   const mode = process.env.PAGADITO_MODE === 'live' ? 'live' : 'sandbox'
   const endpoint = mode === 'live'
     ? 'https://comercios.pagadito.com/wspg/charges.php'
     : 'https://sandbox.pagadito.com/comercios/wspg/charges.php'
 
-  // Build detailsJson manually so price appears as a JSON numeric literal with
-  // decimal point (e.g. 1169.00). Wrap in CDATA so literal " characters inside
-  // the JSON don't break the XML parser on Pagadito's PHP server.
-  const detailsJson = '[' + details.map(d =>
-    `{"quantity":${parseInt(d.quantity)},"description":${JSON.stringify(String(d.description).slice(0, 100))},"price":${Number(d.price).toFixed(2)},"url_product":${JSON.stringify(d.url_product)}}`
-  ).join(',') + ']'
-  const detailsNode = `<![CDATA[${detailsJson}]]>`
-  // Use same namespace prefix ("soap:") as the npm soap library uses for connect(),
-  // because Pagadito's server likely parses envelopes with string/regex matching
-  // and expects <soap:Envelope>/<soap:Body>, not <soapenv:Envelope>/<soapenv:Body>.
-  const body = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:wspg"><soap:Body><tns:exec_trans><token>${token}</token><ern>${ern}</ern><amount>${amount}</amount><details>${detailsNode}</details><currency>${currency}</currency><format_return>json</format_return></tns:exec_trans></soap:Body></soap:Envelope>`
+  // Build details JSON with numeric price. Escape only &, <, > — NOT ".
+  const detailsJson = '[' + details.map(d => {
+    const desc = String(d.description).slice(0, 100)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    const url = d.url_product
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    return `{"quantity":${parseInt(d.quantity)},"description":"${desc}","price":${Number(d.price).toFixed(2)},"url_product":"${url}"}`
+  }).join(',') + ']'
+
+  const body = [
+    '<?xml version="1.0" encoding="utf-8"?>',
+    '<soap:Envelope',
+    '  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"',
+    '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+    '  xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
+    '  xmlns:tns="urn:wspg"',
+    '  soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">',
+    '  <soap:Body>',
+    '    <tns:exec_trans>',
+    `      <token xsi:type="xsd:string">${token}</token>`,
+    `      <ern xsi:type="xsd:string">${ern}</ern>`,
+    `      <amount xsi:type="xsd:string">${amount}</amount>`,
+    `      <details xsi:type="xsd:string">${detailsJson}</details>`,
+    `      <format_return xsi:type="xsd:string">json</format_return>`,
+    `      <currency xsi:type="xsd:string">${currency}</currency>`,
+    `      <custom_params xsi:type="xsd:string"></custom_params>`,
+    '    </tns:exec_trans>',
+    '  </soap:Body>',
+    '</soap:Envelope>',
+  ].join('\n')
 
   console.log('[Pagadito] exec_trans rawRequest:', body)
 
@@ -243,11 +266,10 @@ async function execTransRaw({ token, ern, amount, details, currency = 'DOP' }) {
   })
 
   const xmlText = await res.text()
-  console.log('[Pagadito] exec_trans rawResponse:', xmlText.slice(0, 2000))
+  console.log('[Pagadito] exec_trans rawResponse:', xmlText.slice(0, 3000))
 
   const match = xmlText.match(/<return[^>]*>([\s\S]*?)<\/return>/)
   if (!match) throw new Error('Respuesta SOAP inesperada de Pagadito')
-  // Pagadito entity-encodes the JSON in its response — decode before parsing
   const jsonStr = match[1]
     .replace(/&quot;/g, '"')
     .replace(/&amp;/g, '&')
