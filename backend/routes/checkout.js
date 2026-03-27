@@ -408,7 +408,17 @@ router.post('/pagadito/create', async (req, res) => {
     const GRATIS = ['Santo Domingo', 'Distrito Nacional']
     const costoEnvio = GRATIS.includes(provincia) ? 0 : 280
 
-    // APIPG hace connect internamente — no necesitamos llamarlo por separado.
+    // PASO 1: Conectar y obtener token de sesión
+    const connectData = await soapCall('connect', {
+      uid:           PAGADITO_UID,
+      wsk:           PAGADITO_WSK,
+      format_return: 'json',
+    })
+    if (connectData.code !== 'PG1001') {
+      console.error('Pagadito connect error:', connectData)
+      return res.status(400).json({ error: `Error de conexión con Pagadito: ${connectData.message}` })
+    }
+    const sessionToken = connectData.value
 
     // Pagadito es una pasarela centroamericana — la cuenta está en USD.
     // Convertimos los precios DOP → USD para enviarlos a Pagadito.
@@ -442,11 +452,11 @@ router.post('/pagadito/create', async (req, res) => {
     console.log('[Pagadito] amountUSD:', amountUSD)
     console.log('[Pagadito] details (USD):', JSON.stringify(details))
 
-    // APIPG: HTTP POST puro (sin SOAP). Internamente hace connect + exec_trans.
-    // No tiene el problema de encoding de " en XML → evita PG2002.
-    const transData = await execTransAPIPG({
-      uid:      PAGADITO_UID,
-      wsk:      PAGADITO_WSK,
+    // execTransRaw: SOAP manual con encodingStyle + xsi:type, sin CDATA.
+    // Evita el bug de node-soap que encode " como &quot; en text nodes → PG2002.
+    // Confirmado funcionando en diagnostic: PG1002. ✅
+    const transData = await execTransRaw({
+      token:    sessionToken,
       ern,
       amount:   amountUSD,
       details:  details.map(d => ({ quantity: d.quantity, description: d.description, price: d.priceUSD, url_product: d.url_product })),
