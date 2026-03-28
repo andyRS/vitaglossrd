@@ -404,8 +404,8 @@ router.post('/pagadito/create', async (req, res) => {
       return res.status(400).json({ error: 'Datos incompletos para crear transacción' })
     }
 
-    // Envío gratis en SD y DN; RD$280 en el interior
-    const GRATIS = ['Santo Domingo', 'Distrito Nacional']
+    // Envío gratis en SD, SD Este, SD Oeste y DN; RD$280 en el interior
+    const GRATIS = ['Santo Domingo', 'Santo Domingo Este', 'Santo Domingo Oeste', 'Distrito Nacional']
     const costoEnvio = GRATIS.includes(provincia) ? 0 : 280
 
     // PASO 1: Conectar y obtener token de sesión
@@ -617,10 +617,11 @@ router.post('/pagadito/cert/:caso', async (req, res) => {
   }
 })
 
-// POST /api/checkout/pagadito/cert/verify  — Casos 1, 2 y 4: obtener Número de Aprobación PG
+// POST /api/checkout/pagadito/cert-verify  — Casos 1, 2 y 4: obtener Número de Aprobación PG
 // Body: { tokenTrans: "...", caso: 1|2|4 }
 // El tokenTrans llega en la URL de retorno de Pagadito: ?token=xxx&ern=xxx
-router.post('/pagadito/cert/verify', async (req, res) => {
+// NOTA: ruta en /cert-verify (no /cert/verify) para evitar colisión con /cert/:caso
+router.post('/pagadito/cert-verify', async (req, res) => {
   const { tokenTrans, caso } = req.body
   if (!tokenTrans) return res.status(400).json({ error: 'Falta tokenTrans (el ?token= de la URL de retorno de Pagadito)' })
 
