@@ -41,7 +41,7 @@ const orderSchema = new mongoose.Schema({
   // Método de pago
   metodoPago: {
     type: String,
-    enum: ['whatsapp', '2checkout', 'paypal'],
+    enum: ['whatsapp', '2checkout', 'paypal', 'pagadito', 'transferencia', 'contraentrega'],
     default: 'whatsapp',
   },
   pagoRef: { type: String, default: '' }, // ID de transacción de la pasarela
