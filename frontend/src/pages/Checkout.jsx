@@ -180,7 +180,8 @@ export default function Checkout() {
           setEnviando(false)
           return
         }
-        clearCart()
+        // NO limpiar carrito aquí — se limpia en OrdenConfirmada después de confirmar el pago.
+        // Si el usuario vuelve atrás desde Pagadito (token vencido, canceló, error), el carrito debe seguir intacto.
         window.location.href = data.paymentUrl
         return
       } catch {
@@ -249,6 +250,20 @@ export default function Checkout() {
 
       <div className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
         <div className="space-y-5">
+
+          {Object.keys(errors).length > 0 && (
+            <div className="bg-red-600 text-white rounded-2xl px-5 py-4 flex items-start gap-3 shadow-md">
+              <span className="text-2xl mt-0.5">⚠️</span>
+              <div>
+                <p className="font-bold text-sm">Faltan campos obligatorios</p>
+                <p className="text-xs text-red-100 mt-0.5">
+                  {Object.values(errors).length === 1
+                    ? 'Completa el campo marcado en rojo antes de continuar.'
+                    : `Completa los ${Object.keys(errors).length} campos marcados en rojo antes de continuar.`}
+                </p>
+              </div>
+            </div>
+          )}
 
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             <h2 className="font-bold text-gray-800 text-base mb-4 flex items-center gap-2">

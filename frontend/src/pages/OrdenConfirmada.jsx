@@ -17,6 +17,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { api } from '../services/api'
+import { useCart } from '../context/CartContext'
 
 const METODO_LABEL = {
   paypal:    'PayPal',
@@ -217,6 +218,7 @@ export default function OrdenConfirmada() {
   const isPagadito = !!tokenTrans && !orderId
 
   // Estado
+  const { clearCart } = useCart()
   const [status, setStatus]     = useState(isPagadito ? 'loading' : 'success')
   const [invoice, setInvoice]   = useState(invoiceNumber)
   const [pgApproval, setPgApproval] = useState('')
@@ -248,6 +250,7 @@ export default function OrdenConfirmada() {
 
       setInvoice(String(result.invoiceNumber))
       if (result.pgApproval) setPgApproval(result.pgApproval)
+      clearCart()  // Limpiar carrito DESPUÉS de confirmar el pago exitosamente
       setStatus('success')
     } catch (err) {
       setError(err.message || 'Error al verificar el pago con Pagadito.')
