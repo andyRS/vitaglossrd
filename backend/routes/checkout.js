@@ -490,47 +490,47 @@ router.post('/pagadito/create', async (req, res) => {
 //    POST /api/checkout/pagadito/cert/verify   → confirma Caso4: verifica token devuelto por Pagadito
 // ══════════════════════════════════════════════════════════════════════════════
 
-// Montos en DOP (pesos dominicanos) — moneda real del comercio VitaGloss RD
-// Requerido por Pagadito dev: las pruebas de certificación deben hacerse en DOP
+// Montos exactos del formulario de Certificación Técnica TECNICA-V1 de Pagadito (USD fijos)
+// Caso 1 ya pagado: $18.44 — ERN 628089188 — Aprobación 727BDAF1
 const CERT_CASOS = {
   1: {
-    label:    'Caso 1 — 1 artículo, pago exitoso (RD$1,099)',
+    label:    'Caso 1 — 1 artículo, pago exitoso ($18.44 USD)',
     items:    [
-      { quantity: 1, description: 'Vitamina C Nutrilite', price: 1099, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Vitamina C Nutrilite', price: 18.44, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '1099.00',
-    currency: 'DOP',
+    amount:   '18.44',
+    currency: 'USD',
     instruccion: '✅ Completa el pago con cuenta Compradores Pagadito sandbox (país: El Salvador)',
   },
   2: {
-    label:    'Caso 2 — Múltiples artículos, pago exitoso (RD$3,929)',
+    label:    'Caso 2 — Múltiples artículos, pago exitoso ($23.79 USD)',
     items:    [
-      { quantity: 1, description: 'Vitamina C Nutrilite',  price: 1099, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'Cal Mag D Nutrilite',   price: 1270, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'Vitamina D Nutrilite',  price: 1560, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Vitamina C Nutrilite',  price: 12.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Cal Mag D Nutrilite',   price:  7.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Vitamina D Nutrilite',  price:  4.79, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '3929.00',  // 1099 + 1270 + 1560 = 3929
-    currency: 'DOP',
+    amount:   '23.79',  // 12.00 + 7.00 + 4.79 = 23.79
+    currency: 'USD',
     instruccion: '✅ Completa el pago con cuenta Compradores Pagadito sandbox (país: El Salvador)',
   },
   3: {
-    label:    'Caso 3 — Transacción cancelada (RD$4,040)',
+    label:    'Caso 3 — Transacción cancelada ($99.91 USD)',
     items:    [
-      { quantity: 1, description: 'Double X Reemplazo 31 dias', price: 4040, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Double X Reemplazo 31 dias', price: 99.91, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '4040.00',
-    currency: 'DOP',
+    amount:   '99.91',
+    currency: 'USD',
     instruccion: '⚠️ Abre la URL de pago, inicia sesión en Pagadito sandbox y haz clic en CANCELAR. NO completar el pago.',
   },
   4: {
-    label:    'Caso 4 — get_status post-pago (RD$7,790)',
+    label:    'Caso 4 — get_status post-pago ($104.12 USD)',
     items:    [
-      { quantity: 1, description: 'Double X Reemplazo 31 dias',  price: 4040, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'Omega-3 Nutrilite',           price: 2050, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'Pelo Piel y Unas Nutrilite',  price: 1700, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Double X Reemplazo 31 dias',  price: 55.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Omega-3 Nutrilite',           price: 30.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Pelo Piel y Unas Nutrilite',  price: 19.12, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '7790.00',  // 4040 + 2050 + 1700 = 7790
-    currency: 'DOP',
+    amount:   '104.12',  // 55.00 + 30.00 + 19.12 = 104.12
+    currency: 'USD',
     instruccion: '✅ Completa el pago. Luego llama POST /cert/verify con el token que devolvió Pagadito en la URL de retorno.',
   },
 }
