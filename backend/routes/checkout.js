@@ -490,47 +490,47 @@ router.post('/pagadito/create', async (req, res) => {
 //    POST /api/checkout/pagadito/cert/verify   → confirma Caso4: verifica token devuelto por Pagadito
 // ══════════════════════════════════════════════════════════════════════════════
 
-// Montos exactos requeridos por el Formulario de Certificación Técnica TECNICA-V1 de Pagadito
-// Fila 1: $18.44 USD | Fila 2: $23.79 USD | Fila 3: $99.91 USD (cancelar) | Fila 4: $104.12 USD (get_status)
+// Montos en DOP (pesos dominicanos) — moneda real del comercio VitaGloss RD
+// Requerido por Pagadito dev: las pruebas de certificación deben hacerse en DOP
 const CERT_CASOS = {
   1: {
-    label:    'Caso 1 — 1 artículo, pago exitoso ($18.44)',
+    label:    'Caso 1 — 1 artículo, pago exitoso (RD$1,099)',
     items:    [
-      { quantity: 1, description: 'VitaGloss Pack Hidratacion Profunda', price: 18.44, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Vitamina C Nutrilite', price: 1099, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '18.44',
-    currency: 'USD',
-    instruccion: '✅ Completa el pago en Pagadito sandbox. Tarjeta VISA 4111111111111111 / 12/2030 / CVV 123',
+    amount:   '1099.00',
+    currency: 'DOP',
+    instruccion: '✅ Completa el pago con cuenta Compradores Pagadito sandbox (país: El Salvador)',
   },
   2: {
-    label:    'Caso 2 — Múltiples artículos, pago exitoso ($23.79)',
+    label:    'Caso 2 — Múltiples artículos, pago exitoso (RD$3,929)',
     items:    [
-      { quantity: 1, description: 'VitaGloss Shampoo Reparador',       price: 12.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'VitaGloss Acondicionador Brillo',   price:  7.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'VitaGloss Serum Reparacion Capilar', price:  4.79, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Vitamina C Nutrilite',  price: 1099, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Cal Mag D Nutrilite',   price: 1270, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Vitamina D Nutrilite',  price: 1560, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '23.79',   // 12.00 + 7.00 + 4.79 = 23.79
-    currency: 'USD',
-    instruccion: '✅ Completa el pago en Pagadito sandbox. Tarjeta VISA 4111111111111111 / 12/2030 / CVV 123',
+    amount:   '3929.00',  // 1099 + 1270 + 1560 = 3929
+    currency: 'DOP',
+    instruccion: '✅ Completa el pago con cuenta Compradores Pagadito sandbox (país: El Salvador)',
   },
   3: {
-    label:    'Caso 3 — Transacción cancelada ($99.91)',
+    label:    'Caso 3 — Transacción cancelada (RD$4,040)',
     items:    [
-      { quantity: 1, description: 'VitaGloss Kit Completo Capilar', price: 99.91, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Double X Reemplazo 31 dias', price: 4040, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '99.91',
-    currency: 'USD',
+    amount:   '4040.00',
+    currency: 'DOP',
     instruccion: '⚠️ Abre la URL de pago, inicia sesión en Pagadito sandbox y haz clic en CANCELAR. NO completar el pago.',
   },
   4: {
-    label:    'Caso 4 — get_status post-pago ($104.12)',
+    label:    'Caso 4 — get_status post-pago (RD$7,790)',
     items:    [
-      { quantity: 1, description: 'VitaGloss Pack Premium Restauracion', price: 55.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'VitaGloss Mascarilla Profunda',        price: 30.00, url_product: 'https://www.vitaglossrd.com/catalogo' },
-      { quantity: 1, description: 'VitaGloss Aceite Capilar Argan',       price: 19.12, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Double X Reemplazo 31 dias',  price: 4040, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Omega-3 Nutrilite',           price: 2050, url_product: 'https://www.vitaglossrd.com/catalogo' },
+      { quantity: 1, description: 'Pelo Piel y Unas Nutrilite',  price: 1700, url_product: 'https://www.vitaglossrd.com/catalogo' },
     ],
-    amount:   '104.12',  // 55.00 + 30.00 + 19.12 = 104.12
-    currency: 'USD',
+    amount:   '7790.00',  // 4040 + 2050 + 1700 = 7790
+    currency: 'DOP',
     instruccion: '✅ Completa el pago. Luego llama POST /cert/verify con el token que devolvió Pagadito en la URL de retorno.',
   },
 }
@@ -546,10 +546,10 @@ router.get('/pagadito/cert', (req, res) => {
       cvv:        '123',
     },
     pasos: [
-      '1. POST /api/checkout/pagadito/cert/1 → pagar $18.44 (1 artículo)',
-      '2. POST /api/checkout/pagadito/cert/2 → pagar $23.79 (3 artículos)',
-      '3. POST /api/checkout/pagadito/cert/3 → iniciar $99.91 y CANCELAR en Pagadito',
-      '4. POST /api/checkout/pagadito/cert/4 → pagar $104.12 (3 artículos)',
+      '1. POST /api/checkout/pagadito/cert/1 → pagar RD$1,099 (1 artículo)',
+      '2. POST /api/checkout/pagadito/cert/2 → pagar RD$3,929 (3 artículos)',
+      '3. POST /api/checkout/pagadito/cert/3 → iniciar RD$4,040 y CANCELAR en Pagadito',
+      '4. POST /api/checkout/pagadito/cert/4 → pagar RD$7,790 (3 artículos)',
       '5. POST /api/checkout/pagadito/cert/verify {tokenTrans} → confirmar Caso 4 vía get_status',
     ],
     nota: 'Registrar en Excel: ERN, Monto, Hora, Fecha y Número de Aprobación PG para cada caso completado.',
@@ -602,7 +602,7 @@ router.post('/pagadito/cert/:caso', async (req, res) => {
       excel: {
         numero:   casoNum,
         ERN:      ern,
-        monto:    `$${caso.amount} ${caso.currency}`,
+        monto:    `RD$${caso.amount} ${caso.currency}`,
         fecha:    now.toISOString().split('T')[0],
         hora:     now.toTimeString().split(' ')[0],
         aprobacion_PG: casoNum === 3
