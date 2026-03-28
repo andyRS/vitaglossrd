@@ -232,9 +232,14 @@ export default function OrdenConfirmada() {
     try {
       // Recuperar datos guardados antes del redirect
       const raw = sessionStorage.getItem('vg_checkout_data')
+
       if (!raw) {
-        setError('No se encontraron los datos del pedido. Por favor contáctanos por WhatsApp.')
-        setStatus('error')
+        // Sin datos de sesión (Postman cert, browser refresh, etc.)
+        // Verificar solo el estado del pago con Pagadito — sin crear orden
+        const result = await api.pagaditoVerify({ tokenTrans, statusOnly: true })
+        if (result.pgApproval) setPgApproval(result.pgApproval)
+        setInvoice(ern || '-')
+        setStatus('success')
         return
       }
 

@@ -80,8 +80,8 @@ export const api = {
   paypalCreate: (body) => request('POST', '/checkout/paypal/create', body),
   // PayPal: capturar pago + crear orden en DB
   paypalCapture: (paypalOrderId, body) => request('POST', `/checkout/paypal/capture/${paypalOrderId}`, body),
-  // Pagadito: connect + exec_trans → devuelve URL de pago
-  pagaditoCreate: (body) => request('POST', '/checkout/pagadito/create', body),
-  // Pagadito: verify + get_status → confirma pago y crea orden en DB
+  // Pagadito: verificar pago + crear orden en DB
   pagaditoVerify: (body) => request('POST', '/checkout/pagadito/verify', body),
+  // 2Checkout: procesar token de 2Pay.js + crear orden en DB
+  twoCo: (body) => request('POST', '/checkout/2co', body),
 }

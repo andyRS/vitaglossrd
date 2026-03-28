@@ -674,7 +674,7 @@ router.post('/pagadito/verify', async (req, res) => {
       return res.status(503).json({ error: 'Pagadito no configurado' })
     }
 
-    const { tokenTrans, items, total, nombre, apellidos, email,
+    const { tokenTrans, statusOnly, items, total, nombre, apellidos, email,
             whatsapp, calle, sector, provincia, referencia, refCode } = req.body
 
     if (!tokenTrans) return res.status(400).json({ error: 'Token de transacción no recibido' })
@@ -709,6 +709,11 @@ router.post('/pagadito/verify', async (req, res) => {
 
     if (estado !== 'COMPLETED') {
       return res.status(400).json({ error: `El pago no fue completado. Estado: ${estado}` })
+    }
+
+    // Modo solo-estado: solo verificar pago, sin crear orden (usado cuando no hay datos del cliente)
+    if (statusOnly) {
+      return res.json({ ok: true, pgApproval, invoiceNumber: '-', statusOnly: true })
     }
 
     // Verificar que no se creó ya la orden con este token (idempotencia)
