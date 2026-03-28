@@ -295,9 +295,11 @@ export default function OrdenConfirmada() {
 
       {/* Logo */}
       <img
-        src="/logo-vitagloss.webp"
+        src="/logo_final.webp"
+        srcSet="/logo_final-200w.webp 200w, /logo_final-400w.webp 400w, /logo_final.webp 1536w"
+        sizes="120px"
         alt="VitaGloss RD"
-        className="h-8 object-contain mt-8 opacity-50"
+        className="h-10 object-contain mt-8 opacity-60"
       />
     </div>
   )
