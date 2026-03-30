@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { m, AnimatePresence } from 'framer-motion'
 import { productos } from '../data/productos'
 import { slugify } from '../utils/slugify'
@@ -248,10 +248,19 @@ function TabsInfoSection({ producto }) {
 export default function ProductoDetalle() {
   const { slug } = useParams()
   const { getPrecio } = usePrecios()
-  // Busca por slug; fallback a id numérico para URLs antiguas (/producto/1)
-  const productoBase = productos.find(p => slugify(p.nombre) === slug)
-    ?? productos.find(p => String(p.id) === slug)
+  const navigate = useNavigate()
+
+  const foundBySlug = productos.find(p => slugify(p.nombre) === slug || p.slug === slug)
+  const foundById   = !foundBySlug ? productos.find(p => String(p.id) === slug) : null
+  const productoBase = foundBySlug ?? foundById
   const producto = productoBase ? { ...productoBase, ...getPrecio(productoBase.id) } : undefined
+
+  // Redirect URLs con ID numérico a la URL canónica con slug
+  useEffect(() => {
+    if (foundById) {
+      navigate(`/producto/${slugify(foundById.nombre)}`, { replace: true })
+    }
+  }, [foundById, navigate])
   const [imgActiva, setImgActiva] = useState(0)
   const [agregado, setAgregado] = useState(false)
   const [qty, setQty] = useState(1)
