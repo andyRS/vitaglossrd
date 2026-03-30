@@ -45,14 +45,6 @@ export const PRECIOS = {
   29: { precio:   3200, precioOriginal:  4923 }, // Serenoa Repens y Raíz de Ortiga
   30: { precio:   3200, precioOriginal:  4923 }, // XS Energy + Focus
   31: { precio:   2850, precioOriginal:  4385 }, // Bebida Energizante XS Jugo Burbujeante
-
-  // ── PRODUCTOS DE PRUEBA — Certificación Pagadito (NO mostrar en catálogo) ──
-  // Montos exactos requeridos por Pagadito en USD a tasa sandbox 55.20
-  // $8.44  = RD$466   | $23.79 = RD$1,314 | $99.91 = RD$5,515 | $104.12 = RD$5,747
-  901: { precio:   1018, precioOriginal:  1566 }, // TEST-1: $18.44 USD  (1018 / 55.20 = 18.44)
-  902: { precio:   1313, precioOriginal:  2020 }, // TEST-2: $23.79 USD  (1313 / 55.20 = 23.79)
-  903: { precio:   5515, precioOriginal:  8485 }, // TEST-3: $99.91 USD  (5515 / 55.20 = 99.91)
-  904: { precio:   5747, precioOriginal:  8842 }, // TEST-4: $104.12 USD (5747 / 55.20 ≈ 104.11)
 }
 
 // ── PRECIOS DE COMBOS/KITS ──────────────────────────────────
