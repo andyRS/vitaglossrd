@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "vitaglossrd.com" }],
+      "destination": "https://www.vitaglossrd.com/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { 
       "source": "/:path((?!ads\\.txt$|robots\\.txt$|sitemap\\.xml$|google-merchant-feed\\.xml$|.*\\..+$).*)", 
